@@ -1,0 +1,31 @@
+import {
+    Server,
+    Calculator,
+    Rocket,
+    Cog,
+    Blocks,
+    Lightbulb,
+    ClipboardCheck,
+    Receipt,
+    BookOpen,
+    Wrench,
+    BarChart,
+    ShieldCheck,
+    User,
+} from "lucide-react"
+
+export const iconMap: Record<string, any> = {
+    Server,
+    Calculator,
+    Rocket,
+    Cog,
+    Blocks,
+    Lightbulb,
+    ClipboardCheck,
+    Receipt,
+    BookOpen,
+    Wrench,
+    BarChart,
+    ShieldCheck,
+    User,
+}
