@@ -1,126 +1,148 @@
 "use client"
 
+import * as React from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Linkedin, Mail, Twitter } from "lucide-react"
-import Link from "next/link"
+import { Mail, Star, Facebook, Linkedin } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useMedia } from "@/hooks/use-media"
-
-const hardcodedTeamMembers = [
-    {
-        name: "Dr. Ahmed Hassan",
-        role: "Managing Partner",
-        bio: "Over 20 years of experience in strategic consulting and digital transformation across East Africa.",
-        image: "/placeholder-team-1.jpg",
-        initials: "AH"
-    },
-    {
-        name: "Sarah Williams",
-        role: "Head of ERP Solutions",
-        bio: "Certified Odoo Expert with a track record of 50+ successful ERP implementations in manufacturing and retail.",
-        image: "/placeholder-team-2.jpg",
-        initials: "SW"
-    },
-    {
-        name: "Michael Chen",
-        role: "Director of Technology",
-        bio: "Leading our tech initiatives, Michael specializes in cloud architecture, cybersecurity, and AI integration.",
-        image: "/placeholder-team-3.jpg",
-        initials: "MC"
-    },
-    {
-        name: "Fatima Ali",
-        role: "Senior Financial Consultant",
-        bio: "Expert in IFRS compliance and financial modernization, helping clients optimize their accounting processes.",
-        image: "/placeholder-team-4.jpg",
-        initials: "FA"
-    },
-]
-
 export function Team({ showHeader = true }: { showHeader?: boolean }) {
-    const { ref, isVisible } = useScrollAnimation()
-    const { media: dynamicTeam } = useMedia('team')
+    const [teamMembers, setTeamMembers] = React.useState<any[]>([])
+    const [otherTeamMembers, setOtherTeamMembers] = React.useState<any[]>([])
+    const [loading, setLoading] = React.useState(true)
 
-    const allTeamMembers = [
-        ...hardcodedTeamMembers,
-        ...dynamicTeam.map(file => ({
-            name: file.name.split('.')[0].replace(/-/g, ' '),
-            role: "Consultant",
-            bio: "Strategic expert at Merit Advisory specializing in enterprise solutions and client success.",
-            image: file.url,
-            initials: file.name.substring(0, 2).toUpperCase()
-        }))
-    ]
+    React.useEffect(() => {
+        Promise.all([
+            fetch("/api/admin/data?type=team").then(res => res.json()),
+            fetch("/api/admin/data?type=other-team").then(res => res.json())
+        ]).then(([team, other]) => {
+            setTeamMembers(team)
+            setOtherTeamMembers(other)
+            setLoading(false)
+        }).catch(() => setLoading(false))
+    }, [])
 
+    if (loading) return null
     return (
-        <section id="team" className={cn("py-24 md:py-32", !showHeader && "py-12 md:py-16")}>
-            <div ref={ref} className="mx-auto max-w-7xl px-6">
+        <section id="team" className={cn("py-24 bg-slate-50/50", !showHeader && "py-12")}>
+            <div className="mx-auto max-w-7xl px-6">
                 {showHeader && (
-                    <div className="mx-auto max-w-2xl text-center mb-16">
-                        <Badge variant="outline" className="mb-4 border-accent/20 bg-accent/5 text-accent">
-                            Our Experts
+                    <div className="mx-auto max-w-4xl text-center mb-20">
+                        <Badge variant="outline" className="mb-4 border-primary/20 bg-primary/5 text-primary px-4 py-1">
+                            OUR LEADERSHIP
                         </Badge>
-                        <h2
-                            className={`text-3xl font-bold leading-tight tracking-tight text-foreground md:text-4xl lg:text-5xl transition-all duration-600 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                                }`}
-                        >
-                            Meet the Team
+                        <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+                            Empowering with <span className="text-primary italic">Expertise</span> & Experience
                         </h2>
-                        <p
-                            className={`mt-4 text-lg text-muted-foreground transition-all duration-600 delay-100 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                                }`}
-                        >
-                            The minds behind our successful digital transformations.
-                        </p>
                     </div>
                 )}
 
-                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-                    {allTeamMembers.map((member: any, i: number) => (
+                {/* Leadership Section */}
+                <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 mb-32">
+                    {teamMembers.map((member, i) => (
                         <div
                             key={member.name}
-                            className={`group relative transition-all duration-600 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-                                }`}
-                            style={{ transitionDelay: `${200 + i * 100}ms` }}
+                            className="group relative flex flex-col items-center"
                         >
-                            <Card className="overflow-hidden border-border bg-card hover:shadow-lg transition-shadow">
-                                <div className="relative aspect-square overflow-hidden bg-muted">
-                                    {member.image && !member.image.includes('placeholder') ? (
-                                        <img
-                                            src={member.image}
-                                            alt={member.name}
-                                            className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                        />
-                                    ) : (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10 text-primary group-hover:scale-105 transition-transform duration-500">
-                                            <span className="text-4xl font-bold opacity-30">{member.initials}</span>
-                                        </div>
-                                    )}
+                            <div className="relative mb-8">
+                                <div className="h-48 w-48 rounded-full border-[6px] border-white shadow-2xl overflow-hidden bg-slate-200">
+                                    <img
+                                        src={member.image}
+                                        alt={member.name}
+                                        className="h-full w-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                                    />
                                 </div>
-                                <CardContent className="p-6 text-center">
-                                    <h3 className="text-xl font-bold text-foreground">{member.name}</h3>
-                                    <p className="text-sm font-medium text-primary mt-1">{member.role}</p>
-                                    <p className="mt-4 text-sm text-muted-foreground line-clamp-3">
-                                        {member.bio}
-                                    </p>
+                            </div>
 
-                                    <div className="mt-6 flex justify-center gap-4">
-                                        <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                                            <Linkedin className="h-4 w-4" />
-                                        </Link>
-                                        <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                                            <Twitter className="h-4 w-4" />
-                                        </Link>
-                                        <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                                            <Mail className="h-4 w-4" />
-                                        </Link>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                {member.expHeader}
+                            </p>
+                            <h3 className="text-2xl font-black text-slate-900 text-center mb-2">{member.name}</h3>
+                            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-6">{member.role}</p>
+
+                            {/* Stats Grid */}
+                            <div className="grid grid-cols-2 w-full gap-2 mb-6">
+                                <div className="bg-slate-100/80 rounded-lg p-3 text-center border border-slate-200">
+                                    <div className="text-lg font-black text-primary">{member.yearsExp}</div>
+                                    <div className="text-[9px] font-bold text-red-600 uppercase">Years Exp</div>
+                                </div>
+                                <div className="bg-slate-100/80 rounded-lg p-3 text-center border border-slate-200">
+                                    <div className="text-lg font-black text-primary">{member.qualification}</div>
+                                    <div className="text-[9px] font-bold text-red-600 uppercase">{member.qualLabel}</div>
+                                </div>
+                            </div>
+
+                            <p className="text-sm leading-relaxed text-slate-600 text-center mb-6 px-2">
+                                {member.bio}
+                            </p>
+
+                            {/* Social Links */}
+                            <div className="flex gap-4 mb-8">
+                                <a 
+                                    href={(member as any).facebook} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e4e8c]/5 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-all duration-300"
+                                >
+                                    <Facebook className="h-5 w-5" />
+                                </a>
+                                <a 
+                                    href={(member as any).linkedin} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e4e8c]/5 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-all duration-300"
+                                >
+                                    <Linkedin className="h-5 w-5" />
+                                </a>
+                            </div>
+
+                            <a 
+                                href={`mailto:${member.email}`}
+                                className="mt-auto w-full flex items-center justify-center gap-2 bg-[#b22222] text-white py-3 rounded-lg font-bold text-sm hover:bg-[#8b0000] transition-colors shadow-md shadow-red-900/10"
+                            >
+                                <Mail className="h-4 w-4" />
+                                {member.email}
+                            </a>
                         </div>
                     ))}
+                </div>
+
+                {/* Team Behind Merit Section */}
+                <div className="mt-40">
+                    <div className="flex flex-col items-center text-center mb-16">
+                        <div className="inline-flex items-center gap-2 bg-[#1e4e8c] text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg mb-6">
+                            <Star className="h-4 w-4 fill-white" />
+                            Meet the Team Behind Merit
+                        </div>
+                        <h3 className="text-3xl font-extrabold text-[#b22222]">Driven by Expertise. Focused on Results.</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                        {otherTeamMembers.map((member, i) => (
+                            <div 
+                                key={member.name}
+                                className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1"
+                            >
+                                <div className="aspect-[4/5] bg-slate-100 overflow-hidden">
+                                    <img 
+                                        src={member.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop"} 
+                                        alt={member.name} 
+                                        className="h-full w-full object-cover"
+                                    />
+                                </div>
+                                <div className="bg-[#b22222] p-4 text-center">
+                                    <p className="font-black text-white text-base">{member.name}</p>
+                                    <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest mt-1">{member.role}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-20 text-center">
+                        <p className="text-slate-500 text-lg italic max-w-4xl mx-auto px-6">
+                            “At Merit Advisory Services LLP, our team brings strong expertise in finance, audit, advisory, and ERP solutions, delivering practical and reliable services that support compliance, efficiency, and sustainable growth.”
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>

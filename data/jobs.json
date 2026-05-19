@@ -1,0 +1,115 @@
+[
+    {
+        "id": "odoo-functional-consultant",
+        "title": "Functional Consultant [Odoo]",
+        "location": "Hargeisa, Somaliland",
+        "type": "Full-time",
+        "department": "ERP Solutions",
+        "closingDate": "2026-05-31",
+        "experience": "2+ years",
+        "openings": 2,
+        "workMode": "On-site",
+        "description": "We are looking for a motivated and skilled professional candidate to join our team as an Odoo Functional Consultant / Project Manager. The selected candidate will be responsible for demonstrating Odoo solutions to potential clients, managing implementation projects, and providing continuous support.",
+        "responsibilities": [
+            "Present Demos to new leads",
+            "Solely manage and oversee projects, including all implementation tasks",
+            "Provide on-site and remote training to clients",
+            "Setup system defaults, data migration, and overall implementation",
+            "Provide comprehensive functional support to clients",
+            "Verify accuracy and integrity of data entered into the system",
+            "Participate in fiscal year closing processes",
+            "Generate reports tailored to customer requirements",
+            "Assess and check the quality of customizations"
+        ],
+        "requirements": [
+            "Strong English proficiency (Speaking) is required",
+            "Bachelor’s degree in Accounting, Business Administration, Information Systems, or related field",
+            "Previous Odoo experience (implementation, configuration, or support) is a strong plus",
+            "Understanding of ERP systems, business workflows, and process mapping",
+            "Ability to translate business needs into functional specifications",
+            "Familiarity with modules such as Accounting, Sales, Inventory, Purchasing, HR",
+            "Ability to manage multiple projects and meet deadlines",
+            "Strong communication and client-facing skills"
+        ],
+        "process": [
+            { "step": "Application Screening", "description": "We review your profile to ensure alignment with our requirements." },
+            { "step": "Initial Phone Call", "description": "A brief conversation to discuss your experience and expectations." },
+            { "step": "Onsite Interview", "description": "Technical and cultural fit assessment with the leadership team." },
+            { "step": "Exam Evaluation", "description": "Practical test to assess your functional knowledge and problem-solving skills." },
+            { "step": "Final Offer", "description": "Usually issued within 7 days after the interview." }
+        ]
+    },
+    {
+        "id": "senior-erp-pm",
+        "title": "Senior ERP Project Manager",
+        "location": "Mogadishu, Somalia",
+        "type": "Full-time",
+        "department": "Advisory",
+        "closingDate": "2026-06-15",
+        "experience": "5+ years",
+        "openings": 1,
+        "workMode": "Hybrid",
+        "description": "We are seeking an experienced Project Manager to lead large-scale ERP implementation projects for our enterprise clients. You will be responsible for the entire project lifecycle, from planning to go-live, ensuring that all business requirements are met with precision.",
+        "responsibilities": [
+            "Define project scope, goals, and deliverables in collaboration with stakeholders",
+            "Lead and coordinate cross-functional project teams including consultants and developers",
+            "Manage project budget, resource allocation, and timelines using Agile methodologies",
+            "Maintain consistent stakeholder communication and executive reporting",
+            "Identify and mitigate project risks before they impact delivery",
+            "Ensure rigorous quality standards are met throughout the project lifecycle",
+            "Facilitate change management and user adoption strategies",
+            "Oversee post-go-live support and project closure activities"
+        ],
+        "requirements": [
+            "PMP, Prince2, or equivalent project management certification is highly desirable",
+            "Minimum 5 years of experience in ERP project management (SAP, Oracle, Odoo, or MS Dynamics)",
+            "Strong leadership skills with the ability to motivate and guide technical teams",
+            "Experience in the full Software Development Life Cycle (SDLC)",
+            "Excellent problem-solving, negotiation, and conflict-resolution abilities",
+            "Fluency in English and Somali (written and spoken)",
+            "Strong analytical skills for business process optimization"
+        ],
+        "process": [
+            { "step": "Screening", "description": "Review of management experience and certifications." },
+            { "step": "Case Study", "description": "Presentation of a previous project management scenario." },
+            { "step": "Leadership Interview", "description": "Interview with senior partners and stakeholders." },
+            { "step": "Background Check", "description": "Verification of previous project deliveries." }
+        ]
+    },
+    {
+        "id": "fullstack-dev-python",
+        "title": "Full Stack Developer (Python/React)",
+        "location": "Garowe, Somalia",
+        "type": "Full-time / Remote",
+        "department": "Technology",
+        "closingDate": "2026-06-20",
+        "experience": "3+ years",
+        "openings": 2,
+        "workMode": "Remote",
+        "description": "Join our technology team to build and maintain custom extensions and integrations for enterprise systems. You will work on cutting-edge technologies to solve complex business problems and build scalable software solutions.",
+        "responsibilities": [
+            "Develop custom Odoo modules and integrations using Python and the Odoo framework",
+            "Build modern, responsive frontend interfaces using React, Next.js, and Tailwind CSS",
+            "Optimize database queries and system performance for high-traffic environments",
+            "Write clean, maintainable, and well-documented code following best practices",
+            "Collaborate with functional consultants to translate business needs into technical designs",
+            "Implement automated testing and CI/CD pipelines",
+            "Perform code reviews and mentor junior developers"
+        ],
+        "requirements": [
+            "Proficiency in Python and JavaScript (React/Next.js)",
+            "Strong experience with PostgreSQL and database design principles",
+            "Deep knowledge of RESTful APIs, Webhooks, and integration patterns",
+            "Familiarity with Git, Docker, and Linux environments",
+            "Passion for building scalable enterprise software and complex business logic",
+            "Bachelor's degree in Computer Science or a related technical field",
+            "Experience with Odoo development is a major advantage"
+        ],
+        "process": [
+            { "step": "Technical Screening", "description": "Code review of your portfolio or GitHub repositories." },
+            { "step": "Technical Interview", "description": "Live coding or deep-dive architectural discussion." },
+            { "step": "Cultural Fit", "description": "Team discussion to assess collaboration skills." },
+            { "step": "Final Interview", "description": "Meeting with the CTO for final evaluation." }
+        ]
+    }
+]

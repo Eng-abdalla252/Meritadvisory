@@ -196,7 +196,9 @@ export function Differentiators() {
                     </p>
                     <div className="mt-6 flex flex-wrap justify-center gap-4">
                         <a
-                            href="#contact"
+                            href="https://wa.me/16725723750"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 rounded-lg bg-[#0f55ba] px-6 py-3 font-semibold text-white transition-all hover:bg-[#0c4494] hover:shadow-lg"
                         >
                             Get Started Today
@@ -211,25 +213,7 @@ export function Differentiators() {
                 </div>
             </div>
 
-            <style jsx>{`
-        @keyframes ping-slow {
-          75%, 100% {
-            transform: scale(1.5);
-            opacity: 0;
-          }
-        }
 
-        .animate-ping-slow {
-          animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-
-        .bg-grid-pattern {
-          background-image: 
-            linear-gradient(to right, currentColor 1px, transparent 1px),
-            linear-gradient(to bottom, currentColor 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
-      `}</style>
         </section>
     )
 }

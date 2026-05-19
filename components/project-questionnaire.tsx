@@ -72,10 +72,10 @@ export default function ProjectQuestionnaireForm() {
     async function onSubmit(values: FormValues) {
         setIsSubmitting(true)
         try {
-            const response = await fetch("/api/questionnaire", {
+            const response = await fetch("/api/admin/leads", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(values),
+                body: JSON.stringify({ ...values, type: "questionnaire" }),
             })
 
             if (response.ok) {

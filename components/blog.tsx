@@ -1,38 +1,25 @@
 "use client"
 
+import * as React from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { ArrowRight, Calendar } from "lucide-react"
 import Link from "next/link"
-
-const posts = [
-  {
-    slug: "future-of-erp",
-    category: "ERP",
-    date: "Jan 15, 2026",
-    title: "The Future of ERP: AI-Driven Enterprise Systems",
-    excerpt:
-      "Explore how artificial intelligence is revolutionizing enterprise resource planning and what it means for your organization.",
-  },
-  {
-    slug: "digital-overhaul",
-    category: "Digital Transformation",
-    date: "Jan 8, 2026",
-    title: "5 Signs Your Business Needs a Digital Overhaul",
-    excerpt:
-      "Learn the key indicators that your business processes are ripe for digital transformation and how to get started.",
-  },
-  {
-    slug: "modernizing-accounting",
-    category: "Accounting",
-    date: "Dec 20, 2025",
-    title: "Modernizing Legacy Accounting Systems: A Complete Guide",
-    excerpt:
-      "A step-by-step approach to migrating from outdated financial systems to modern, cloud-based accounting platforms.",
-  },
-]
-
 export function Blog() {
   const { ref, isVisible } = useScrollAnimation()
+  const [posts, setPosts] = React.useState<any[]>([])
+  const [loading, setLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    fetch("/api/admin/data?type=blog")
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data)
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [])
+
+  if (loading) return null
 
   return (
     <section id="blog" className="bg-card py-24 md:py-32">
@@ -43,13 +30,13 @@ export function Blog() {
               className={`mb-3 text-sm font-semibold uppercase tracking-widest text-accent transition-all duration-600 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                 }`}
             >
-              Insights & Blog
+              Insights & Thought Leadership
             </p>
             <h2
               className={`text-3xl font-bold leading-tight tracking-tight text-foreground text-balance md:text-4xl lg:text-5xl transition-all duration-600 delay-100 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                 }`}
             >
-              Latest Thinking
+              The Merit Perspective
             </h2>
           </div>
           <Link
@@ -57,44 +44,67 @@ export function Blog() {
             className={`inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-accent transition-all duration-600 delay-200 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
               }`}
           >
-            View All Articles
+            Explore All Perspectives
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {posts.map((post, i) => (
+        <div className="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {posts.slice(0, 3).map((post, i) => (
             <article
               key={post.title}
-              className={`group flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-all duration-500 hover:-translate-y-1 hover:shadow-lg ${isVisible
+              className={`group flex flex-col overflow-hidden bg-white rounded-2xl border border-slate-100 transition-all duration-500 hover:shadow-2xl hover:shadow-slate-200/50 ${isVisible
                   ? "translate-y-0 opacity-100"
                   : "translate-y-8 opacity-0"
                 }`}
-              style={{ transitionDelay: isVisible ? `${200 + i * 100}ms` : "0ms" }}
+              style={{ transitionDelay: `${200 + i * 100}ms` }}
             >
-              <div className="flex h-48 items-center justify-center bg-muted">
-                <span className="rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
-                  {post.category}
-                </span>
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src={post.imageUrl} 
+                  alt={post.title}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
               </div>
-              <div className="flex flex-1 flex-col p-6">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Calendar className="h-3 w-3" />
-                  {post.date}
+              <div className="flex flex-1 flex-col p-8 lg:p-10">
+                <div className="mb-6">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#e31e24] flex items-center gap-2">
+                    <span className="h-1 w-1 rounded-full bg-[#e31e24]" />
+                    {post.category}
+                  </span>
                 </div>
-                <h3 className="mt-3 text-lg font-semibold leading-snug text-foreground group-hover:text-primary">
-                  {post.title}
+                
+                <h3 className="text-2xl font-black leading-tight text-slate-900 group-hover:text-[#e31e24] transition-colors mb-6">
+                  <Link href={`/blog/${post.slug}`}>
+                    {post.title}
+                  </Link>
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {post.excerpt}
-                </p>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary"
-                >
-                  Read More
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                </Link>
+
+                <div className="mt-auto pt-8 border-t border-slate-50 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-full overflow-hidden border border-slate-100">
+                      <img src={post.authorImage} alt={post.author} className="h-full w-full object-cover" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-slate-900 leading-none mb-1">{post.author}</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{post.authorRole}</p>
+                    </div>
+                  </div>
+                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <Calendar className="h-3 w-3" />
+                    {post.date}
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="inline-flex items-center gap-2 text-xs font-black text-[#e31e24] uppercase tracking-widest group/link"
+                  >
+                    Read More
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                  </Link>
+                </div>
               </div>
             </article>
           ))}

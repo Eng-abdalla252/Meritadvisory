@@ -68,8 +68,7 @@ export function About({ brief = false }: { brief?: boolean }) {
                   </div>
                   <h3 className="mt-3 font-semibold text-foreground">Our Mission</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    To empower enterprises with innovative technology solutions
-                    that drive sustainable growth and operational excellence.
+                    To strengthen organizations through practical advisory, governance, and sustainable systems that improve performance and enable informed decision-making.
                   </p>
                 </div>
                 <div className="rounded-xl border border-border bg-card p-5 transition-all hover:border-accent/30 hover:shadow-sm">
@@ -78,8 +77,7 @@ export function About({ brief = false }: { brief?: boolean }) {
                   </div>
                   <h3 className="mt-3 font-semibold text-foreground">Our Vision</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    To be the most trusted advisory partner for enterprises
-                    seeking to lead their industries through digital transformation.
+                    To become a leading professional advisory firm in the region, shaping the future of consulting services and creating meaningful value for organizations and communities.
                   </p>
                 </div>
               </div>

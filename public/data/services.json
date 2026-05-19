@@ -1,0 +1,50 @@
+[
+    {
+        "title": "Enterprise ERP Solutions",
+        "subtitle": "Global Odoo experts delivering seamless implementation, migration, and integration.",
+        "icon": "Cpu",
+        "slug": "technology-digital-solutions",
+        "color": "from-blue-500 to-cyan-500",
+        "tags": ["Odoo Gold Partner", "Migration", "Customization"]
+    },
+    {
+        "title": "Software Engineering",
+        "subtitle": "Full-cycle development from ideation to DevOps and quality assurance.",
+        "icon": "Monitor",
+        "slug": "technology-digital-solutions",
+        "color": "from-purple-500 to-pink-500",
+        "tags": ["React", "Node.js", "Cloud Native"]
+    },
+    {
+        "title": "Digital Strategy",
+        "subtitle": "Comprehensive roadmaps to digitize your value chain and operational agility.",
+        "icon": "Zap",
+        "slug": "advisory-research",
+        "color": "from-amber-500 to-orange-500",
+        "tags": ["Roadmaps", "ROI Focus", "Assessment"]
+    },
+    {
+        "title": "Financial Governance",
+        "subtitle": "IFRS compliance, tax optimization, and automated accounting workflows.",
+        "icon": "Receipt",
+        "slug": "accounting-tax-financial-management",
+        "color": "from-emerald-500 to-teal-500",
+        "tags": ["Tax Optimization", "Audit Ready", "IFRS"]
+    },
+    {
+        "title": "Audit & Assurance",
+        "subtitle": "Risk-based evaluations and cybersecurity audits for enterprise resilience.",
+        "icon": "ClipboardCheck",
+        "slug": "audit-assurance",
+        "color": "from-rose-500 to-red-500",
+        "tags": ["Internal Controls", "Cyber Audit", "Compliance"]
+    },
+    {
+        "title": "Corporate Training",
+        "subtitle": "Upskilling your workforce with hands-on labs and professional certification.",
+        "icon": "BookOpen",
+        "slug": "merit-training-hub",
+        "color": "from-indigo-500 to-blue-500",
+        "tags": ["Certifications", "Odoo Training", "Leadership"]
+    }
+]

@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
@@ -7,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card } from "@/components/ui/card"
-import { MapPin, Phone, Mail, Clock, Building2, Globe } from "lucide-react"
+import { MapPin, Phone, Mail, Clock, Building2, Globe, MessageCircle } from "lucide-react"
 
 const regionalCoverage = {
   countries: [
@@ -22,17 +23,17 @@ const offices = [
   {
     city: "Mogadishu",
     region: "Head Office",
-    address: "Barakaale Building, Abdikasim Avenue\nHodan District, Mogadishu, Somalia",
+    address: "407 - Waaberi Mall, Waberi District, Mogadishu, Somalia",
     phones: ["+252 61 3294814", "+252 61 5424921"],
-    email: "info@meritadvisory.org",
+    email: "info@meritadvisory.so",
     color: "from-[#0f55ba] to-[#c11e1e]",
   },
   {
     city: "Garowe",
     region: "Puntland Office",
     address: "Along 30th Avenue\nNear Globle Rd Junction, Garowe",
-    phones: ["+252 907795588", "+252 907328333"],
-    email: "info@meritadvisory.org",
+    phones: ["+252 907795588", "+252 906795155"],
+    email: "info@meritadvisory.so",
     color: "from-[#c11e1e] to-[#0f55ba]",
   },
   {
@@ -40,34 +41,16 @@ const offices = [
     region: "Somaliland Office",
     address: "404 - Burj Omaar\n26 June District, Hargeisa - Somaliland",
     phones: ["+252 65 9006000", "+252 63 8538888"],
-    email: "info@meritadvisory.org",
+    email: "info@meritadvisory.so",
     color: "from-[#0f55ba] to-[#c11e1e]",
   },
   {
     city: "Bosaso",
     region: "Puntland Office",
     address: "Israac Building, Airport Road\nBosaso, PL, Somalia",
-    phones: ["+252 907085356"],
-    email: "info@meritadvisory.org",
+    phones: ["+252 906795420"],
+    email: "info@meritadvisory.so",
     color: "from-[#c11e1e] to-[#0f55ba]",
-  },
-]
-
-const generalContact = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "info@meritadvisory.org",
-  },
-  {
-    icon: Phone,
-    label: "Phone (Main)",
-    value: "+252 61 3294814",
-  },
-  {
-    icon: Clock,
-    label: "Business Hours",
-    value: "Sat - Thu: 8:00 AM - 5:00 PM EAT\nFriday: Closed",
   },
 ]
 
@@ -76,6 +59,46 @@ export function Contact() {
   const { ref: officesRef, isVisible: officesVisible } = useScrollAnimation()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [requestType, setRequestType] = useState<"sales" | "support">("sales")
+  const [settings, setSettings] = useState<any>(null)
+
+  React.useEffect(() => {
+    fetch("/data/settings.json")
+      .then(res => res.json())
+      .then(data => setSettings(data))
+      .catch(() => {})
+  }, [])
+
+  const contactData = settings?.contact || {
+    email: "info@meritadvisory.so",
+    phone: "+1 672-572-3750",
+    whatsapp: "16725723750"
+  }
+
+  const generalContact = [
+    {
+      icon: Mail,
+      label: "Email",
+      value: contactData.email,
+      href: `mailto:${contactData.email}`,
+    },
+    {
+      icon: Phone,
+      label: "Phone (Main)",
+      value: contactData.phone,
+      href: `tel:${contactData.phone.replace(/\s+/g, '')}`,
+    },
+    {
+      icon: MessageCircle,
+      label: "WhatsApp",
+      value: "Chat with us",
+      href: `https://wa.me/${contactData.whatsapp}`,
+    },
+    {
+      icon: Clock,
+      label: "Business Hours",
+      value: "Sat - Thu: 8:00 AM - 5:00 PM EAT\nFriday: Closed",
+    },
+  ]
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -85,15 +108,15 @@ export function Contact() {
     const data = Object.fromEntries(formData.entries())
 
     try {
-      const endpoint = requestType === "sales" ? "/api/questionnaire" : "/api/support"
-      const response = await fetch(endpoint, {
+      const response = await fetch("/api/admin/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
+          type: "contact",
+          category: requestType,
           customerName: `${data.firstName} ${data.lastName}`,
           companyName: data.company,
-          briefNeed: data.message,
           message: data.message,
           subject: `Website ${requestType === "sales" ? "Inquiry" : "Support Request"}`
         }),
@@ -241,9 +264,20 @@ export function Contact() {
                   <p className="text-sm font-semibold text-foreground">
                     {info.label}
                   </p>
-                  <p className="mt-1 text-sm text-muted-foreground whitespace-pre-line">
-                    {info.value}
-                  </p>
+                  {info.href ? (
+                    <a
+                      href={info.href}
+                      target={info.href.startsWith("http") ? "_blank" : undefined}
+                      rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      className="mt-1 block text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {info.value}
+                    </a>
+                  ) : (
+                    <p className="mt-1 text-sm text-muted-foreground whitespace-pre-line">
+                      {info.value}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
@@ -359,14 +393,14 @@ export function Contact() {
                 >
                   Phone Number
                 </label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="+252 XX XXXXXXX"
-                  className="rounded-lg"
-                  required
-                />
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder={contactData.phone}
+                    className="rounded-lg"
+                    required
+                  />
               </div>
 
               <div className="mt-5">

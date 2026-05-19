@@ -1,107 +1,76 @@
 "use client"
 
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
-import {
-  Database,
-  BarChart3,
-  Link2,
-  Bot,
-  Cloud,
-  Lock,
-} from "lucide-react"
-
-const solutions = [
-  {
-    icon: Database,
-    title: "Enterprise ERP Platforms",
-    description:
-      "SAP, Oracle, Odoo, Microsoft Dynamics, and more. We implement and customize leading ERP platforms for your business.",
-  },
-  {
-    icon: Bot,
-    title: "Intelligent Automation",
-    description:
-      "RPA, AI-powered workflows, and smart process automation to eliminate manual effort and accelerate operations.",
-  },
-  {
-    icon: BarChart3,
-    title: "Advanced Analytics",
-    description:
-      "Business intelligence dashboards, predictive analytics, and data-driven insights that power better decisions.",
-  },
-  {
-    icon: Link2,
-    title: "System Integrations",
-    description:
-      "Seamless API integrations connecting CRM, HR, finance, and operations into a unified technology ecosystem.",
-  },
-  {
-    icon: Cloud,
-    title: "Cloud Migration",
-    description:
-      "Secure and efficient migration of legacy systems to modern cloud platforms with minimal downtime.",
-  },
-  {
-    icon: Lock,
-    title: "Security & Compliance",
-    description:
-      "Enterprise-grade security frameworks, data governance, and regulatory compliance solutions.",
-  },
-]
+import { Database, ArrowRight } from "lucide-react"
+import Link from "next/link"
+import { solutionsDetail } from "@/lib/solutions-data"
+import { iconMap } from "@/lib/icon-map"
+import { Badge } from "@/components/ui/badge"
 
 export function Solutions() {
   const { ref, isVisible } = useScrollAnimation()
 
   return (
-    <section id="solutions" className="bg-navy py-24 md:py-32">
-      <div ref={ref} className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <p
-            className={`mb-3 text-sm font-semibold uppercase tracking-widest text-accent transition-all duration-600 ${
-              isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-          >
-            Solutions & Technologies
-          </p>
+    <section id="solutions" className="bg-[#1f2933] py-24 md:py-32 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-accent/5 to-transparent" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+
+      <div ref={ref} className="mx-auto max-w-7xl px-6 relative z-10">
+        <div className="flex flex-col items-center text-center mb-16">
+          <Badge variant="outline" className="mb-4 border-white/20 bg-white/5 text-white/80 backdrop-blur-sm">
+            Core Competencies
+          </Badge>
           <h2
-            className={`text-3xl font-bold leading-tight tracking-tight text-navy-foreground text-balance md:text-4xl lg:text-5xl transition-all duration-600 delay-100 ${
+            className={`text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl transition-all duration-700 ${
               isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
-            Cutting-Edge Technology Stack
+            Digital Ecosystem Solutions
           </h2>
           <p
-            className={`mt-4 text-lg text-navy-foreground/60 transition-all duration-600 delay-200 ${
+            className={`mt-6 max-w-2xl text-lg text-white/60 transition-all duration-700 delay-100 ${
               isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
-            Leveraging the best-in-class tools and platforms to deliver robust
-            enterprise solutions.
+            Deploying resilient, scalable technology frameworks that integrate seamlessly into your enterprise architecture.
           </p>
         </div>
 
         <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {solutions.map((solution, i) => (
-            <div
-              key={solution.title}
-              className={`group rounded-2xl border border-navy-foreground/10 bg-navy-foreground/5 p-8 backdrop-blur-sm transition-all duration-500 hover:border-primary/40 hover:bg-navy-foreground/10 ${
-                isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }`}
-              style={{ transitionDelay: isVisible ? `${200 + i * 100}ms` : "0ms" }}
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
-                <solution.icon className="h-6 w-6" />
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-navy-foreground">
-                {solution.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-navy-foreground/60">
-                {solution.description}
-              </p>
-            </div>
-          ))}
+          {solutionsDetail.map((solution, i) => {
+            const Icon = iconMap[solution.iconName] || Database
+            return (
+              <Link href={`/solutions/${solution.slug}`} key={solution.slug} className="group">
+                <div
+                  className={`relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md transition-all duration-500 hover:border-primary/50 hover:bg-white/[0.08] hover:shadow-2xl hover:shadow-black/20 ${
+                    isVisible
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-8 opacity-0"
+                  }`}
+                  style={{ transitionDelay: `${200 + i * 100}ms` }}
+                >
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/20 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:rotate-12">
+                    <Icon className="h-7 w-7" />
+                  </div>
+                  <h3 className="mt-6 text-xl font-bold text-white group-hover:text-primary transition-colors">
+                    {solution.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/50 line-clamp-3">
+                    {solution.heroDescription}
+                  </p>
+                  
+                  <div className="mt-8 flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+                    Discover Capability <ArrowRight className="h-3 w-3" />
+                  </div>
+                  
+                  {/* Bottom accent bar */}
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </section>

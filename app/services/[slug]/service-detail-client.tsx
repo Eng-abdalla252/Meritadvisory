@@ -26,6 +26,7 @@ interface ServiceDetail {
     title: string
     subtitle: string
     heroDescription: string
+    imageUrl: string
     keyBenefits: string[]
     approach: Array<{ step: string; detail: string }>
     technologies: string[]
@@ -51,13 +52,22 @@ export function ServiceDetailClient({ service, related }: ServiceDetailClientPro
         <div className="min-h-screen bg-background">
             <Navbar />
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-accent/5 to-background pt-32 pb-20 md:pt-40 md:pb-32">
-                <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-                <div ref={heroRef} className="relative mx-auto max-w-7xl px-6">
+            <section className="relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-32 min-h-[60vh] flex flex-col justify-center">
+                {/* Background Image with Overlay */}
+                <div className="absolute inset-0 z-0">
+                    <img 
+                        src={service.imageUrl || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"} 
+                        alt={service.title}
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+                </div>
+                
+                <div ref={heroRef} className="relative z-10 mx-auto w-full max-w-7xl px-6">
                     <Button
                         variant="ghost"
                         asChild
-                        className="mb-8 pl-0 hover:bg-transparent hover:text-primary transition-colors"
+                        className="mb-8 pl-0 text-white/70 hover:bg-transparent hover:text-white transition-colors"
                     >
                         <Link href="/" className="flex items-center gap-2 text-muted-foreground">
                             <ArrowLeft className="h-4 w-4" />
@@ -68,7 +78,7 @@ export function ServiceDetailClient({ service, related }: ServiceDetailClientPro
                     <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
                         <div>
                             <div
-                                className={`inline-flex items-center gap-3 rounded-full bg-primary/10 px-4 py-2 text-primary transition-all duration-600 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                                className={`inline-flex items-center gap-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 text-white transition-all duration-600 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                                     }`}
                             >
                                 <Icon className="h-5 w-5" />
@@ -76,14 +86,14 @@ export function ServiceDetailClient({ service, related }: ServiceDetailClientPro
                             </div>
 
                             <h1
-                                className={`mt-6 text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl transition-all duration-600 delay-100 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                                className={`mt-6 text-4xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl transition-all duration-600 delay-100 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                                     }`}
                             >
                                 {service.subtitle}
                             </h1>
 
                             <p
-                                className={`mt-6 text-lg text-muted-foreground leading-relaxed transition-all duration-600 delay-200 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                                className={`mt-6 text-lg text-white/80 leading-relaxed transition-all duration-600 delay-200 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                                     }`}
                             >
                                 {service.heroDescription}
@@ -93,12 +103,16 @@ export function ServiceDetailClient({ service, related }: ServiceDetailClientPro
                                 className={`mt-8 flex flex-wrap gap-4 transition-all duration-600 delay-300 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                                     }`}
                             >
-                                <Button size="lg" className="group">
-                                    Get Started
-                                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                <Button size="lg" className="group rounded-full bg-accent text-white hover:bg-accent/90 border-none" asChild>
+                                    <Link href="https://wa.me/16725723750" target="_blank" rel="noopener noreferrer">
+                                        Get Started
+                                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                    </Link>
                                 </Button>
-                                <Button size="lg" variant="outline">
-                                    Schedule Consultation
+                                <Button size="lg" variant="outline" className="rounded-full border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm" asChild>
+                                    <Link href="https://wa.me/16725723750" target="_blank" rel="noopener noreferrer">
+                                        Schedule Consultation
+                                    </Link>
                                 </Button>
                             </div>
                         </div>
@@ -130,8 +144,8 @@ export function ServiceDetailClient({ service, related }: ServiceDetailClientPro
                                 ].map((item, i) => {
                                     const OrbitIcon = item.icon
                                     const radius = 180
-                                    const x = Math.cos((item.angle * Math.PI) / 180) * radius
-                                    const y = Math.sin((item.angle * Math.PI) / 180) * radius
+                                    const x = Math.round(Math.cos((item.angle * Math.PI) / 180) * radius * 100) / 100
+                                    const y = Math.round(Math.sin((item.angle * Math.PI) / 180) * radius * 100) / 100
 
                                     return (
                                         <div
@@ -314,12 +328,16 @@ export function ServiceDetailClient({ service, related }: ServiceDetailClientPro
                         Let's discuss how our {service.title.toLowerCase()} can drive measurable results for your organization.
                     </p>
                     <div className="mt-8 flex flex-wrap justify-center gap-4">
-                        <Button size="lg" variant="secondary" className="group">
-                            Schedule a Free Consultation
-                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        <Button size="lg" variant="secondary" className="group" asChild>
+                            <Link href="https://wa.me/16725723750" target="_blank" rel="noopener noreferrer">
+                                Schedule a Free Consultation
+                                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                            </Link>
                         </Button>
-                        <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-                            Download Service Brief
+                        <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+                            <Link href="https://wa.me/16725723750" target="_blank" rel="noopener noreferrer">
+                                Download Service Brief
+                            </Link>
                         </Button>
                     </div>
                 </div>
@@ -378,34 +396,7 @@ export function ServiceDetailClient({ service, related }: ServiceDetailClientPro
                 </section>
             )}
 
-            <style jsx>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
 
-        @keyframes ping-slow {
-          75%, 100% {
-            transform: scale(2);
-            opacity: 0;
-          }
-        }
-
-        .animate-ping-slow {
-          animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-
-        .bg-grid-pattern {
-          background-image: 
-            linear-gradient(to right, currentColor 1px, transparent 1px),
-            linear-gradient(to bottom, currentColor 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
-      `}</style>
             <Footer />
         </div>
     )

@@ -1,0 +1,163 @@
+[
+    {
+        "name": "Yusuf Hagar",
+        "role": "Functional Consultant",
+        "image": "/team/Yusuf Hagar.jpeg",
+        "expHeader": null,
+        "yearsExp": null,
+        "qualification": null,
+        "qualLabel": null,
+        "bio": null,
+        "email": null
+    },
+    {
+        "name": "Abdullahi Liban",
+        "role": "Functional Consultant",
+        "image": "/team/abdullahi-liban.jpg"
+    },
+    {
+        "name": "Mohamed Farah",
+        "role": "Functional Consultant",
+        "image": "/team/mohamed-farah.jpg"
+    },
+    {
+        "name": "Hassan Mohamed",
+        "role": "Accounting Supervisor",
+        "image": "/team/hassan.jpg"
+    },
+    {
+        "name": "Ahmed Mohamed",
+        "role": "Associate Audit",
+        "image": "/team/Ahmed Mohamed.jpeg"
+    },
+    {
+        "name": "Sahra Saacid",
+        "role": "Accountant",
+        "image": "/team/Sahra.jpeg"
+    },
+    {
+        "name": "Sahra Jama",
+        "role": "Trainee Accountant",
+        "image": "/team/Sahra jama.jpeg"
+    },
+    {
+        "name": "Hilaal Ahmed",
+        "role": "Project Officer",
+        "image": "/team/Hilal.jpeg"
+    },
+    {
+        "name": "Ahmed Muhumed",
+        "role": "Technical Consultant",
+        "image": "/team/Ahmed Muhumad.jpeg"
+    },
+    {
+        "name": "Yusuf Mohamud",
+        "role": "Regional Consultant",
+        "image": "/team/Yusuf Mohamud.jpeg"
+    },
+    {
+        "name": "Soni Shubham",
+        "role": "App Developer",
+        "image": "/team/Soni.jpg"
+    },
+    {
+        "name": "Abdullahi Mohamud",
+        "role": "Associate Audit ",
+        "image": "/team/Abdullahi Mohamud.jpeg"
+    },
+    {
+        "name": "Abdullahi Mohamed Mohamoud",
+        "role": "Associate Business Development Officer",
+        "image": "/team/Abdullahi.jpeg"
+    },
+    {
+        "name": "Abdimalik Mohamed",
+        "role": "Associate Accountant",
+        "image": "/team/Abdimalik.jpeg"
+    },
+    {
+        "name": "Ayub Mohamed",
+        "role": "Functional Associate",
+        "image": "/team/Ayub.jpeg"
+    },
+    {
+        "name": "Ibraahim Abdullahi",
+        "role": "Functional Associate",
+        "image": "/team/Ibrahim.jpeg"
+    },
+    {
+        "name": "Mustafa Abdi",
+        "role": "Associate Accountant",
+        "image": "/team/Mustafa.jpeg"
+    },
+    {
+        "name": "Rahma Abdulle",
+        "role": "Associate Accountant",
+        "image": "/team/Rahma.jpeg"
+    },
+    {
+        "name": "Saabiriin Abdulqadir",
+        "role": "Trainee Accountant",
+        "image": "/team/Saabiriin.jpeg"
+    },
+    {
+        "name": "Jihaan Abdulkadir",
+        "role": "Accountant",
+        "image": "/team/Jihaan.jpeg"
+    },
+    {
+        "name": "Kamaal",
+        "role": "Technical Consultant",
+        "image": "/team/Kamaal.jpeg"
+    },
+    {
+        "name": "Ifraax Mohamud",
+        "role": "Accountant",
+        "image": "/team/ifraax.jpeg"
+    },
+    {
+        "name": "Kowsar Osman",
+        "role": "Accountant",
+        "image": "/team/Kowsar.PNG"
+    },
+    {
+        "name": "Ahmed Mohamud",
+        "role": "Technical Supervisor",
+        "image": "/team/Ahmed Mohamoud.webp"
+    },
+    {
+        "name": "Anas Abdulkadir",
+        "role": "Accounting Supervisor",
+        "image": "/team/Anas.webp"
+    },
+    {
+        "name": "Juweria Mohamed",
+        "role": "Functional Associate",
+        "image": "/team/Juweria.webp"
+    },
+    {
+        "name": "Pruthvish Gajjar",
+        "role": "Senior Odoo Developer",
+        "image": "/team/Pruthvish-Gajjar.webp"
+    },
+    {
+        "name": "Yahya Farah",
+        "role": "Technical Associate",
+        "image": "/team/yahya.jpg"
+    },
+    {
+        "name": "Yugal Vyas",
+        "role": "Odoo Developer",
+        "image": "/team/placeholder.png"
+    },
+    {
+        "name": "Ahmed Qasim",
+        "role": "Finance Officer",
+        "image": "/team/placeholder.png"
+    },
+    {
+        "name": "Omar Osman",
+        "role": "Accounting Supervisor",
+        "image": "/team/placeholder.png"
+    }
+]

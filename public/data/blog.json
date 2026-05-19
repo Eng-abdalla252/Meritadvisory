@@ -1,0 +1,35 @@
+[
+  {
+    "slug": "somalia-digital-economy-2026",
+    "category": "Insights",
+    "date": "Feb 10, 2026",
+    "title": "Somalia's Digital Leap: Navigating the 2026 Economy",
+    "excerpt": "A deep dive into how fiber connectivity and mobile finance are reshaping the business landscape in the region.",
+    "imageUrl": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=2070&auto=format&fit=crop",
+    "author": "Burhan Ismael Hassan",
+    "authorRole": "Managing Partner",
+    "authorImage": "/team/burhan-ismail.jpeg"
+  },
+  {
+    "slug": "erp-for-retail-growth",
+    "category": "Tech Guide",
+    "date": "Jan 28, 2026",
+    "title": "Scalable ERP: The Secret to Multi-Location Retail",
+    "excerpt": "Why real-time inventory sync is the most critical asset for expanding Somali retail chains today.",
+    "imageUrl": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop",
+    "author": "Ahmed M Jama",
+    "authorRole": "Lead Partner",
+    "authorImage": "/team/ahmed.jpeg"
+  },
+  {
+    "slug": "corporate-governance-tips",
+    "category": "Governance",
+    "date": "Jan 12, 2026",
+    "title": "5 Pillars of Strong Corporate Governance",
+    "excerpt": "How transparent auditing and clear accountability structures drive long-term investor confidence.",
+    "imageUrl": "https://images.unsplash.com/photo-1454165833762-02652292273b?q=80&w=2070&auto=format&fit=crop",
+    "author": "Burhan Said Salah",
+    "authorRole": "Lead Partner",
+    "authorImage": "/team/burhan-said-salah.jpeg"
+  }
+]

@@ -1,0 +1,45 @@
+{
+    "categories": [
+        {
+            "id": "core",
+            "name": "Core ERP Modules",
+            "services": [
+                { "id": "accounting", "name": "Financial Accounting", "price": 1500, "hours": 40, "description": "Chart of accounts, journals, tax, and reporting." },
+                { "id": "inventory", "name": "Inventory Management", "price": 1200, "hours": 32, "description": "Warehouse management, stock moves, and valuation." },
+                { "id": "sales", "name": "Sales & CRM", "price": 1000, "hours": 24, "description": "Quotations, pipeline management, and customer tracking." },
+                { "id": "purchase", "name": "Purchase Management", "price": 800, "hours": 20, "description": "Vendor management, RFQs, and purchase orders." },
+                { "id": "hr", "name": "Human Resources", "price": 1200, "hours": 30, "description": "Employee records, attendance, and basic payroll." }
+            ]
+        },
+        {
+            "id": "advanced",
+            "name": "Advanced Modules",
+            "services": [
+                { "id": "mrp", "name": "Manufacturing (MRP)", "price": 2500, "hours": 60, "description": "BOMs, work orders, and production planning." },
+                { "id": "project", "name": "Project Management", "price": 1000, "hours": 24, "description": "Task tracking, timesheets, and project profitability." },
+                { "id": "quality", "name": "Quality Control", "price": 1200, "hours": 24, "description": "Quality checks, alerts, and control points." },
+                { "id": "maintenance", "name": "Maintenance Management", "price": 800, "hours": 16, "description": "Preventive and corrective maintenance for equipment." }
+            ]
+        },
+        {
+            "id": "integrations",
+            "name": "Integrations",
+            "services": [
+                { "id": "whatsapp", "name": "WhatsApp Integration", "price": 500, "hours": 10, "description": "Automated notifications and customer chat." },
+                { "id": "payment", "name": "Payment Gateway", "price": 600, "hours": 12, "description": "Integration with local and international gateways." },
+                { "id": "bi", "name": "Power BI / Dashboard", "price": 1500, "hours": 30, "description": "Advanced reporting and business intelligence." },
+                { "id": "ecommerce", "name": "E-commerce Sync", "price": 1200, "hours": 24, "description": "Connecting ERP with Shopify, WooCommerce, or Odoo Web." }
+            ]
+        },
+        {
+            "id": "implementation",
+            "name": "Implementation Services",
+            "services": [
+                { "id": "analysis", "name": "Business Analysis", "price": 1000, "hours": 20, "description": "Requirement gathering and gap analysis." },
+                { "id": "migration", "name": "Data Migration", "price": 1500, "hours": 40, "description": "Importing historical data from legacy systems." },
+                { "id": "training", "name": "User Training", "price": 1200, "hours": 32, "description": "Comprehensive training for key users and staff." },
+                { "id": "onsite", "name": "On-site Support (Per Week)", "price": 800, "hours": 40, "description": "Dedicated engineer at your premises." }
+            ]
+        }
+    ]
+}

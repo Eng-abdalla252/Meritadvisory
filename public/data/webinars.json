@@ -1,0 +1,41 @@
+[
+    {
+        "id": "odoo-accounting-mastery",
+        "title": "Mastering Odoo Accounting: Anglo-Saxon vs. Continental",
+        "description": "Deep dive into Odoo's accounting engine, comparing global standards and how to optimize your financial workflows.",
+        "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2022&auto=format&fit=crop",
+        "videoUrl": "https://www.youtube.com/embed/5mI_fN-U9x0",
+        "date": "2026-06-15",
+        "time": "10:00 AM EAT",
+        "speaker": "Ahmed Farah",
+        "speakerRole": "Senior Financial Consultant",
+        "category": "Accounting",
+        "status": "upcoming"
+    },
+    {
+        "id": "erp-implementation-success",
+        "title": "Scaling Your Business with Strategic ERP Implementation",
+        "description": "Learn the 5 key stages of a successful ERP rollout and how to avoid common pitfalls in digital transformation.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop",
+        "videoUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
+        "date": "2026-05-28",
+        "time": "2:00 PM EAT",
+        "speaker": "Sir Abdikani Ismail",
+        "speakerRole": "Board Director",
+        "category": "Strategy",
+        "status": "upcoming"
+    },
+    {
+        "id": "healthcare-digitization",
+        "title": "Digitizing Healthcare: Lessons from Arafat Hospital",
+        "description": "A case study on how integrated systems improved patient care and operational efficiency in a high-traffic hospital.",
+        "image": "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=2070&auto=format&fit=crop",
+        "videoUrl": "https://www.youtube.com/embed/f3pGshZ7Tio",
+        "date": "2026-04-10",
+        "time": "Recorded",
+        "speaker": "Dr. Mohamed Ali Maslax",
+        "speakerRole": "CEO, Arafat Hospital",
+        "category": "Healthcare",
+        "status": "recorded"
+    }
+]

@@ -1,10 +1,11 @@
 import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { LogoCarousel } from "@/components/logo-carousel"
-import { About } from "@/components/about"
 import { Awards } from "@/components/awards"
 import { Services } from "@/components/services"
+import { ERPProcess } from "@/components/erp-process"
 import { Differentiators } from "@/components/differentiators"
+import { Testimonials } from "@/components/testimonials"
 import { CTASection } from "@/components/cta-section"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
@@ -24,10 +25,11 @@ export default function Page() {
       <main>
         <Hero />
         <LogoCarousel />
-        <About brief={true} />
         <Awards />
         <Services />
+        <ERPProcess />
         <Differentiators />
+        <Testimonials />
         <CTASection />
         <Contact />
       </main>

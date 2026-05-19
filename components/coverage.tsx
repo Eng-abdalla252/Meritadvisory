@@ -197,7 +197,7 @@ export function Coverage() {
                                                 }}
                                             >
                                                 {/* Pin */}
-                                                <div className="relative animate-bounce" style={{ animationDelay: `${i * 200}ms`, animationDuration: "2s" }}>
+                                                <div className="relative animate-bounce-slow" style={{ animationDelay: `${i * 200}ms`, animationDuration: "2s" }}>
                                                     <MapPin className={`h-8 w-8 ${office.isHeadquarters ? "text-accent" : "text-primary"} drop-shadow-lg`} fill="currentColor" />
                                                 </div>
 
@@ -273,27 +273,7 @@ export function Coverage() {
                 </div>
             </div>
 
-            <style jsx>{`
-        .bg-grid-pattern {
-          background-image: 
-            linear-gradient(to right, currentColor 1px, transparent 1px),
-            linear-gradient(to bottom, currentColor 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
 
-        @keyframes bounce {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-
-        .animate-bounce {
-          animation: bounce 2s ease-in-out infinite;
-        }
-      `}</style>
         </section>
     )
 }

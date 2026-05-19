@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1779180569614",
+    "jobId": "senior-erp-pm",
+    "jobTitle": "Senior ERP Project Manager",
+    "name": "Burhan jama ",
+    "email": "abdalla@gmail.com",
+    "phone": "0907795588",
+    "linkedin": "",
+    "degree": "Bachelor",
+    "resumeText": "",
+    "cvUrl": "/uploads/cvs/1779180569606-Brochure-Content.docx",
+    "aiScore": 45,
+    "aiCategory": "Review Needed",
+    "aiInsights": [
+      "University degree (Bachelor's)"
+    ],
+    "status": "New",
+    "appliedAt": "2026-05-19T08:49:29.614Z",
+    "type": "recruitment",
+    "createdAt": "2026-05-19T08:49:29.616Z"
+  },
+  {
+    "type": "webinar",
+    "name": "Abdullahi Mohamed Mohamud",
+    "email": "outreach@meritadvisory.so",
+    "company": "merit",
+    "webinarTitle": "Mastering Odoo Accounting: Anglo-Saxon vs. Continental",
+    "webinarId": "odoo-accounting-mastery",
+    "id": "lead-1778662648974",
+    "createdAt": "2026-05-13T08:57:28.974Z"
+  },
+  {
+    "id": "1778660585789",
+    "jobId": "senior-erp-pm",
+    "jobTitle": "Senior ERP Project Manager",
+    "name": "jaamac cali axmed ",
+    "email": "Abdallahi@gmail.com",
+    "phone": "98945678",
+    "linkedin": "https://www.linkedin.com/company/merit-advisory-services-llp/",
+    "degree": "Master",
+    "resumeText": "Maintain consistent stakeholder communication and executive reporting\r\nIdentify and mitigate project risks before they impact delivery\r\nEnsure rigorous quality standards are met throughout the project lifecycle\r\nFacilitate change management and user adoption strategies\r\nOversee post-go-live support and project closure activities",
+    "cvUrl": "/uploads/cvs/1778660585786-Quotation---S00353.pdf",
+    "aiScore": 68,
+    "status": "New",
+    "appliedAt": "2026-05-13T08:23:05.789Z",
+    "type": "recruitment",
+    "createdAt": "2026-05-13T08:23:05.790Z"
+  },
+  {
+    "id": "1778660158676",
+    "jobId": "senior-erp-pm",
+    "jobTitle": "Senior ERP Project Manager",
+    "name": "Xaaji axmed ",
+    "email": "axmed@gmail.com",
+    "phone": "906795155",
+    "linkedin": "https://www.linkedin.com/company/merit-advisory-services-llp/",
+    "degree": "Bachelor",
+    "resumeText": "Maintain consistent stakeholder communication and executive reporting\nIdentify and mitigate project risks before they impact delivery\nEnsure rigorous quality standards are met throughout the project lifecycle\nFacilitate change management and user adoption strategies\nOversee post-go-live support and project closure activities",
+    "aiScore": 68,
+    "status": "New",
+    "appliedAt": "2026-05-13T08:15:58.676Z",
+    "type": "recruitment",
+    "createdAt": "2026-05-13T08:15:58.677Z"
+  },
+  {
+    "firstName": "Abdalla",
+    "lastName": "Xidig",
+    "email": "mrxidig252@gmail.com",
+    "phone": "0906795155",
+    "company": "merit",
+    "message": "waa tuug",
+    "type": "contact",
+    "category": "sales",
+    "customerName": "Abdalla Xidig",
+    "companyName": "merit",
+    "subject": "Website Inquiry",
+    "id": "lead-1778660045916",
+    "createdAt": "2026-05-13T08:14:05.916Z",
+    "status": "handled"
+  }
+]

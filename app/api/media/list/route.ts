@@ -24,22 +24,41 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Invalid folder' }, { status: 400 });
     }
 
-    const directoryPath = path.join(process.cwd(), 'public', 'uploads', folder);
+    const uploadsPath = path.join(process.cwd(), 'public', 'uploads', folder);
+    const basePath = path.join(process.cwd(), 'public', folder);
 
     try {
-        if (!fs.existsSync(directoryPath)) {
-            return NextResponse.json({ files: [] });
+        let allFiles: { name: string; url: string }[] = [];
+
+        // Check public/uploads
+        if (fs.existsSync(uploadsPath)) {
+            const files = fs.readdirSync(uploadsPath);
+            allFiles = [...allFiles, ...files.map(file => ({
+                name: file,
+                url: `/uploads/${folder}/${file}`
+            }))];
         }
 
-        const files = fs.readdirSync(directoryPath);
-        const fileList = files.map(file => ({
-            name: file,
-            url: `/uploads/${folder}/${file}`
-        }));
+        // Check base public directory (for manually added logos)
+        if (fs.existsSync(basePath)) {
+            const files = fs.readdirSync(basePath);
+            const baseFiles = files.filter(file => !fs.statSync(path.join(basePath, file)).isDirectory()).map(file => ({
+                name: file,
+                url: `/${folder}/${file}`
+            }));
+            
+            // Avoid duplicates if same filename exists in both
+            const existingNames = new Set(allFiles.map(f => f.name));
+            baseFiles.forEach(f => {
+                if (!existingNames.has(f.name)) {
+                    allFiles.push(f);
+                }
+            });
+        }
 
-        return NextResponse.json({ files: fileList });
+        return NextResponse.json({ files: allFiles });
     } catch (error) {
-        console.error(`Error reading directory ${directoryPath}:`, error);
+        console.error(`Error reading media directories for ${folder}:`, error);
         return NextResponse.json({ error: 'Failed to list files' }, { status: 500 });
     }
 }

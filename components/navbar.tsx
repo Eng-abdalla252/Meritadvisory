@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Phone, ChevronDown } from "lucide-react"
+import { Menu, X, Phone, ChevronDown, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import {
   NavigationMenu,
@@ -23,20 +23,20 @@ const navLinks = [
     label: "Solutions",
     href: "/solutions",
     items: [
-      { label: "Enterprise ERP Platforms", href: "/solutions", description: "SAP, Oracle, Odoo, and more expert implementations." },
-      { label: "Intelligent Automation", href: "/solutions", description: "RPA and AI-powered workflows for efficiency." },
-      { label: "Advanced Analytics", href: "/solutions", description: "Data-driven insights and BI dashboards." },
-      { label: "System Integrations", href: "/solutions", description: "Seamlessly connecting your technology ecosystem." },
+      { label: "Enterprise ERP Platforms", href: "/solutions/enterprise-erp-platforms", description: "SAP, Oracle, Odoo, and more expert implementations." },
+      { label: "Intelligent Automation", href: "/solutions/intelligent-automation", description: "RPA and AI-powered workflows for efficiency." },
+      { label: "Advanced Analytics", href: "/solutions/advanced-analytics", description: "Data-driven insights and BI dashboards." },
+      { label: "System Integrations", href: "/solutions/system-integrations", description: "Seamlessly connecting your technology ecosystem." },
     ],
   },
   {
     label: "Industries",
     href: "/industries",
     items: [
-      { label: "Manufacturing", href: "/industries", description: "Production, inventory, and supply chain optimization." },
-      { label: "Financial Services", href: "/industries", description: "Regulatory compliance and risk management." },
-      { label: "Healthcare", href: "/industries", description: "Compliant systems for patient and operations." },
-      { label: "Retail & E-Commerce", href: "/industries", description: "Omnichannel commerce and integrated POS." },
+      { label: "Manufacturing", href: "/industries/manufacturing", description: "Production, inventory, and supply chain optimization." },
+      { label: "Financial Services", href: "/industries/financial-services", description: "Regulatory compliance and risk management." },
+      { label: "Healthcare", href: "/industries/healthcare", description: "Compliant systems for patient and operations." },
+      { label: "Retail & E-Commerce", href: "/industries/retail-ecommerce", description: "Omnichannel commerce and integrated POS." },
     ],
   },
   {
@@ -44,9 +44,11 @@ const navLinks = [
     href: "#",
     items: [
       { label: "Case Studies", href: "/case-studies" },
-      { label: "Success Stories", href: "/case-studies" },
+      { label: "Success Stories", href: "/success-stories" },
+      { label: "Webinars", href: "/webinars" },
       { label: "Our Team", href: "/team" },
       { label: "Our Clients", href: "/clients" },
+      { label: "Blueprint & Budget Planner", href: "/estimator", description: "Get a strategic cost and timeline breakdown for your ERP project." },
       { label: "Project Questionnaire", href: "/questionnaire" },
       { label: "Blog", href: "/blog" },
       { label: "Careers", href: "/careers" },
@@ -65,22 +67,34 @@ interface NavItem {
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [settings, setSettings] = useState<any>(null)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false)
   const [mobileIndustriesOpen, setMobileIndustriesOpen] = useState(false)
   const [mobileInsightsOpen, setMobileInsightsOpen] = useState(false)
 
   useEffect(() => {
+    fetch("/data/settings.json")
+      .then(res => res.json())
+      .then(data => setSettings(data))
+      .catch(() => {})
+
     const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const contactData = settings?.contact || {
+    phone: "+1 672-572-3750",
+    whatsapp: "16725723750",
+    email: "info@meritadvisory.so"
+  }
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-        ? "bg-white shadow-md border-b border-border text-[#222222]"
-        : "bg-transparent text-[#222222]"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+        ? "bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20 text-foreground"
+        : "bg-transparent text-foreground"
         }`}
     >
       {/* Top bar */}
@@ -88,23 +102,23 @@ export function Navbar() {
         className={`overflow-hidden transition-all duration-300 ${scrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"
           }`}
       >
-        <div className="bg-accent/90 text-accent-foreground">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-1.5 text-xs">
+        <div className="bg-[#b22222] text-white">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-1 text-[10px] uppercase tracking-widest font-bold">
             <span>Empowering enterprises with cutting-edge digital solutions</span>
             <div className="hidden items-center gap-4 sm:flex">
-              <a href="tel:+15552345678" className="flex items-center gap-1 hover:underline">
-                <Phone className="h-3 w-3" />
-                +252906795155
+              <a href={`https://wa.me/${contactData.whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:underline">
+                <Phone className="h-2.5 w-2.5" />
+                {contactData.phone}
               </a>
-              <span>outreach@meritadvisory.org</span>
+              <span>{contactData.email}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-        <Link href="/" className="flex items-center gap-2.5">
-          <img src="/logo.png" alt="Merit Advisory Logo" className="h-16 w-auto object-contain mix-blend-multiply" />
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
+        <Link href="/" className="flex items-center gap-2">
+          <img src="/logo.png" alt="Merit Advisory Logo" className="h-12 w-auto object-contain mix-blend-multiply" />
         </Link>
 
         {/* Desktop Navigation */}
@@ -148,6 +162,14 @@ export function Navbar() {
                         {service.subtitle}
                       </ListItem>
                     ))}
+                    <li className="col-span-full pt-4 mt-2 border-t border-border">
+                        <Link 
+                            href="/services" 
+                            className="flex items-center justify-center gap-2 text-sm font-bold text-primary hover:text-accent transition-colors"
+                        >
+                            View All Services & Expertise <ArrowRight className="h-4 w-4" />
+                        </Link>
+                    </li>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -191,7 +213,7 @@ export function Navbar() {
                         href={link.href}
                         className={cn(
                           navigationMenuTriggerStyle(),
-                          "bg-transparent text-[#222222] hover:bg-accent/10 hover:text-accent focus:bg-accent/10 focus:text-accent"
+                          "bg-transparent text-foreground hover:bg-primary/5 hover:text-primary transition-colors focus:bg-primary/5 focus:text-primary"
                         )}
                       >
                         {link.label}
@@ -209,9 +231,9 @@ export function Navbar() {
             className="rounded-full border-accent text-accent hover:bg-accent/10"
             asChild
           >
-            <a href={process.env.ODOO_URL || "#"} target="_blank" rel="noopener noreferrer">
+            <Link href="/portal">
               Portal
-            </a>
+            </Link>
           </Button>
 
           <Button
@@ -219,7 +241,7 @@ export function Navbar() {
             className="rounded-full bg-accent px-6 text-accent-foreground shadow-sm hover:bg-accent/90"
             asChild
           >
-            <Link href="#contact">Get Started</Link>
+            <Link href={`https://wa.me/${contactData.whatsapp}`} target="_blank" rel="noopener noreferrer">Get Started</Link>
           </Button>
         </div>
 
@@ -274,6 +296,13 @@ export function Navbar() {
                       {service.title}
                     </Link>
                   ))}
+                  <Link
+                    href="/services"
+                    onClick={() => setMobileOpen(false)}
+                    className="text-sm font-bold text-primary pt-2 border-t border-border"
+                  >
+                    View All Services & Expertise
+                  </Link>
                 </div>
               )}
             </div>
@@ -342,14 +371,14 @@ export function Navbar() {
 
             <div className="flex flex-col gap-3 mt-4">
               <Button className="w-full rounded-full bg-accent text-accent-foreground" asChild>
-                <Link href="#contact" onClick={() => setMobileOpen(false)}>
+                <Link href={`https://wa.me/${contactData.whatsapp}`} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}>
                   Get Started
                 </Link>
               </Button>
               <Button variant="outline" className="w-full rounded-full border-accent text-accent" asChild>
-                <a href={process.env.ODOO_URL || "#"} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}>
-                  Odoo Portal Login
-                </a>
+                <Link href="/portal" onClick={() => setMobileOpen(false)}>
+                  Client Portal Login
+                </Link>
               </Button>
             </div>
           </nav>

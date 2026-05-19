@@ -1,0 +1,71 @@
+[
+    {
+        "id": "arafat-hospital",
+        "author": "Dr. Mohamed Ali Maslax",
+        "role": "CEO",
+        "image": "/uploads/1778655388278-DSC00414.JPG",
+        "quote": "Merit Advisory's Odoo ERP implementation has revolutionized our hospital management. Their deep understanding of healthcare workflows and commitment to data integrity has allowed us to focus more on patient care.",
+        "videoUrl": "https://www.youtube.com/embed/5mI_fN-U9x0",
+        "category": "Healthcare"
+    },
+    {
+        "id": "vista-real-estate",
+        "title": "Scaling Real Estate Operations",
+        "client": "Vista Real Estate",
+        "author": "Mr. Hassan Abdi Awad",
+        "role": "CEO",
+        "quote": "As a leader in real estate, we needed a partner who could handle the scale of our operations. Merit Advisory delivered a customized financial framework that provides us with real-time insights.",
+        "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
+        "videoUrl": "https://www.youtube.com/embed/ScMzIvxBSi4",
+        "category": "Real Estate",
+        "impact": "Real-time Financial Reporting"
+    },
+    {
+        "id": "laws-advisory",
+        "title": "Strategic Board Empowerment",
+        "client": "LAWS",
+        "author": "Sir Abdikani Ismail",
+        "role": "Board Director",
+        "quote": "The strategic advisory provided by Merit has been instrumental in our organizational growth. Their ability to translate complex data into actionable strategies has strengthened our board's decision-making.",
+        "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2074&auto=format&fit=crop",
+        "videoUrl": "/testimonials/WhatsApp Video 2026-05-12 at 18.06.33.mp4",
+        "category": "Public Sector",
+        "impact": "Data-Driven Governance"
+    },
+    {
+        "id": "premier-bank",
+        "title": "Financial Systems Integration",
+        "client": "Premier Bank",
+        "author": "Ali Yusuf",
+        "role": "CTO",
+        "quote": "Integrating our core banking systems with a robust ERP was a major challenge. Merit Advisory navigated this complexity with ease, ensuring seamless data flow and enhanced security.",
+        "image": "https://images.unsplash.com/photo-1554774853-719586f82d77?q=80&w=2070&auto=format&fit=crop",
+        "videoUrl": "https://www.youtube.com/embed/3vC5TsTr99M",
+        "category": "Banking",
+        "impact": "100% Data Sync Accuracy"
+    },
+    {
+        "id": "dhaab-logistics",
+        "title": "Optimizing Supply Chain Logistics",
+        "client": "Dhaab Logistics",
+        "author": "Ahmed Farah",
+        "role": "Operations Manager",
+        "quote": "Our supply chain was fragmented before Merit stepped in. Their Odoo implementation unified our warehouse, transport, and inventory management into a single source of truth.",
+        "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
+        "videoUrl": "https://www.youtube.com/embed/Z0X8Zf0Qp6Q",
+        "category": "Logistics",
+        "impact": "30% Cost Reduction"
+    },
+    {
+        "id": "som-telecom",
+        "title": "Enterprise Resource Transformation",
+        "client": "SomTelecom",
+        "author": "Fardowsa Ibrahim",
+        "role": "CFO",
+        "quote": "Merit Advisory delivered a scalable solution that grew with us. Their financial automation tools have cut our month-end closing time by half.",
+        "image": "https://images.unsplash.com/photo-1573161158330-11259d4261c4?q=80&w=1974&auto=format&fit=crop",
+        "videoUrl": "https://www.youtube.com/embed/7V-K9vR8fE0",
+        "category": "Telecom",
+        "impact": "50% Faster Reporting"
+    }
+]
