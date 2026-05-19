@@ -28,8 +28,8 @@ export function LogoCarousel() {
     return [...staticClients, ...uniqueDynamic];
   }, [clientsData, dynamicLogos]);
 
-  // Fast scroll: ~1.5s per logo minimum, base 15s
-  const duration = Math.max(15, allClients.length * 1.5);
+  // Fast, smooth continuous scroll: 0.25s per logo, base 10s
+  const duration = Math.max(10, allClients.length * 0.25);
 
   if (loading || allClients.length === 0) return null;
 

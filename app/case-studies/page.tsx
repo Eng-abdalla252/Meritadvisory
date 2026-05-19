@@ -18,7 +18,7 @@ export default function CaseStudiesPage() {
                 <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32">
                     <div className="absolute inset-0 z-0">
                         <img 
-                            src="/modern_office_mogadishu_1777450373996.png" 
+                            src="/hero-images/1.jpg" 
                             alt="Merit Advisory Base"
                             className="w-full h-full object-cover"
                         />
