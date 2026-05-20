@@ -1,5 +1,43 @@
 [
     {
+        "id": "internship-program",
+        "title": "Future Leaders Internship Program",
+        "location": "Garowe, Mogadishu, Hargeisa, Somalia",
+        "type": "Internship (6 Months)",
+        "department": "Emerging Talent",
+        "closingDate": "2026-08-31",
+        "experience": "Fresh Graduate / Final Year Student",
+        "openings": 10,
+        "workMode": "Hybrid",
+        "description": "Merit Advisory's Future Leaders Internship Program is a fully-funded, 6-month structured program designed to develop the next generation of professional talent in Somalia. Interns gain hands-on experience in Odoo ERP systems, software engineering, and financial advisory — at zero cost.",
+        "responsibilities": [
+            "Work on real client projects under senior consultant supervision",
+            "Attend weekly mentoring sessions and skill-development workshops",
+            "Produce professional deliverables including reports, configurations, and code",
+            "Participate in team meetings, client presentations, and internal reviews",
+            "Complete assigned track curriculum and self-learning modules",
+            "Submit weekly progress reflections and learning journals"
+        ],
+        "requirements": [
+            "Bachelor's degree in Computer Science, Software Engineering, Accounting, Finance, Business Administration, or a related field",
+            "Fresh graduate or up to 2 years post-graduation experience",
+            "Strong motivation to learn, grow, and contribute to real projects",
+            "Basic computer proficiency; experience with Microsoft Office or Google Workspace",
+            "Proficiency in Somali language required; English is an advantage",
+            "Availability for minimum 4 days per week in a hybrid format",
+            "Willingness to collaborate, take initiative, and receive constructive feedback",
+            "Accounting, IFRS, Odoo ERP, Python, React, financial modeling"
+        ],
+        "process": [
+            { "step": "Application Submission", "description": "Complete the online application form and upload your CV and motivation statement." },
+            { "step": "Profile Screening", "description": "Our team reviews all applications. Shortlisted candidates are contacted within 5 business days." },
+            { "step": "Orientation Interview", "description": "A short conversation to understand your goals and confirm track alignment." },
+            { "step": "2-Week Bootcamp", "description": "Kick-off with tools setup, team orientation, culture workshop, and learning roadmap creation." },
+            { "step": "6-Month Program", "description": "Active project work, weekly mentoring, skill workshops, and continuous learning on your chosen track." },
+            { "step": "Graduation & Certification", "description": "Final capstone presentation, performance evaluation, certificate ceremony, and Merit Advisory membership activation." }
+        ]
+    },
+    {
         "id": "odoo-functional-consultant",
         "title": "Functional Consultant [Odoo]",
         "location": "Hargeisa, Somaliland",

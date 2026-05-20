@@ -12,6 +12,7 @@ const footerLinks = {
     { label: "Our Clients", href: "/clients" },
     { label: "Blog", href: "/blog" },
     { label: "Careers", href: "/careers" },
+    { label: "🎓 Internship Program", href: "/careers/internship" },
   ],
   services: servicesDetail.map(service => ({
     label: service.title,
