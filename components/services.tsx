@@ -90,7 +90,7 @@ export function Services() {
                                 <Card className="h-full overflow-hidden border-border bg-card/50 backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/20 rounded-[2rem]">
                                     <CardContent className="p-7">
                                         <div className={cn(
-                                            "mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3",
+                                            "mb-5 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3",
                                             service.color
                                         )}>
                                             <Icon className="h-6 w-6 text-white" />

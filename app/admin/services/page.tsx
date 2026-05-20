@@ -215,7 +215,7 @@ export default function ServicesAdmin() {
                         <Card key={service.title + i} className="p-8 border-none shadow-xl shadow-slate-200/50 rounded-[2.5rem] group hover:shadow-2xl hover:shadow-red-500/5 transition-all">
                             <div className="flex items-start justify-between gap-4">
                                 <div className="flex items-start gap-6">
-                                    <div className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}>
+                                    <div className={`h-14 w-14 shrink-0 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}>
                                         <Icon className="h-7 w-7 text-white" />
                                     </div>
                                     <div className="space-y-2">
