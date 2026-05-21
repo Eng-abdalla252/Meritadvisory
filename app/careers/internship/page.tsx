@@ -231,181 +231,162 @@ export default function InternshipPage() {
             <Navbar />
 
             {/* ─── HERO ─── */}
-            <section className="relative pt-36 pb-28 overflow-hidden bg-slate-950">
-                {/* Background glow effects for premium styling */}
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-red-600/10 rounded-full blur-[140px] pointer-events-none" />
-                    <div className="absolute bottom-0 left-10 w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
-                    <div className="absolute bottom-0 right-10 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
-                </div>
+            <section className="relative min-h-[90vh] lg:min-h-[80vh] grid grid-cols-1 lg:grid-cols-2 bg-slate-950 overflow-hidden">
+                {/* Left Side: Content Column */}
+                <div className="flex flex-col justify-center pt-36 pb-20 px-6 sm:px-12 lg:px-20 xl:px-28 relative z-10 bg-slate-950">
+                    <div className="max-w-xl">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }} 
+                            animate={{ opacity: 1, y: 0 }} 
+                            transition={{ duration: 0.5 }}
+                        >
+                            <Badge className="mb-6 border-red-500/30 bg-red-500/10 text-red-400 text-[11px] uppercase tracking-widest font-black px-5 py-2 rounded-full">
+                                <Sparkles className="h-3 w-3 mr-2 inline" />
+                                Future Leaders Program · 2026 Cohort Open
+                            </Badge>
+                        </motion.div>
 
-                <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-                        
-                        {/* Left Column - Text Content */}
-                        <div className="lg:col-span-7 text-left flex flex-col items-start">
-                            <motion.div 
-                                initial={{ opacity: 0, y: 20 }} 
-                                animate={{ opacity: 1, y: 0 }} 
-                                transition={{ duration: 0.5 }}
+                        <motion.h1
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1] mb-6"
+                        >
+                            Launch Your Career with{" "}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-300">
+                                6 Months
+                            </span>{" "}
+                            of Real-World Experience
+                        </motion.h1>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="text-base md:text-lg text-slate-300 font-medium leading-relaxed mb-8"
+                        >
+                            Merit Advisory's internship program is designed for fresh graduates eager to gain practical, job-ready skills in ERP systems, IT & software engineering, and financial advisory — completely free of charge.
+                        </motion.p>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            className="flex flex-col sm:flex-row gap-4 mb-8 w-full sm:w-auto"
+                        >
+                            <Button
+                                size="lg"
+                                className="bg-[#e31e24] hover:bg-red-700 text-white font-black px-8 py-6 h-auto rounded-xl text-md shadow-lg shadow-red-500/20 border-none"
+                                onClick={() => document.getElementById("apply-section")?.scrollIntoView({ behavior: "smooth" })}
                             >
-                                <Badge className="mb-6 border-red-500/30 bg-red-500/10 text-red-400 text-[11px] uppercase tracking-widest font-black px-5 py-2 rounded-full">
-                                    <Sparkles className="h-3 w-3 mr-2 inline" />
-                                    Future Leaders Program · 2026 Cohort Open
-                                </Badge>
-                            </motion.div>
-
-                            <motion.h1
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.1 }}
-                                className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1] mb-6"
+                                Apply Now — It's Free
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                            </Button>
+                            <Button
+                                size="lg"
+                                variant="outline"
+                                className="border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white font-bold px-8 py-6 h-auto rounded-xl"
+                                onClick={() => document.getElementById("tracks-section")?.scrollIntoView({ behavior: "smooth" })}
                             >
-                                Launch Your Career with{" "}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">
-                                    6 Months
-                                </span>{" "}
-                                of Real-World Experience
-                            </motion.h1>
+                                Explore Tracks
+                            </Button>
+                        </motion.div>
 
-                            <motion.p
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.2 }}
-                                className="text-base md:text-lg text-slate-300 font-medium leading-relaxed mb-8 max-w-2xl"
+                        {/* Social Follow Links */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.35 }}
+                            className="flex items-center gap-4 text-slate-400 mt-2"
+                        >
+                            <span className="text-xs font-black uppercase tracking-wider text-slate-400">Follow Us</span>
+                            <div className="h-[2px] w-8 bg-slate-800" />
+                            <a 
+                                href="https://linkedin.com/company/meritadvisory" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="hover:text-red-500 transition-colors p-1"
+                                title="LinkedIn"
                             >
-                                Merit Advisory's internship program is designed for fresh graduates eager to gain practical, job-ready skills in ERP systems, IT & software engineering, and financial advisory — completely free of charge.
-                            </motion.p>
-
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.3 }}
-                                className="flex flex-col sm:flex-row gap-4 mb-8 w-full sm:w-auto"
+                                <Linkedin className="h-5 w-5" />
+                            </a>
+                            <a 
+                                href="https://instagram.com/meritadvisory" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="hover:text-red-500 transition-colors p-1"
+                                title="Instagram"
                             >
-                                <Button
-                                    size="lg"
-                                    className="bg-[#e31e24] hover:bg-red-700 text-white font-black px-8 py-6 h-auto rounded-xl text-md shadow-lg shadow-red-500/20 border-none"
-                                    onClick={() => document.getElementById("apply-section")?.scrollIntoView({ behavior: "smooth" })}
-                                >
-                                    Apply Now — It's Free
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </Button>
-                                <Button
-                                    size="lg"
-                                    variant="outline"
-                                    className="border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white font-bold px-8 py-6 h-auto rounded-xl"
-                                    onClick={() => document.getElementById("tracks-section")?.scrollIntoView({ behavior: "smooth" })}
-                                >
-                                    Explore Tracks
-                                </Button>
-                            </motion.div>
-
-                            {/* Social Follow Links */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.35 }}
-                                className="flex items-center gap-4 text-slate-400 mt-2"
+                                <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                                </svg>
+                            </a>
+                            <a 
+                                href="https://facebook.com/meritadvisory" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="hover:text-red-500 transition-colors p-1"
+                                title="Facebook"
                             >
-                                <span className="text-xs font-black uppercase tracking-wider text-slate-400">Follow Us</span>
-                                <div className="h-[2px] w-8 bg-slate-800" />
-                                <a 
-                                    href="https://linkedin.com/company/meritadvisory" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    className="hover:text-red-500 transition-colors p-1"
-                                    title="LinkedIn"
-                                >
-                                    <Linkedin className="h-5 w-5" />
-                                </a>
-                                <a 
-                                    href="https://instagram.com/meritadvisory" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    className="hover:text-red-500 transition-colors p-1"
-                                    title="Instagram"
-                                >
-                                    <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                                    </svg>
-                                </a>
-                                <a 
-                                    href="https://facebook.com/meritadvisory" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    className="hover:text-red-500 transition-colors p-1"
-                                    title="Facebook"
-                                >
-                                    <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                                    </svg>
-                                </a>
-                            </motion.div>
-                        </div>
-
-                        {/* Right Column - Beautiful, Crystal-Clear Image Slideshow */}
-                        <div className="lg:col-span-5 relative flex justify-center items-center">
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.6, delay: 0.2 }}
-                                className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl border-4 border-slate-800/80 bg-slate-900"
-                            >
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={bgIndex}
-                                        initial={{ opacity: 0, scale: 1.05 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
-                                        transition={{ duration: 0.8, ease: "easeInOut" }}
-                                        className="absolute inset-0 bg-cover bg-center"
-                                        style={{ backgroundImage: `url(${heroBackgrounds[bgIndex]})` }}
-                                    />
-                                </AnimatePresence>
-
-                                {/* Subtle soft gradient overlay just on the bottom edge for text readability of any potential label, keeping the photo clear */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
-
-                                {/* Slide indicators (dots) */}
-                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                                    {heroBackgrounds.map((_, i) => (
-                                        <button
-                                            key={i}
-                                            onClick={() => setBgIndex(i)}
-                                            className={cn(
-                                                "h-2 w-2 rounded-full transition-all duration-300",
-                                                bgIndex === i ? "bg-red-500 w-6" : "bg-white/50 hover:bg-white"
-                                            )}
-                                        />
-                                    ))}
-                                </div>
-
-                                {/* Floating premium badge on image card */}
-                                <div className="absolute top-4 right-4 bg-slate-950/80 backdrop-blur-md border border-slate-700/50 rounded-xl px-4 py-2 flex items-center gap-2 z-20 shadow-lg">
-                                    <span className="relative flex h-2 w-2">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                                    </span>
-                                    <span className="text-[10px] font-black text-white uppercase tracking-wider">
-                                        Live from Mogadishu
-                                    </span>
-                                </div>
-                            </motion.div>
-                            
-                            {/* Decorative background aura behind the image card */}
-                            <div className="absolute -inset-4 bg-gradient-to-r from-red-500/10 to-purple-500/10 rounded-[2.5rem] blur-2xl opacity-70 -z-10 pointer-events-none" />
-                        </div>
-
+                                <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                                    <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                                </svg>
+                            </a>
+                        </motion.div>
                     </div>
 
-                    {/* Stats row below the split screen */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                        className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
-                    >
+                    {/* Left side glow backdrops */}
+                    <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-red-600/10 rounded-full blur-[120px] pointer-events-none -z-10" />
+                    <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none -z-10" />
+                </div>
+
+                {/* Right Side: Crystal-Clear, Full-Height Image Slideshow */}
+                <div className="relative min-h-[450px] lg:min-h-full w-full overflow-hidden bg-slate-900">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={bgIndex}
+                            initial={{ opacity: 0, scale: 1.05 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 1.0, ease: "easeInOut" }}
+                            className="absolute inset-0 bg-cover bg-center"
+                            style={{ backgroundImage: `url(${heroBackgrounds[bgIndex]})` }}
+                        />
+                    </AnimatePresence>
+
+                    {/* NO DARK OVERLAYS OR COLOR gradients - 100% crystal clear */}
+
+                    {/* Slide indicators (dots) on bottom-right */}
+                    <div className="absolute bottom-6 right-6 flex gap-2 z-20 bg-slate-950/40 backdrop-blur-sm px-4 py-2 rounded-full">
+                        {heroBackgrounds.map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setBgIndex(i)}
+                                className={cn(
+                                    "h-2.5 w-2.5 rounded-full transition-all duration-300",
+                                    bgIndex === i ? "bg-red-500 w-6" : "bg-white/60 hover:bg-white"
+                                )}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Floating Mogadishu Live Status Badge */}
+                    <div className="absolute top-6 right-6 bg-slate-950/85 backdrop-blur-md border border-slate-700/50 rounded-xl px-4 py-2.5 flex items-center gap-2 z-20 shadow-lg">
+                        <span className="relative flex h-2.5 w-2.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                        </span>
+                        <span className="text-[10px] font-black text-white uppercase tracking-wider">
+                            Live from Mogadishu
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── HERO STATS ROW ─── */}
+            <section className="bg-slate-950 py-12 border-y border-slate-800/80">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {[
                             { num: "6", label: "Months Duration" },
                             { num: "3", label: "Specialization Tracks" },
@@ -417,7 +398,7 @@ export default function InternshipPage() {
                                 <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{stat.label}</p>
                             </div>
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
