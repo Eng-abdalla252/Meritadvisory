@@ -53,7 +53,6 @@ const navLinks = [
       { label: "Blog", href: "/blog" },
       { label: "Careers", href: "/careers" },
       { label: "🎓 Internship Program", href: "/careers/internship", description: "6-month free program for fresh graduates. Apply now!" },
-      { label: "Helpdesk", href: "/#contact" },
     ],
   },
   { label: "Contact", href: "/#contact" },

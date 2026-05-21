@@ -135,12 +135,26 @@ const timeline = [
 
 const TOTAL_STEPS = 3
 
+const heroBackgrounds = [
+    "/internship/bg-1.jpg",
+    "/internship/bg-2.jpg",
+    "/internship/bg-3.jpg"
+]
+
 export default function InternshipPage() {
     const [step, setStep] = React.useState(1)
     const [submitting, setSubmitting] = React.useState(false)
     const [submitted, setSubmitted] = React.useState(false)
     const [selectedTrack, setSelectedTrack] = React.useState("")
     const [errors, setErrors] = React.useState<Record<string, string>>({})
+    const [bgIndex, setBgIndex] = React.useState(0)
+
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            setBgIndex(prev => (prev + 1) % heroBackgrounds.length)
+        }, 5000)
+        return () => clearInterval(interval)
+    }, [])
 
     const [formData, setFormData] = React.useState({
         name: "",
@@ -218,10 +232,25 @@ export default function InternshipPage() {
 
             {/* ─── HERO ─── */}
             <section className="relative pt-36 pb-28 overflow-hidden bg-slate-950">
-                {/* Ambient glows */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-red-600/20 rounded-full blur-[160px] pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
-                <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none" />
+                {/* Sliding and Fading Background Slideshow */}
+                <div className="absolute inset-0 z-0">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={bgIndex}
+                            initial={{ opacity: 0, scale: 1.05 }}
+                            animate={{ opacity: 0.35, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 1.5, ease: "easeInOut" }}
+                            className="absolute inset-0 bg-cover bg-center"
+                            style={{ backgroundImage: `url(${heroBackgrounds[bgIndex]})` }}
+                        />
+                    </AnimatePresence>
+                    {/* Multi-layered smooth overlays for maximum legibility and design depth */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-950/75 to-slate-950" />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-red-600/20 rounded-full blur-[160px] pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
+                    <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none" />
+                </div>
 
                 <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
