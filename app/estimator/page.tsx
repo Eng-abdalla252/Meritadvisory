@@ -15,9 +15,9 @@ export default function EstimatorPage() {
             <Navbar />
             
             {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-[#1e4e8c] via-[#1e4e8c] to-[#2b6cb0] pt-48 pb-32 overflow-hidden shadow-inner">
+            <div className="relative bg-gradient-to-r from-[#0f4c9c] via-[#0f4c9c] to-[#1a66cc] pt-48 pb-32 overflow-hidden shadow-inner">
                 {/* Mesh Gradient Background */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#3b82f6,transparent),radial-gradient(circle_at_0%_100%,#1e4e8c,transparent),radial-gradient(circle_at_100%_100%,#1d4ed8,transparent)] opacity-40 mix-blend-overlay" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#0f4c9c,transparent),radial-gradient(circle_at_0%_100%,#0f4c9c,transparent),radial-gradient(circle_at_100%_100%,#b22222,transparent)] opacity-30 mix-blend-overlay" />
                 
                 {/* Hero Background Logo Watermark */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-[0.12] pointer-events-none select-none overflow-hidden">

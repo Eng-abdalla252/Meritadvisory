@@ -42,3 +42,16 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Failed to post job" }, { status: 500 })
     }
 }
+
+export async function PUT(request: Request) {
+    try {
+        const updatedJobs = await request.json()
+        if (!Array.isArray(updatedJobs)) {
+            return NextResponse.json({ error: "Invalid jobs data format" }, { status: 400 })
+        }
+        writeData(updatedJobs)
+        return NextResponse.json({ success: true, message: "Jobs updated successfully" })
+    } catch (error) {
+        return NextResponse.json({ error: "Failed to update jobs list" }, { status: 500 })
+    }
+}

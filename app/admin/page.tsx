@@ -15,7 +15,9 @@ import {
     Briefcase,
     Award,
     Inbox,
-    Settings
+    Settings,
+    Calculator,
+    GraduationCap
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -90,6 +92,8 @@ export default function AdminDashboard() {
                     <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Quick Management</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {[
+                            { title: "Blueprint Planner", desc: "Configure pricing, hours, and available modules for the Budget Planner.", href: "/admin/blueprint", icon: Calculator },
+                            { title: "Careers & Internships", desc: "Manage job postings and structured Internship program specifications.", href: "/admin/careers", icon: GraduationCap },
                             { title: "Business Leads", desc: "View and manage new inquiries and job applications.", href: "/admin/leads", icon: Inbox },
                             { title: "Site Settings", desc: "Manage hero text, contact info, and site configuration.", href: "/admin/settings", icon: Settings },
                             { title: "Manage Webinars", desc: "Schedule new sessions and manage recordings.", href: "/admin/webinars", icon: Video },
@@ -98,15 +102,15 @@ export default function AdminDashboard() {
                             { title: "Team Profiles", desc: "Update leadership team information.", href: "/admin/team", icon: Users },
                         ].map((action) => (
                             <Link key={action.href} href={action.href}>
-                                <Card className="p-8 border-slate-100 hover:border-red-500/20 hover:shadow-2xl hover:shadow-red-500/5 transition-all group cursor-pointer rounded-[2.5rem] h-full flex flex-col justify-between">
+                                <Card className="p-8 border-slate-100 hover:border-red-500/20 hover:shadow-2xl hover:shadow-[#b22222]/5 transition-all group cursor-pointer rounded-[2.5rem] h-full flex flex-col justify-between">
                                     <div>
-                                        <div className="h-10 w-10 rounded-xl bg-slate-900 text-white flex items-center justify-center mb-6 group-hover:bg-[#e31e24] transition-colors">
+                                        <div className="h-10 w-10 rounded-xl bg-slate-900 text-white flex items-center justify-center mb-6 group-hover:bg-[#b22222] transition-colors">
                                             <action.icon className="h-5 w-5" />
                                         </div>
                                         <h3 className="text-lg font-black text-slate-900 mb-2">{action.title}</h3>
                                         <p className="text-sm text-slate-500 font-medium leading-relaxed">{action.desc}</p>
                                     </div>
-                                    <div className="mt-8 flex items-center gap-2 text-xs font-black text-[#e31e24] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div className="mt-8 flex items-center gap-2 text-xs font-black text-[#b22222] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
                                         Open Module
                                         <ArrowRight className="h-4 w-4" />
                                     </div>

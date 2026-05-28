@@ -17,13 +17,17 @@ import {
     Bell,
     Award,
     Briefcase,
-    Inbox
+    Inbox,
+    Calculator,
+    GraduationCap
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 const sidebarLinks = [
     { label: "Overview", href: "/admin", icon: LayoutDashboard },
+    { label: "Blueprint Planner", href: "/admin/blueprint", icon: Calculator },
+    { label: "Careers & Internships", href: "/admin/careers", icon: GraduationCap },
     { label: "Webinars", href: "/admin/webinars", icon: Video },
     { label: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
     { label: "Blog Posts", href: "/admin/blog", icon: FileText },
@@ -52,7 +56,7 @@ export default function AdminLayout({
             <aside className="hidden lg:flex w-72 flex-col fixed inset-y-0 bg-slate-900 text-white z-50">
                 <div className="p-8">
                     <Link href="/" className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-[#e31e24] flex items-center justify-center font-black text-xl">M</div>
+                        <div className="h-10 w-10 rounded-xl bg-[#b22222] flex items-center justify-center font-black text-xl">M</div>
                         <div>
                             <p className="font-black tracking-tight leading-none text-lg">MERIT</p>
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Admin Portal</p>
@@ -60,7 +64,7 @@ export default function AdminLayout({
                     </Link>
                 </div>
 
-                <nav className="flex-1 px-4 space-y-1">
+                <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
                     {sidebarLinks.map((link) => {
                         const Icon = link.icon
                         const isActive = pathname === link.href
@@ -69,13 +73,13 @@ export default function AdminLayout({
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
-                                    "flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all group",
+                                    "flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-black transition-all group uppercase tracking-widest",
                                     isActive 
-                                        ? "bg-[#e31e24] text-white shadow-lg shadow-red-500/20" 
+                                        ? "bg-[#b22222] text-white shadow-lg shadow-red-500/20" 
                                         : "text-slate-400 hover:text-white hover:bg-white/5"
                                 )}
                             >
-                                <Icon className={cn("h-5 w-5", isActive ? "text-white" : "text-slate-500 group-hover:text-white")} />
+                                <Icon className={cn("h-4 w-4", isActive ? "text-white" : "text-slate-500 group-hover:text-white")} />
                                 {link.label}
                             </Link>
                         )
@@ -108,7 +112,7 @@ export default function AdminLayout({
             {/* Mobile Header */}
             <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-slate-900 flex items-center justify-between px-6 z-[60] border-b border-white/5">
                 <Link href="/" className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-[#e31e24] flex items-center justify-center font-black">M</div>
+                    <div className="h-8 w-8 rounded-lg bg-[#b22222] flex items-center justify-center font-black">M</div>
                     <span className="font-black text-white text-sm">MERIT ADMIN</span>
                 </Link>
                 <button onClick={() => setIsMobileOpen(!isMobileOpen)} className="text-white">
@@ -127,7 +131,7 @@ export default function AdminLayout({
                                 onClick={() => setIsMobileOpen(false)}
                                 className={cn(
                                     "flex items-center gap-4 px-6 py-5 rounded-2xl text-lg font-black transition-all",
-                                    pathname === link.href ? "bg-[#e31e24] text-white" : "text-slate-400"
+                                    pathname === link.href ? "bg-[#b22222] text-white" : "text-slate-400"
                                 )}
                             >
                                 <link.icon className="h-6 w-6" />
@@ -155,7 +159,7 @@ export default function AdminLayout({
                     <div className="flex items-center gap-4">
                         <button className="text-slate-400 hover:text-slate-600 transition-colors relative">
                             <Bell className="h-5 w-5" />
-                            <span className="absolute -top-1 -right-1 h-2 w-2 bg-[#e31e24] rounded-full border-2 border-white" />
+                            <span className="absolute -top-1 -right-1 h-2 w-2 bg-[#b22222] rounded-full border-2 border-white" />
                         </button>
                         <button 
                             onClick={() => router.push("/admin/settings")}
