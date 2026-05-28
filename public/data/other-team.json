@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "name": "Yusuf Hagar",
         "role": "Functional Consultant",
@@ -98,7 +98,7 @@
     {
         "name": "Saabiriin Abdulqadir",
         "role": "Trainee Accountant",
-        "image": "/team/Saabiriin.jpeg"
+        "image": "/team/Saabiriin.jpg"
     },
     {
         "name": "Jihaan Abdulkadir",
@@ -113,12 +113,12 @@
     {
         "name": "Ifraax Mohamud",
         "role": "Accountant",
-        "image": "/team/ifraax.jpeg"
+        "image": "/team/ifraax.jpg"
     },
     {
         "name": "Kowsar Osman",
         "role": "Accountant",
-        "image": "/team/Kowsar.PNG"
+        "image": "/team/Kowsar.jpg"
     },
     {
         "name": "Ahmed Mohamud",
@@ -146,18 +146,44 @@
         "image": "/team/yahya.jpg"
     },
     {
-        "name": "Yugal Vyas",
-        "role": "Odoo Developer",
-        "image": "/team/placeholder.png"
+        "name": "Yahye Abdiwali Mohamed",
+        "role": "Functional Consultant",
+        "image": "/team/yahye abdiwali.jpeg"
     },
     {
-        "name": "Ahmed Qasim",
-        "role": "Finance Officer",
-        "image": "/team/placeholder.png"
-    },
-    {
-        "name": "Omar Osman",
+        "name": "Mahdi Abdulkadir Mohamed",
         "role": "Accounting Supervisor",
-        "image": "/team/placeholder.png"
+        "image": "/team/Mahdi.jpeg"
+    },
+    {
+        "name": "Omar Mohamud Ismail",
+        "role": "Associate Functional",
+        "image": "/team/omar mohamoud.jpg"
+    },
+    {
+        "name": "Abdalla Said Abokor",
+        "role": "Accountant",
+        "image": "/team/Abdalla said.jpg"
+    },
+    {
+        "name": "Nimca Jama Abdi",
+        "role": "Accountant and Admin",
+        "image": "/team/nimca.jpeg"
+    },
+    {
+        "name": "Mumtaz Abihakim Ismail",
+        "role": "Trainee Accountant",
+        "image": "/team/Mumtaz.jpeg"
+    },
+    {
+        "name": "Fatimo Abdullahi Adan",
+        "role": "Trainee Accountant",
+        "image": "/team/fatima.jpg"
+    },
+    {
+        "name": "Abdijibaar Ahmed",
+        "role": "Trainee Accountant",
+        "image": "/team/Abdijabar.jpg"
     }
 ]
+

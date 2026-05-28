@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
@@ -19,7 +19,7 @@ export function Awards() {
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
-    fetch("/api/admin/data?type=awards")
+    fetch("/api/admin/data-api?type=awards")
       .then(res => res.json())
       .then(data => {
         setCerts(data)

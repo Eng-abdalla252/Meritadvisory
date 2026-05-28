@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
@@ -60,7 +60,7 @@ export default function TestimonialsAdmin() {
 
     const fetchTestimonials = async () => {
         try {
-            const res = await fetch("/api/admin/data?type=testimonials")
+            const res = await fetch("/api/admin/data-api?type=testimonials")
             const data = await res.json()
             setTestimonials(data)
         } catch (error) {
@@ -102,7 +102,7 @@ export default function TestimonialsAdmin() {
         }
 
         try {
-            const res = await fetch("/api/admin/data?type=testimonials", {
+            const res = await fetch("/api/admin/data-api?type=testimonials", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedTestimonials)
@@ -124,7 +124,7 @@ export default function TestimonialsAdmin() {
         
         const updatedTestimonials = testimonials.filter(t => t.id !== id)
         try {
-            const res = await fetch("/api/admin/data?type=testimonials", {
+            const res = await fetch("/api/admin/data-api?type=testimonials", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedTestimonials)

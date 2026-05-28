@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
@@ -66,8 +66,8 @@ export default function TeamAdmin() {
     const fetchData = async () => {
         try {
             const [resCore, resOther] = await Promise.all([
-                fetch("/api/admin/data?type=team"),
-                fetch("/api/admin/data?type=other-team")
+                fetch("/api/admin/data-api?type=team"),
+                fetch("/api/admin/data-api?type=other-team")
             ])
             const core = await resCore.json()
             const other = await resOther.json()
@@ -115,7 +115,7 @@ export default function TeamAdmin() {
         }
 
         try {
-            const res = await fetch(`/api/admin/data?type=${activeTab === "core" ? "team" : "other-team"}`, {
+            const res = await fetch(`/api/admin/data-api?type=${activeTab === "core" ? "team" : "other-team"}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedList)
@@ -138,7 +138,7 @@ export default function TeamAdmin() {
         
         const updatedList = (activeTab === "core" ? [...coreTeam] : [...otherTeam]).filter((_, i) => i !== index)
         try {
-            const res = await fetch(`/api/admin/data?type=${activeTab === "core" ? "team" : "other-team"}`, {
+            const res = await fetch(`/api/admin/data-api?type=${activeTab === "core" ? "team" : "other-team"}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedList)

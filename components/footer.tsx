@@ -54,6 +54,9 @@ export function Footer() {
     whatsapp: "16725723750"
   }
 
+  const secondaryPhone = "+252906795155"
+  const secondaryWhatsapp = "252906795155"
+
   const socialLinks = [
     { icon: Linkedin, href: settings?.socials?.linkedin || "https://www.linkedin.com/company/merit-advisory-services-llp/", label: "LinkedIn" },
     { icon: Twitter, href: settings?.socials?.twitter || "https://x.com/LlpMerit", label: "Twitter" },
@@ -175,7 +178,11 @@ export function Footer() {
             <ul className="flex flex-col gap-3">
                 <li className="text-sm text-[#4b5563]">
                     <span className="block font-bold text-[#1f2933] mb-1">Phone</span>
-                    <a href={`https://wa.me/${contactData.whatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">{contactData.phone}</a>
+                    <div className="rounded-xl border border-[#d2d2d2] bg-[#d2d2d2] p-3">
+                      <a href={`https://wa.me/${contactData.whatsapp}`} target="_blank" rel="noopener noreferrer" className="block text-sm leading-6 text-[#1f2933] hover:text-primary transition-colors">{contactData.phone}</a>
+                      
+                      <a href={`https://wa.me/${secondaryWhatsapp}`} target="_blank" rel="noopener noreferrer" className="block text-sm leading-6 text-[#1f2933] hover:text-primary transition-colors">{secondaryPhone}</a>
+                    </div>
                 </li>
                 <li className="text-sm text-[#4b5563]">
                     <span className="block font-bold text-[#1f2933] mb-1">Email</span>

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
@@ -66,7 +66,7 @@ export default function BlogAdmin() {
 
     const fetchPosts = async () => {
         try {
-            const res = await fetch("/api/admin/data?type=blog")
+            const res = await fetch("/api/admin/data-api?type=blog")
             const data = await res.json()
             setPosts(data)
         } catch (error) {
@@ -110,7 +110,7 @@ export default function BlogAdmin() {
         }
 
         try {
-            const res = await fetch("/api/admin/data?type=blog", {
+            const res = await fetch("/api/admin/data-api?type=blog", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedPosts)
@@ -132,7 +132,7 @@ export default function BlogAdmin() {
         
         const updatedPosts = posts.filter(p => p.slug !== slug)
         try {
-            const res = await fetch("/api/admin/data?type=blog", {
+            const res = await fetch("/api/admin/data-api?type=blog", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedPosts)

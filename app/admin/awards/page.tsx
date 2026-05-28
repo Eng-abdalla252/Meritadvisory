@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
@@ -53,7 +53,7 @@ export default function AwardsAdmin() {
 
     const fetchData = async () => {
         try {
-            const res = await fetch("/api/admin/data?type=awards")
+            const res = await fetch("/api/admin/data-api?type=awards")
             const data = await res.json()
             setAwards(data)
         } catch (error) {
@@ -91,7 +91,7 @@ export default function AwardsAdmin() {
         }
 
         try {
-            const res = await fetch("/api/admin/data?type=awards", {
+            const res = await fetch("/api/admin/data-api?type=awards", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedAwards)
@@ -113,7 +113,7 @@ export default function AwardsAdmin() {
         
         const updatedAwards = awards.filter((_, i) => i !== index)
         try {
-            const res = await fetch("/api/admin/data?type=awards", {
+            const res = await fetch("/api/admin/data-api?type=awards", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedAwards)

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
@@ -64,7 +64,7 @@ export default function WebinarsAdmin() {
 
     const fetchWebinars = async () => {
         try {
-            const res = await fetch("/api/admin/data?type=webinars")
+            const res = await fetch("/api/admin/data-api?type=webinars")
             const data = await res.json()
             setWebinars(data)
         } catch (error) {
@@ -110,7 +110,7 @@ export default function WebinarsAdmin() {
         }
 
         try {
-            const res = await fetch("/api/admin/data?type=webinars", {
+            const res = await fetch("/api/admin/data-api?type=webinars", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedWebinars)
@@ -132,7 +132,7 @@ export default function WebinarsAdmin() {
         
         const updatedWebinars = webinars.filter(w => w.id !== id)
         try {
-            const res = await fetch("/api/admin/data?type=webinars", {
+            const res = await fetch("/api/admin/data-api?type=webinars", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedWebinars)

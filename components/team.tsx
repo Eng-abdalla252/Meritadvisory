@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
@@ -12,15 +12,23 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
     const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
+        const normalize = (value: any) => Array.isArray(value) ? value : []
+
         Promise.all([
-            fetch("/api/admin/data?type=team").then(res => res.json()),
-            fetch("/api/admin/data?type=other-team").then(res => res.json())
+            fetch("/data/team.json").then(res => res.json()),
+            fetch("/data/other-team.json").then(res => res.json())
         ]).then(([team, other]) => {
-            setTeamMembers(team)
-            setOtherTeamMembers(other)
+            setTeamMembers(normalize(team))
+            setOtherTeamMembers(normalize(other))
             setLoading(false)
-        }).catch(() => setLoading(false))
+        }).catch(() => {
+            setTeamMembers([])
+            setOtherTeamMembers([])
+            setLoading(false)
+        })
     }, [])
+
+    const getImageSrc = (image?: string) => image ? encodeURI(image) : "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop"
 
     if (loading) return null
     return (
@@ -47,7 +55,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                             <div className="relative mb-8">
                                 <div className="h-48 w-48 rounded-full border-[6px] border-white shadow-2xl overflow-hidden bg-slate-200">
                                     <img
-                                        src={member.image}
+                                        src={getImageSrc(member.image)}
                                         alt={member.name}
                                         className="h-full w-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
                                     />
@@ -125,7 +133,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                             >
                                 <div className="aspect-[4/5] bg-slate-100 overflow-hidden">
                                     <img 
-                                        src={member.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop"} 
+                                        src={getImageSrc(member.image)} 
                                         alt={member.name} 
                                         className="h-full w-full object-cover"
                                     />
@@ -140,7 +148,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
 
                     <div className="mt-20 text-center">
                         <p className="text-slate-500 text-lg italic max-w-4xl mx-auto px-6">
-                            “At Merit Advisory Services LLP, our team brings strong expertise in finance, audit, advisory, and ERP solutions, delivering practical and reliable services that support compliance, efficiency, and sustainable growth.”
+                            Merit Advisory Services LLP, our team brings strong expertise in finance, audit, advisory, and ERP solutions, delivering practical and reliable services that support compliance, efficiency, and sustainable growth.
                         </p>
                     </div>
                 </div>

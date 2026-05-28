@@ -72,7 +72,7 @@ export default function SuccessStoriesPage() {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 font-black text-[10px] uppercase tracking-[0.2em] mb-6"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#b22222]/10 text-[#b22222] font-black text-[10px] uppercase tracking-[0.2em] mb-6"
                         >
                             <Star className="h-4 w-4 fill-current" />
                             Client Success Stories
@@ -84,7 +84,7 @@ export default function SuccessStoriesPage() {
                             className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6"
                         >
                             Empowering Growth Through <br />
-                            <span className="text-[#e31e24]">Strategic Innovation</span>
+                            <span className="text-[#b22222]">Strategic Innovation</span>
                         </motion.h1>
                         <motion.p 
                             initial={{ opacity: 0, y: 20 }}
@@ -118,7 +118,7 @@ export default function SuccessStoriesPage() {
                     {/* Success Stories Grid */}
                     {stories.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 text-slate-400">
-                            <div className="h-12 w-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin mb-4" />
+                            <div className="h-12 w-12 border-4 border-[#b22222] border-t-transparent rounded-full animate-spin mb-4" />
                             <p className="text-xl font-bold">Synchronizing Success Stories...</p>
                         </div>
                     ) : (
@@ -131,7 +131,7 @@ export default function SuccessStoriesPage() {
                                 transition={{ delay: i * 0.1 }}
                                 viewport={{ once: true }}
                             >
-                                <Card className="group relative overflow-hidden rounded-[2.5rem] border-none bg-white shadow-2xl shadow-slate-200 transition-all hover:shadow-red-500/10">
+                                <Card className="group relative overflow-hidden rounded-[2.5rem] border-none bg-white shadow-2xl shadow-slate-200 transition-all hover:shadow-[#b22222]/10">
                                     {/* Video / Image Thumbnail */}
                                     <div className="relative aspect-video overflow-hidden cursor-pointer" onClick={() => setSelectedVideo(story.videoUrl)}>
                                         {!story.videoUrl.includes("youtube.com") && !story.videoUrl.includes("vimeo.com") ? (
@@ -152,7 +152,7 @@ export default function SuccessStoriesPage() {
                                             />
                                         )}
                                         <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/40 transition-colors flex items-center justify-center">
-                                            <div className="h-20 w-20 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white border border-white/30 group-hover:bg-[#e31e24] group-hover:border-none transition-all scale-90 group-hover:scale-100 shadow-2xl">
+                                            <div className="h-20 w-20 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white border border-white/30 group-hover:bg-[#b22222] group-hover:border-none transition-all scale-90 group-hover:scale-100 shadow-2xl">
                                                 <Play className="h-8 w-8 fill-current ml-1" />
                                             </div>
                                         </div>
@@ -160,7 +160,7 @@ export default function SuccessStoriesPage() {
                                             {story.category}
                                         </Badge>
                                         {story.impact && (
-                                            <Badge className="absolute bottom-6 right-6 bg-[#e31e24] text-white border-none font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">
+                                            <Badge className="absolute bottom-6 right-6 bg-[#b22222] text-white border-none font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">
                                                 <CheckCircle2 className="h-4 w-4" />
                                                 {story.impact}
                                             </Badge>
@@ -190,12 +190,12 @@ export default function SuccessStoriesPage() {
                                                 </div>
                                                 <div>
                                                     <p className="font-black text-slate-900 uppercase text-sm leading-none mb-1">{story.author}</p>
-                                                    <p className="text-[10px] font-black text-red-500 uppercase tracking-widest">{story.role}</p>
+                                                    <p className="text-[10px] font-black text-[#b22222] uppercase tracking-widest">{story.role}</p>
                                                 </div>
                                             </div>
                                             <button 
                                                 onClick={() => setSelectedVideo(story.videoUrl)}
-                                                className="inline-flex items-center gap-2 text-sm font-black text-slate-900 uppercase tracking-widest hover:text-red-500 transition-colors"
+                                                className="inline-flex items-center gap-2 text-sm font-black text-slate-900 uppercase tracking-widest hover:text-[#b22222] transition-colors"
                                             >
                                                 Watch Story
                                                 <ArrowUpRight className="h-4 w-4" />
@@ -226,8 +226,9 @@ export default function SuccessStoriesPage() {
                             className="relative w-full max-w-5xl aspect-video bg-black rounded-[2rem] overflow-hidden shadow-2xl"
                         >
                             <button 
+                                opacity-0
                                 onClick={() => setSelectedVideo(null)}
-                                className="absolute top-6 right-6 h-12 w-12 rounded-full bg-white/10 hover:bg-[#e31e24] text-white flex items-center justify-center z-10 transition-colors backdrop-blur-md"
+                                className="absolute top-6 right-6 h-12 w-12 rounded-full bg-white/10 hover:bg-[#b22222] text-white flex items-center justify-center z-10 transition-colors backdrop-blur-md"
                             >
                                 <X className="h-6 w-6" />
                             </button>

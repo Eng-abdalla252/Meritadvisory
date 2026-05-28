@@ -71,6 +71,7 @@ export function Contact() {
   const contactData = settings?.contact || {
     email: "info@meritadvisory.so",
     phone: "+1 672-572-3750",
+    phone: "+252 906795155",
     whatsapp: "16725723750"
   }
 

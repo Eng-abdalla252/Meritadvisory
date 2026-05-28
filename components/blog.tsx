@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
@@ -10,7 +10,7 @@ export function Blog() {
   const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
-    fetch("/api/admin/data?type=blog")
+    fetch("/api/admin/data-api?type=blog")
       .then(res => res.json())
       .then(data => {
         setPosts(data)

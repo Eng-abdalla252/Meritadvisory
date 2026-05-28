@@ -1,54 +1,55 @@
-[
-  {
-    "name": "Burhan Ismael Hassan",
-    "role": "MANAGING PARTNER",
-    "expHeader": "17+ YEARS OF FINANCIAL LEADERSHIP",
-    "yearsExp": "17+",
-    "qualification": "FCCA",
-    "qualLabel": "QUALIFIED",
-    "bio": "Managing Director with over 17 years of experience in finance, advisory, and organizational transformation—delivering strategic solutions that drive efficiency, compliance, and sustainable growth.",
-    "image": "/team/burhan-ismail.jpeg",
-    "email": "burhan.ismael@meritadvisory.so",
-    "facebook": "https://facebook.com/meritadvisory",
-    "linkedin": "https://linkedin.com/company/meritadvisory"
-  },
-  {
-    "name": "Burhan Said Salah",
-    "role": "LEAD PARTNER – BUSINESS DEVELOPMENT",
-    "expHeader": "10+ YEARS OF ADVISORY & AUDIT EXPERIENCE",
-    "yearsExp": "10+",
-    "qualification": "ACCA",
-    "qualLabel": "QUALIFIED",
-    "bio": "Lead Partner with over 10 years of experience in audit, advisory, and financial consulting—supporting organizations across public and private sectors with strong expertise in IFRS, ISAs, and compliance.",
-    "image": "/team/burhan-said-salah.jpeg",
-    "email": "burhan.said@meritadvisory.so",
-    "facebook": "https://facebook.com/meritadvisory",
-    "linkedin": "https://linkedin.com/company/meritadvisory"
-  },
-  {
-    "name": "Ahmed M Jama",
-    "role": "LEAD PARTNER – ACCOUNTING SERVICES",
-    "expHeader": "8+ YEARS OF FINANCIAL EXPERIENCE",
-    "yearsExp": "10+",
-    "qualification": "AICPA",
-    "qualLabel": "MEMBER",
-    "bio": "Lead Partner – Accounting Services with over 8 years of experience in finance, budgeting, and internal control—delivering practical solutions that enhance financial performance, strengthen compliance, and support effective decision-making.",
-    "image": "/team/ahmed.jpeg",
-    "email": "ahmed.jama@meritadvisory.so",
-    "facebook": "https://facebook.com/meritadvisory",
-    "linkedin": "https://linkedin.com/company/meritadvisory"
-  },
-  {
-    "name": "Bashir M Warsame",
-    "role": "LEAD PARTNER – AUDIT & ASSURANCE",
-    "expHeader": "10+ YEARS OF AUDITING & ACCOUNTING",
-    "yearsExp": "8+",
-    "qualification": "ACCA",
-    "qualLabel": "QUALIFIED",
-    "bio": "Lead Partner – Audit & Assurance Services with over 8 years of experience in auditing, accounting, and financial reporting—delivering high-quality assurance, strengthening internal controls, and supporting transparency and compliance.",
-    "image": "/team/bashir.webp",
-    "email": "bashir.warsame@meritadvisory.so",
-    "facebook": "https://facebook.com/meritadvisory",
-    "linkedin": "https://linkedin.com/company/meritadvisory"
-  }
+﻿[
+    {
+        "name": "Burhan Ismael Hassan",
+        "role": "MANAGING PARTNER",
+        "expHeader": "17+ YEARS OF FINANCIAL LEADERSHIP",
+        "yearsExp": "17+",
+        "qualification": "FCCA",
+        "qualLabel": "QUALIFIED",
+        "bio": "Managing Director with over 17 years of experience in finance, advisory, and organizational transformationâ€”delivering strategic solutions that drive efficiency, compliance, and sustainable growth.",
+        "image": "/team/burhan-ismail.jpeg",
+        "email": "burhan.ismael@meritadvisory.so",
+        "facebook": "https://facebook.com/meritadvisory",
+        "linkedin": "https://linkedin.com/company/meritadvisory"
+    },
+    {
+        "name": "Burhan Said Salah",
+        "role": "LEAD PARTNER â€“ BUSINESS DEVELOPMENT",
+        "expHeader": "10+ YEARS OF ADVISORY & AUDIT EXPERIENCE",
+        "yearsExp": "10+",
+        "qualification": "ACCA",
+        "qualLabel": "QUALIFIED",
+        "bio": "Lead Partner with over 10 years of experience in audit, advisory, and financial consultingâ€”supporting organizations across public and private sectors with strong expertise in IFRS, ISAs, and compliance.",
+        "image": "/team/burhan-said-salah.jpeg",
+        "email": "burhan.said@meritadvisory.so",
+        "facebook": "https://facebook.com/meritadvisory",
+        "linkedin": "https://linkedin.com/company/meritadvisory"
+    },
+    {
+        "name": "Ahmed M Jama",
+        "role": "LEAD PARTNER â€“ ACCOUNTING SERVICES",
+        "expHeader": "8+ YEARS OF FINANCIAL EXPERIENCE",
+        "yearsExp": "10+",
+        "qualification": "AICPA",
+        "qualLabel": "MEMBER",
+        "bio": "Lead Partner â€“ Accounting Services with over 8 years of experience in finance, budgeting, and internal controlâ€”delivering practical solutions that enhance financial performance, strengthen compliance, and support effective decision-making.",
+        "image": "/team/ahmed.jpeg",
+        "email": "ahmed.jama@meritadvisory.so",
+        "facebook": "https://facebook.com/meritadvisory",
+        "linkedin": "https://linkedin.com/company/meritadvisory"
+    },
+    {
+        "name": "Bashir M Warsame",
+        "role": "LEAD PARTNER â€“ AUDIT & ASSURANCE",
+        "expHeader": "10+ YEARS OF AUDITING & ACCOUNTING",
+        "yearsExp": "8+",
+        "qualification": "ACCA",
+        "qualLabel": "QUALIFIED",
+        "bio": "Lead Partner â€“ Audit & Assurance Services with over 8 years of experience in auditing, accounting, and financial reportingâ€”delivering high-quality assurance, strengthening internal controls, and supporting transparency and compliance.",
+        "image": "/team/bashir.jpg",
+        "email": "bashir.warsame@meritadvisory.so",
+        "facebook": "https://facebook.com/meritadvisory",
+        "linkedin": "https://linkedin.com/company/meritadvisory"
+    }
 ]
+
