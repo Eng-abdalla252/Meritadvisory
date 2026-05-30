@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
@@ -155,7 +155,7 @@ export default function TestimonialsAdmin() {
                     if (!open) setEditingTestimonial(null)
                 }}>
                     <DialogTrigger asChild>
-                        <Button className="h-14 bg-[#e31e24] hover:bg-red-600 text-white font-black uppercase text-xs tracking-widest rounded-2xl px-8 shadow-xl shadow-red-500/20">
+                        <Button className="h-14 bg-[#b22222] hover:bg-[#8b0000] text-white font-black uppercase text-xs tracking-widest rounded-2xl px-8 shadow-xl shadow-[#b22222]/20">
                             <Plus className="h-4 w-4 mr-2" />
                             Add Testimonial
                         </Button>
@@ -232,8 +232,8 @@ export default function TestimonialsAdmin() {
                                     <img src={testimonial.image} alt="" className="h-full w-full object-cover" />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-black text-slate-900 group-hover:text-[#e31e24] transition-colors tracking-tight">{testimonial.author}</h3>
-                                    <p className="text-[10px] font-black text-red-500 uppercase tracking-widest">{testimonial.role}</p>
+                                    <h3 className="text-xl font-black text-slate-900 group-hover:text-[#b22222] transition-colors tracking-tight">{testimonial.author}</h3>
+                                    <p className="text-[10px] font-black text-[#b22222] uppercase tracking-widest">{testimonial.role}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-1">
@@ -271,7 +271,7 @@ export default function TestimonialsAdmin() {
                                 {testimonial.category}
                             </Badge>
                             {testimonial.videoUrl && (
-                                <div className="flex items-center gap-2 text-[#e31e24] text-[10px] font-black uppercase tracking-widest">
+                                <div className="flex items-center gap-2 text-[#b22222] text-[10px] font-black uppercase tracking-widest">
                                     <VideoIcon className="h-4 w-4" />
                                     Video Included
                                 </div>
