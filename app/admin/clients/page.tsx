@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
@@ -24,6 +24,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ImageUpload } from "@/components/admin/image-upload"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { toast } from "sonner"
+import { Settings, X } from "lucide-react"
 
 interface Client {
     name: string
@@ -35,22 +44,29 @@ interface Client {
 export default function ClientsAdmin() {
     const router = useRouter()
     const [clients, setClients] = React.useState<Client[]>([])
+    const [categories, setCategories] = React.useState<string[]>([])
     const [loading, setLoading] = React.useState(true)
     const [saving, setSaving] = React.useState(false)
     const [search, setSearch] = React.useState("")
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
+    const [isCategoryDialogOpen, setIsCategoryDialogOpen] = React.useState(false)
     const [editingClient, setEditingClient] = React.useState<{data: Client, index: number} | null>(null)
     
     // Image State
     const [logo, setLogo] = React.useState("")
+    const [selectedIndustry, setSelectedIndustry] = React.useState("")
+    const [newCategoryName, setNewCategoryName] = React.useState("")
+    const [savingCategories, setSavingCategories] = React.useState(false)
 
     React.useEffect(() => {
         if (editingClient) {
             setLogo(editingClient.data.logo)
+            setSelectedIndustry(editingClient.data.industry)
         } else {
             setLogo("")
+            setSelectedIndustry(categories.filter(c => c !== "All")[0] || "")
         }
-    }, [editingClient, isDialogOpen])
+    }, [editingClient, isDialogOpen, categories])
 
     const fetchClients = async () => {
         try {
@@ -64,14 +80,64 @@ export default function ClientsAdmin() {
         }
     }
 
+    const fetchCategories = async () => {
+        try {
+            const res = await fetch("/api/admin/data-api?type=client-categories")
+            const data = await res.json()
+            setCategories(data)
+        } catch (error) {
+            console.error("Failed to fetch categories")
+        }
+    }
+
     React.useEffect(() => {
         const auth = localStorage.getItem("admin_auth")
         if (!auth) {
             router.push("/admin/login")
         } else {
             fetchClients()
+            fetchCategories()
         }
     }, [router])
+
+    const handleSaveCategories = async (updatedCategories: string[]) => {
+        setSavingCategories(true)
+        try {
+            const res = await fetch("/api/admin/data-api?type=client-categories", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedCategories)
+            })
+            if (res.ok) {
+                setCategories(updatedCategories)
+                toast.success("Categories updated successfully")
+            } else {
+                toast.error("Failed to update categories")
+            }
+        } catch (e) {
+            toast.error("Error saving categories")
+        } finally {
+            setSavingCategories(false)
+        }
+    }
+
+    const handleAddCategory = () => {
+        const trimmed = newCategoryName.trim()
+        if (!trimmed) return
+        if (categories.includes(trimmed)) {
+            toast.error("Category already exists")
+            return
+        }
+        const updated = [...categories, trimmed]
+        handleSaveCategories(updated)
+        setNewCategoryName("")
+    }
+
+    const handleDeleteCategory = (catToDelete: string) => {
+        if (catToDelete === "All") return
+        const updated = categories.filter(c => c !== catToDelete)
+        handleSaveCategories(updated)
+    }
 
     const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -141,54 +207,125 @@ export default function ClientsAdmin() {
                     <p className="text-slate-500 font-medium">Manage the global organization logos displayed in the "Trusted By" carousel.</p>
                 </div>
                 
-                <Dialog open={isDialogOpen} onOpenChange={(open) => {
-                    setIsDialogOpen(open)
-                    if (!open) setEditingClient(null)
-                }}>
-                    <DialogTrigger asChild>
-                        <Button className="h-14 bg-[#e31e24] hover:bg-red-600 text-white font-black uppercase text-xs tracking-widest rounded-2xl px-8 shadow-xl shadow-red-500/20">
-                            <Plus className="h-4 w-4 mr-2" />
-                            Add Client Logo
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-md rounded-[2.5rem] p-10">
-                        <DialogHeader>
-                            <DialogTitle className="text-2xl font-black uppercase tracking-tight">
-                                {editingClient ? "Edit Client" : "New Client Logo"}
-                            </DialogTitle>
-                        </DialogHeader>
-                        <form onSubmit={handleSave} className="space-y-6 mt-6">
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Organization Name</Label>
-                                <Input name="name" defaultValue={editingClient?.data.name} required className="h-12 rounded-xl" />
+                <div className="flex items-center gap-3">
+                    {/* Category Manager Dialog */}
+                    <Dialog open={isCategoryDialogOpen} onOpenChange={setIsCategoryDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button variant="outline" className="h-14 border-slate-200 hover:bg-slate-50 text-slate-700 font-black uppercase text-xs tracking-widest rounded-2xl px-6">
+                                <Settings className="h-4 w-4 mr-2" />
+                                Manage Categories
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-md rounded-[2.5rem] p-10">
+                            <DialogHeader>
+                                <DialogTitle className="text-2xl font-black uppercase tracking-tight">
+                                    Predefined Categories
+                                </DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-6 mt-6">
+                                <div className="flex gap-2">
+                                    <Input 
+                                        placeholder="New Category..." 
+                                        value={newCategoryName}
+                                        onChange={e => setNewCategoryName(e.target.value)}
+                                        className="h-12 rounded-xl"
+                                    />
+                                    <Button 
+                                        type="button" 
+                                        onClick={handleAddCategory}
+                                        disabled={savingCategories}
+                                        className="h-12 bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-5 font-bold shrink-0"
+                                    >
+                                        Add
+                                    </Button>
+                                </div>
+                                <div className="max-h-60 overflow-y-auto space-y-2 border border-slate-100 rounded-xl p-3 bg-slate-50">
+                                    {categories.map((cat) => (
+                                        <div key={cat} className="flex items-center justify-between p-2 bg-white rounded-lg shadow-sm border border-slate-100 text-sm font-semibold">
+                                            <span>{cat}</span>
+                                            {cat !== "All" && (
+                                                <Button 
+                                                    variant="ghost" 
+                                                    size="icon" 
+                                                    onClick={() => handleDeleteCategory(cat)}
+                                                    disabled={savingCategories}
+                                                    className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
+                                                >
+                                                    <X className="h-4 w-4" />
+                                                </Button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
+                        </DialogContent>
+                    </Dialog>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Industry</Label>
-                                <Input name="industry" defaultValue={editingClient?.data.industry} required className="h-12 rounded-xl" />
-                            </div>
+                    {/* Add Client Dialog */}
+                    <Dialog open={isDialogOpen} onOpenChange={(open) => {
+                        setIsDialogOpen(open)
+                        if (!open) setEditingClient(null)
+                    }}>
+                        <DialogTrigger asChild>
+                            <Button className="h-14 bg-[#e31e24] hover:bg-red-600 text-white font-black uppercase text-xs tracking-widest rounded-2xl px-8 shadow-xl shadow-red-500/20">
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Client Logo
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-md rounded-[2.5rem] p-10">
+                            <DialogHeader>
+                                <DialogTitle className="text-2xl font-black uppercase tracking-tight">
+                                    {editingClient ? "Edit Client" : "New Client Logo"}
+                                </DialogTitle>
+                            </DialogHeader>
+                            <form onSubmit={handleSave} className="space-y-6 mt-6">
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Organization Name</Label>
+                                    <Input name="name" defaultValue={editingClient?.data.name} required className="h-12 rounded-xl" />
+                                </div>
 
-                            <ImageUpload 
-                                label="Organization Logo" 
-                                value={logo} 
-                                onChange={setLogo} 
-                            />
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Industry</Label>
+                                    <Select 
+                                        value={selectedIndustry}
+                                        onValueChange={setSelectedIndustry}
+                                    >
+                                        <SelectTrigger className="h-12 rounded-xl">
+                                            <SelectValue placeholder="Select Category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {categories.filter(c => c !== "All").map((cat) => (
+                                                <SelectItem key={cat} value={cat}>
+                                                    {cat}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <input type="hidden" name="industry" value={selectedIndustry} />
+                                </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Country/Region</Label>
-                                <Input name="country" defaultValue={editingClient?.data.country} required className="h-12 rounded-xl" />
-                            </div>
+                                <ImageUpload 
+                                    label="Organization Logo" 
+                                    value={logo} 
+                                    onChange={setLogo} 
+                                />
 
-                            <div className="flex justify-end gap-4 pt-6">
-                                <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
-                                <Button type="submit" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
-                                    {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                                    Save Client
-                                </Button>
-                            </div>
-                        </form>
-                    </DialogContent>
-                </Dialog>
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Country/Region</Label>
+                                    <Input name="country" defaultValue={editingClient?.data.country} required className="h-12 rounded-xl" />
+                                </div>
+
+                                <div className="flex justify-end gap-4 pt-6">
+                                    <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
+                                    <Button type="submit" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
+                                        {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                                        Save Client
+                                    </Button>
+                                </div>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
+                </div>
             </div>
 
             <Card className="p-0 border-none shadow-xl shadow-slate-200/50 rounded-[2.5rem] overflow-hidden">
