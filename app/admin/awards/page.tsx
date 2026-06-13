@@ -14,7 +14,8 @@ import {
     Trophy,
     Medal,
     Save,
-    Loader2
+    Loader2,
+    Minimize2
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -144,43 +145,58 @@ export default function AwardsAdmin() {
                             Add Award/Cert
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-md rounded-[2.5rem] p-10">
-                        <DialogHeader>
+                    <DialogContent className="max-w-md rounded-[2.5rem] p-0 overflow-hidden flex flex-col max-h-[90vh]">
+                        {/* Fixed header */}
+                        <DialogHeader className="px-10 pt-10 pb-0 shrink-0 flex items-center justify-between">
                             <DialogTitle className="text-2xl font-black uppercase tracking-tight">
                                 {editingAward ? "Edit Award" : "New Recognition"}
                             </DialogTitle>
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setIsDialogOpen(false)}
+                                className="h-8 w-8 rounded-xl hover:bg-slate-100"
+                            >
+                                <Minimize2 className="h-4 w-4" />
+                            </Button>
                         </DialogHeader>
-                        <form onSubmit={handleSave} className="space-y-6 mt-6">
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Award Title</Label>
-                                <Input name="label" defaultValue={editingAward?.data.label} required className="h-12 rounded-xl" />
-                            </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Subtitle</Label>
-                                <Input name="sublabel" defaultValue={editingAward?.data.sublabel} required className="h-12 rounded-xl" />
-                            </div>
+                        {/* Scrollable body */}
+                        <div className="overflow-y-auto flex-1 px-10 py-6">
+                            <form id="award-form" onSubmit={handleSave} className="space-y-6">
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Award Title</Label>
+                                    <Input name="label" defaultValue={editingAward?.data.label} required className="h-12 rounded-xl" />
+                                </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Icon Type</Label>
-                                <select name="icon" defaultValue={editingAward?.data.icon || "Award"} className="w-full h-12 rounded-xl border border-slate-200 px-3 text-sm font-medium">
-                                    <option value="Award">Award Icon</option>
-                                    <option value="Shield">Shield Icon</option>
-                                    <option value="BadgeCheck">BadgeCheck Icon</option>
-                                    <option value="Trophy">Trophy Icon</option>
-                                    <option value="Star">Star Icon</option>
-                                    <option value="Medal">Medal Icon</option>
-                                </select>
-                            </div>
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Subtitle</Label>
+                                    <Input name="sublabel" defaultValue={editingAward?.data.sublabel} required className="h-12 rounded-xl" />
+                                </div>
 
-                            <div className="flex justify-end gap-4 pt-6">
-                                <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
-                                <Button type="submit" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
-                                    {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                                    Save Award
-                                </Button>
-                            </div>
-                        </form>
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Icon Type</Label>
+                                    <select name="icon" defaultValue={editingAward?.data.icon || "Award"} className="w-full h-12 rounded-xl border border-slate-200 px-3 text-sm font-medium">
+                                        <option value="Award">Award Icon</option>
+                                        <option value="Shield">Shield Icon</option>
+                                        <option value="BadgeCheck">BadgeCheck Icon</option>
+                                        <option value="Trophy">Trophy Icon</option>
+                                        <option value="Star">Star Icon</option>
+                                        <option value="Medal">Medal Icon</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+
+                        {/* Fixed footer */}
+                        <div className="px-10 pb-10 pt-4 shrink-0 border-t border-slate-100 bg-white flex justify-end gap-4">
+                            <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
+                            <Button type="submit" form="award-form" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
+                                {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                                Save Award
+                            </Button>
+                        </div>
                     </DialogContent>
                 </Dialog>
             </div>

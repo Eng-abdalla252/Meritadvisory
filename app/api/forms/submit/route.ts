@@ -130,6 +130,27 @@ export async function POST(request: Request) {
             aiScore = evaluation.score
             aiCategory = evaluation.category
             aiEvaluation = evaluation
+
+            // Also save to applications.json
+            const apps = readJSON(APPS_PATH)
+            apps.push({
+                id: Date.now().toString(),
+                jobId: data.jobId || "unknown",
+                jobTitle: data.jobTitle || "Unknown Position",
+                name: displayName,
+                email: data.email,
+                phone: data.phone,
+                linkedin: data.linkedin,
+                degree: data.degree,
+                resumeText: data.resumeText,
+                cvUrl,
+                aiScore: evaluation.score,
+                aiCategory: evaluation.category,
+                aiInsights: evaluation.insights,
+                status: "New",
+                appliedAt: now,
+            })
+            writeJSON(APPS_PATH, apps)
         }
 
         // ── Build Lead Record ────────────────────────────────────────────────

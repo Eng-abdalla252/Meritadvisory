@@ -12,7 +12,8 @@ import {
     User,
     Save,
     Loader2,
-    Eye
+    Eye,
+    Minimize2
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -168,68 +169,83 @@ export default function BlogAdmin() {
                             Write New Post
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-3xl rounded-[2.5rem] p-10 overflow-y-auto max-h-[90vh]">
-                        <DialogHeader>
+                    <DialogContent className="max-w-3xl rounded-[2.5rem] p-0 overflow-hidden flex flex-col max-h-[90vh]">
+                        {/* Fixed header */}
+                        <DialogHeader className="px-10 pt-10 pb-0 shrink-0 flex items-center justify-between">
                             <DialogTitle className="text-2xl font-black uppercase tracking-tight">
                                 {editingPost ? "Edit Article" : "Create New Article"}
                             </DialogTitle>
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setIsDialogOpen(false)}
+                                className="h-8 w-8 rounded-xl hover:bg-slate-100"
+                            >
+                                <Minimize2 className="h-4 w-4" />
+                            </Button>
                         </DialogHeader>
-                        <form onSubmit={handleSave} className="space-y-6 mt-6">
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Article Title</Label>
-                                    <Input name="title" defaultValue={editingPost?.title} required className="h-12 rounded-xl" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</Label>
-                                    <Input name="category" defaultValue={editingPost?.category} required className="h-12 rounded-xl" />
-                                </div>
-                            </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Short Excerpt</Label>
-                                <Textarea name="excerpt" defaultValue={editingPost?.excerpt} required className="rounded-xl min-h-[80px]" />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-6">
-                                <ImageUpload 
-                                    label="Cover Image" 
-                                    value={imageUrl} 
-                                    onChange={setImageUrl} 
-                                />
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Publish Date</Label>
-                                    <Input name="date" defaultValue={editingPost?.date} placeholder="e.g. Feb 10, 2026" className="h-12 rounded-xl" />
-                                </div>
-                            </div>
-
-                            <div className="p-6 bg-slate-50 rounded-2xl space-y-6">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Author Information</p>
+                        {/* Scrollable body */}
+                        <div className="overflow-y-auto flex-1 px-10 py-6">
+                            <form id="blog-form" onSubmit={handleSave} className="space-y-6">
                                 <div className="grid grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Name</Label>
-                                        <Input name="author" defaultValue={editingPost?.author} required className="h-12 rounded-xl bg-white" />
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Article Title</Label>
+                                        <Input name="title" defaultValue={editingPost?.title} required className="h-12 rounded-xl" />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Role</Label>
-                                        <Input name="authorRole" defaultValue={editingPost?.authorRole} required className="h-12 rounded-xl bg-white" />
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</Label>
+                                        <Input name="category" defaultValue={editingPost?.category} required className="h-12 rounded-xl" />
                                     </div>
                                 </div>
-                                <ImageUpload 
-                                    label="Author Avatar" 
-                                    value={authorImage} 
-                                    onChange={setAuthorImage} 
-                                />
-                            </div>
 
-                            <div className="flex justify-end gap-4 pt-6">
-                                <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
-                                <Button type="submit" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
-                                    {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                                    Publish Article
-                                </Button>
-                            </div>
-                        </form>
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Short Excerpt</Label>
+                                    <Textarea name="excerpt" defaultValue={editingPost?.excerpt} required className="rounded-xl min-h-[80px]" />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-6">
+                                    <ImageUpload 
+                                        label="Cover Image" 
+                                        value={imageUrl} 
+                                        onChange={setImageUrl} 
+                                    />
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Publish Date</Label>
+                                        <Input name="date" defaultValue={editingPost?.date} placeholder="e.g. Feb 10, 2026" className="h-12 rounded-xl" />
+                                    </div>
+                                </div>
+
+                                <div className="p-6 bg-slate-50 rounded-2xl space-y-6">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Author Information</p>
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Name</Label>
+                                            <Input name="author" defaultValue={editingPost?.author} required className="h-12 rounded-xl bg-white" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Role</Label>
+                                            <Input name="authorRole" defaultValue={editingPost?.authorRole} required className="h-12 rounded-xl bg-white" />
+                                        </div>
+                                    </div>
+                                    <ImageUpload 
+                                        label="Author Avatar" 
+                                        value={authorImage} 
+                                        onChange={setAuthorImage} 
+                                    />
+                                </div>
+                            </form>
+                        </div>
+
+                        {/* Fixed footer */}
+                        <div className="px-10 pb-10 pt-4 shrink-0 border-t border-slate-100 bg-white flex justify-end gap-4">
+                            <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
+                            <Button type="submit" form="blog-form" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
+                                {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                                Publish Article
+                            </Button>
+                        </div>
                     </DialogContent>
                 </Dialog>
             </div>

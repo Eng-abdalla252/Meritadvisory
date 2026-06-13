@@ -18,7 +18,8 @@ import {
     Zap,
     Cpu,
     Save,
-    Loader2
+    Loader2,
+    Minimize2
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -151,51 +152,66 @@ export default function ServicesAdmin() {
                             Add Service
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-2xl rounded-[2.5rem] p-10 overflow-y-auto max-h-[90vh]">
-                        <DialogHeader>
+                    <DialogContent className="max-w-2xl rounded-[2.5rem] p-0 overflow-hidden flex flex-col max-h-[90vh]">
+                        {/* Fixed header */}
+                        <DialogHeader className="px-10 pt-10 pb-0 shrink-0 flex items-center justify-between">
                             <DialogTitle className="text-2xl font-black uppercase tracking-tight">
                                 {editingService ? "Edit Service" : "New Service Offering"}
                             </DialogTitle>
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setIsDialogOpen(false)}
+                                className="h-8 w-8 rounded-xl hover:bg-slate-100"
+                            >
+                                <Minimize2 className="h-4 w-4" />
+                            </Button>
                         </DialogHeader>
-                        <form onSubmit={handleSave} className="space-y-6 mt-6">
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Service Title</Label>
-                                <Input name="title" defaultValue={editingService?.data.title} required className="h-12 rounded-xl" />
-                            </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Subtitle/Description</Label>
-                                <Textarea name="subtitle" defaultValue={editingService?.data.subtitle} required className="rounded-xl min-h-[80px]" />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-6">
+                        {/* Scrollable body */}
+                        <div className="overflow-y-auto flex-1 px-10 py-6">
+                            <form id="service-form" onSubmit={handleSave} className="space-y-6">
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Icon Type</Label>
-                                    <select name="icon" defaultValue={editingService?.data.icon || "Cpu"} className="w-full h-12 rounded-xl border border-slate-200 px-3 text-sm font-medium">
-                                        {Object.keys(iconMap).map(icon => (
-                                            <option key={icon} value={icon}>{icon} Icon</option>
-                                        ))}
-                                    </select>
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Service Title</Label>
+                                    <Input name="title" defaultValue={editingService?.data.title} required className="h-12 rounded-xl" />
                                 </div>
+
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Color Gradient (Tailwind)</Label>
-                                    <Input name="color" defaultValue={editingService?.data.color} placeholder="from-blue-500 to-cyan-500" className="h-12 rounded-xl" />
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Subtitle/Description</Label>
+                                    <Textarea name="subtitle" defaultValue={editingService?.data.subtitle} required className="rounded-xl min-h-[80px]" />
                                 </div>
-                            </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Tags (Comma separated)</Label>
-                                <Input name="tags" defaultValue={editingService?.data.tags.join(", ")} placeholder="Odoo, Consulting, Audit" className="h-12 rounded-xl" />
-                            </div>
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Icon Type</Label>
+                                        <select name="icon" defaultValue={editingService?.data.icon || "Cpu"} className="w-full h-12 rounded-xl border border-slate-200 px-3 text-sm font-medium">
+                                            {Object.keys(iconMap).map(icon => (
+                                                <option key={icon} value={icon}>{icon} Icon</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Color Gradient (Tailwind)</Label>
+                                        <Input name="color" defaultValue={editingService?.data.color} placeholder="from-blue-500 to-cyan-500" className="h-12 rounded-xl" />
+                                    </div>
+                                </div>
 
-                            <div className="flex justify-end gap-4 pt-6">
-                                <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
-                                <Button type="submit" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
-                                    {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                                    Save Service
-                                </Button>
-                            </div>
-                        </form>
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Tags (Comma separated)</Label>
+                                    <Input name="tags" defaultValue={editingService?.data.tags.join(", ")} placeholder="Odoo, Consulting, Audit" className="h-12 rounded-xl" />
+                                </div>
+                            </form>
+                        </div>
+
+                        {/* Fixed footer */}
+                        <div className="px-10 pb-10 pt-4 shrink-0 border-t border-slate-100 bg-white flex justify-end gap-4">
+                            <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
+                            <Button type="submit" form="service-form" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
+                                {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                                Save Service
+                            </Button>
+                        </div>
                     </DialogContent>
                 </Dialog>
             </div>

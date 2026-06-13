@@ -11,7 +11,8 @@ import {
     Save,
     Loader2,
     Star,
-    CheckCircle2
+    CheckCircle2,
+    Minimize2
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -27,6 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ImageUpload } from "@/components/admin/image-upload"
+import { VideoUpload } from "@/components/admin/video-upload"
 
 interface SuccessStory {
     id: string
@@ -35,7 +37,7 @@ interface SuccessStory {
     author: string
     role: string
     quote: string
-    videoUrl: string
+    videoFile: string
     category: string
     impact: string
     image: string
@@ -52,12 +54,16 @@ export default function SuccessStoriesAdmin() {
     
     // Image State
     const [imageUrl, setImageUrl] = React.useState("")
+    // Video File State
+    const [videoFile, setVideoFile] = React.useState("")
 
     React.useEffect(() => {
         if (editingStory) {
             setImageUrl(editingStory.image)
+            setVideoFile(editingStory.videoFile || "")
         } else {
             setImageUrl("")
+            setVideoFile("")
         }
     }, [editingStory, isDialogOpen])
 
@@ -97,7 +103,7 @@ export default function SuccessStoriesAdmin() {
             role: formData.get("role") as string,
             image: imageUrl || "/placeholder.jpg",
             quote: formData.get("quote") as string,
-            videoUrl: formData.get("videoUrl") as string,
+            videoFile: videoFile,
             category: formData.get("category") as string,
             impact: formData.get("impact") as string
         }
@@ -169,70 +175,87 @@ export default function SuccessStoriesAdmin() {
                             Add Success Story
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-2xl rounded-[2.5rem] p-10">
-                        <DialogHeader>
+                    <DialogContent className="max-w-2xl rounded-[2.5rem] p-0 overflow-hidden flex flex-col max-h-[90vh]">
+                        {/* Fixed header */}
+                        <DialogHeader className="px-10 pt-10 pb-0 shrink-0 flex items-center justify-between">
                             <DialogTitle className="text-2xl font-black uppercase tracking-tight">
                                 {editingStory ? "Edit Success Story" : "New Success Story"}
                             </DialogTitle>
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setIsDialogOpen(false)}
+                                className="h-8 w-8 rounded-xl hover:bg-slate-100"
+                            >
+                                <Minimize2 className="h-4 w-4" />
+                            </Button>
                         </DialogHeader>
-                        <form onSubmit={handleSave} className="space-y-6 mt-6">
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Story Title</Label>
-                                <Input name="title" defaultValue={editingStory?.title} required placeholder="e.g. Empowering Healthcare Management" className="h-12 rounded-xl" />
-                            </div>
 
-                            <div className="grid grid-cols-2 gap-6">
+                        {/* Scrollable body */}
+                        <div className="overflow-y-auto flex-1 px-10 py-6">
+                            <form id="success-story-form" onSubmit={handleSave} className="space-y-6">
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Client Organization</Label>
-                                    <Input name="client" defaultValue={editingStory?.client} required placeholder="e.g. Arafat Hospital" className="h-12 rounded-xl" />
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Story Title</Label>
+                                    <Input name="title" defaultValue={editingStory?.title} required placeholder="e.g. Empowering Healthcare Management" className="h-12 rounded-xl" />
                                 </div>
+
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Client Organization</Label>
+                                        <Input name="client" defaultValue={editingStory?.client} required placeholder="e.g. Arafat Hospital" className="h-12 rounded-xl" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category/Industry</Label>
+                                        <Input name="category" defaultValue={editingStory?.category} required placeholder="e.g. Healthcare" className="h-12 rounded-xl" />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Contact Person (Author)</Label>
+                                        <Input name="author" defaultValue={editingStory?.author} required placeholder="e.g. Dr. Mohamed Ali" className="h-12 rounded-xl" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Author Role</Label>
+                                        <Input name="role" defaultValue={editingStory?.role} required placeholder="e.g. CEO" className="h-12 rounded-xl" />
+                                    </div>
+                                </div>
+
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category/Industry</Label>
-                                    <Input name="category" defaultValue={editingStory?.category} required placeholder="e.g. Healthcare" className="h-12 rounded-xl" />
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Impact Statement / Key metric</Label>
+                                    <Input name="impact" defaultValue={editingStory?.impact} placeholder="e.g. Unified Healthcare Workflows" className="h-12 rounded-xl" />
                                 </div>
-                            </div>
 
-                            <div className="grid grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Contact Person (Author)</Label>
-                                    <Input name="author" defaultValue={editingStory?.author} required placeholder="e.g. Dr. Mohamed Ali" className="h-12 rounded-xl" />
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Quote / Summary</Label>
+                                    <Textarea name="quote" defaultValue={editingStory?.quote} required className="rounded-xl min-h-[100px] leading-relaxed italic" />
                                 </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Author Role</Label>
-                                    <Input name="role" defaultValue={editingStory?.role} required placeholder="e.g. CEO" className="h-12 rounded-xl" />
+
+                                <div className="grid grid-cols-2 gap-6">
+                                    <ImageUpload 
+                                        label="Author/Client Image" 
+                                        value={imageUrl} 
+                                        onChange={setImageUrl} 
+                                    />
+                                    <VideoUpload 
+                                        label="Video Testimonial" 
+                                        value={videoFile} 
+                                        onChange={setVideoFile}
+                                        hint="Upload video file (MP4, MOV, WebM)"
+                                    />
                                 </div>
-                            </div>
+                            </form>
+                        </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Impact Statement / Key metric</Label>
-                                <Input name="impact" defaultValue={editingStory?.impact} placeholder="e.g. Unified Healthcare Workflows" className="h-12 rounded-xl" />
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Quote / Summary</Label>
-                                <Textarea name="quote" defaultValue={editingStory?.quote} required className="rounded-xl min-h-[100px] leading-relaxed italic" />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-6">
-                                <ImageUpload 
-                                    label="Author/Client Image" 
-                                    value={imageUrl} 
-                                    onChange={setImageUrl} 
-                                />
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Video Testimonial URL</Label>
-                                    <Input name="videoUrl" defaultValue={editingStory?.videoUrl} required placeholder="YouTube embed or mp4 link" className="h-12 rounded-xl" />
-                                </div>
-                            </div>
-
-                            <div className="flex justify-end gap-4 pt-6">
-                                <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
-                                <Button type="submit" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
-                                    {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                                    Save Success Story
-                                </Button>
-                            </div>
-                        </form>
+                        {/* Fixed footer */}
+                        <div className="px-10 pb-10 pt-4 shrink-0 border-t border-slate-100 bg-white flex justify-end gap-4">
+                            <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
+                            <Button type="submit" form="success-story-form" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
+                                {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                                Save Success Story
+                            </Button>
+                        </div>
                     </DialogContent>
                 </Dialog>
             </div>
@@ -302,10 +325,10 @@ export default function SuccessStoriesAdmin() {
                                     </Badge>
                                 )}
                             </div>
-                            {story.videoUrl && (
+                            {story.videoFile && (
                                 <div className="flex items-center gap-2 text-[#b22222] text-[10px] font-black uppercase tracking-widest">
                                     <VideoIcon className="h-4 w-4" />
-                                    Video: {story.videoUrl.slice(0, 30)}...
+                                    Video: {story.videoFile.slice(0, 30)}...
                                 </div>
                             )}
                         </div>

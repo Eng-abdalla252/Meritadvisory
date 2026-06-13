@@ -11,7 +11,8 @@ import {
     Calendar,
     Save,
     X,
-    Loader2
+    Loader2,
+    Minimize2
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -168,78 +169,93 @@ export default function WebinarsAdmin() {
                             Add New Webinar
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-2xl rounded-[2.5rem] p-10">
-                        <DialogHeader>
+                    <DialogContent className="max-w-2xl rounded-[2.5rem] p-0 overflow-hidden flex flex-col max-h-[90vh]">
+                        {/* Fixed header */}
+                        <DialogHeader className="px-10 pt-10 pb-0 shrink-0 flex items-center justify-between">
                             <DialogTitle className="text-2xl font-black uppercase tracking-tight">
                                 {editingWebinar ? "Edit Webinar" : "Create New Webinar"}
                             </DialogTitle>
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setIsDialogOpen(false)}
+                                className="h-8 w-8 rounded-xl hover:bg-slate-100"
+                            >
+                                <Minimize2 className="h-4 w-4" />
+                            </Button>
                         </DialogHeader>
-                        <form onSubmit={handleSave} className="space-y-6 mt-6">
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Title</Label>
-                                    <Input name="title" defaultValue={editingWebinar?.title} required className="h-12 rounded-xl" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</Label>
-                                    <Input name="category" defaultValue={editingWebinar?.category} required className="h-12 rounded-xl" />
-                                </div>
-                            </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Description</Label>
-                                <Textarea name="description" defaultValue={editingWebinar?.description} required className="rounded-xl min-h-[100px]" />
-                            </div>
+                        {/* Scrollable body */}
+                        <div className="overflow-y-auto flex-1 px-10 py-6">
+                            <form id="webinar-form" onSubmit={handleSave} className="space-y-6">
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Title</Label>
+                                        <Input name="title" defaultValue={editingWebinar?.title} required className="h-12 rounded-xl" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</Label>
+                                        <Input name="category" defaultValue={editingWebinar?.category} required className="h-12 rounded-xl" />
+                                    </div>
+                                </div>
 
-                            <div className="grid grid-cols-2 gap-6">
-                                <ImageUpload 
-                                    label="Thumbnail Image" 
-                                    value={imageUrl} 
-                                    onChange={setImageUrl} 
-                                />
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Video/Join URL</Label>
-                                    <Input name="videoUrl" defaultValue={editingWebinar?.videoUrl} required className="h-12 rounded-xl" />
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Description</Label>
+                                    <Textarea name="description" defaultValue={editingWebinar?.description} required className="rounded-xl min-h-[100px]" />
                                 </div>
-                            </div>
 
-                            <div className="grid grid-cols-3 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Date</Label>
-                                    <Input name="date" defaultValue={editingWebinar?.date} required className="h-12 rounded-xl" />
+                                <div className="grid grid-cols-2 gap-6">
+                                    <ImageUpload 
+                                        label="Thumbnail Image" 
+                                        value={imageUrl} 
+                                        onChange={setImageUrl} 
+                                    />
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Video/Join URL</Label>
+                                        <Input name="videoUrl" defaultValue={editingWebinar?.videoUrl} required className="h-12 rounded-xl" />
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Time</Label>
-                                    <Input name="time" defaultValue={editingWebinar?.time} required className="h-12 rounded-xl" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Status</Label>
-                                    <select name="status" defaultValue={editingWebinar?.status || "upcoming"} className="w-full h-12 rounded-xl border border-slate-200 px-3 text-sm font-medium">
-                                        <option value="upcoming">Upcoming</option>
-                                        <option value="recorded">Recorded</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Speaker Name</Label>
-                                    <Input name="speaker" defaultValue={editingWebinar?.speaker} required className="h-12 rounded-xl" />
+                                <div className="grid grid-cols-3 gap-6">
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Date</Label>
+                                        <Input name="date" defaultValue={editingWebinar?.date} required className="h-12 rounded-xl" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Time</Label>
+                                        <Input name="time" defaultValue={editingWebinar?.time} required className="h-12 rounded-xl" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Status</Label>
+                                        <select name="status" defaultValue={editingWebinar?.status || "upcoming"} className="w-full h-12 rounded-xl border border-slate-200 px-3 text-sm font-medium">
+                                            <option value="upcoming">Upcoming</option>
+                                            <option value="recorded">Recorded</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Speaker Role</Label>
-                                    <Input name="speakerRole" defaultValue={editingWebinar?.speakerRole} required className="h-12 rounded-xl" />
-                                </div>
-                            </div>
 
-                            <div className="flex justify-end gap-4 pt-6">
-                                <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
-                                <Button type="submit" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
-                                    {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                                    Save Webinar
-                                </Button>
-                            </div>
-                        </form>
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Speaker Name</Label>
+                                        <Input name="speaker" defaultValue={editingWebinar?.speaker} required className="h-12 rounded-xl" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Speaker Role</Label>
+                                        <Input name="speakerRole" defaultValue={editingWebinar?.speakerRole} required className="h-12 rounded-xl" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        {/* Fixed footer */}
+                        <div className="px-10 pb-10 pt-4 shrink-0 border-t border-slate-100 bg-white flex justify-end gap-4">
+                            <Button type="button" variant="ghost" onClick={() => setIsDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
+                            <Button type="submit" form="webinar-form" disabled={saving} className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl px-10 font-bold">
+                                {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                                Save Webinar
+                            </Button>
+                        </div>
                     </DialogContent>
                 </Dialog>
             </div>
