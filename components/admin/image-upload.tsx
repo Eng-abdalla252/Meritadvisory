@@ -29,13 +29,30 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
                 method: "POST",
                 body: formData
             })
-            const data = await res.json()
-            if (data.url) {
-                onChange(data.url)
+            if (res.ok) {
+                const data = await res.json()
+                if (data.url) {
+                    onChange(data.url)
+                    setUploading(false)
+                    return
+                }
             }
         } catch (error) {
-            console.error("Upload failed")
-        } finally {
+            console.error("Upload to server failed, falling back to base64", error)
+        }
+
+        // Client-side fallback: Read as Base64 Data URL
+        try {
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                if (typeof reader.result === "string") {
+                    onChange(reader.result)
+                }
+                setUploading(false)
+            }
+            reader.readAsDataURL(file)
+        } catch (err) {
+            console.error("Base64 fallback failed", err)
             setUploading(false)
         }
     }
