@@ -1,0 +1,436 @@
+[
+    {
+        "id": "contact",
+        "title": "Contact Us Form",
+        "description": "Used on the main landing page contact section to collect general inquiries.",
+        "submitButtonText": "Send Message",
+        "successMessage": "Thank you! Your message has been sent successfully. We will get back to you soon.",
+        "fields": [
+            {
+                "id": "name",
+                "label": "Full Name",
+                "type": "text",
+                "placeholder": "Enter your full name",
+                "required": true,
+                "order": 1
+            },
+            {
+                "id": "email",
+                "label": "Email Address",
+                "type": "email",
+                "placeholder": "Enter your email address",
+                "required": true,
+                "order": 2
+            },
+            {
+                "id": "phone",
+                "label": "Phone Number",
+                "type": "phone",
+                "placeholder": "e.g. +252 90 6XXXXXX",
+                "required": false,
+                "order": 3
+            },
+            {
+                "id": "company",
+                "label": "Company / Organization",
+                "type": "text",
+                "placeholder": "Your company name",
+                "required": false,
+                "order": 4
+            },
+            {
+                "id": "category",
+                "label": "Inquiry Type",
+                "type": "select",
+                "placeholder": "Select topic",
+                "required": true,
+                "options": [
+                    "General Inquiry",
+                    "ERP Consultation",
+                    "Audit & Assurance",
+                    "Tax Optimization",
+                    "Merit Training Hub",
+                    "Careers & Recruitment"
+                ],
+                "order": 5
+            },
+            {
+                "id": "subject",
+                "label": "Subject",
+                "type": "text",
+                "placeholder": "How can we help you?",
+                "required": true,
+                "order": 6
+            },
+            {
+                "id": "message",
+                "label": "Your Message",
+                "type": "textarea",
+                "placeholder": "Write your detailed message here...",
+                "required": true,
+                "order": 7
+            }
+        ]
+    },
+    {
+        "id": "demo",
+        "title": "Request ERP Demo",
+        "description": "Modal popup form for scheduling an ERP systems walkthrough.",
+        "submitButtonText": "Schedule Demo Now",
+        "successMessage": "Demo request received! One of our ERP consultants will contact you shortly to schedule the session.",
+        "fields": [
+            {
+                "id": "name",
+                "label": "Your Name",
+                "type": "text",
+                "placeholder": "Enter your full name",
+                "required": true,
+                "order": 1
+            },
+            {
+                "id": "email",
+                "label": "Business Email",
+                "type": "email",
+                "placeholder": "Enter your corporate email address",
+                "required": true,
+                "order": 2
+            },
+            {
+                "id": "phone",
+                "label": "Phone Number",
+                "type": "phone",
+                "placeholder": "Phone number",
+                "required": true,
+                "order": 3
+            },
+            {
+                "id": "system",
+                "label": "Preferred System",
+                "type": "select",
+                "placeholder": "Select ERP platform",
+                "required": true,
+                "options": [
+                    "Odoo ERP (Standard)",
+                    "Odoo ERP (Customized)",
+                    "SAP Business One",
+                    "Oracle NetSuite",
+                    "Financial Accounting System"
+                ],
+                "order": 4
+            },
+            {
+                "id": "message",
+                "label": "Brief Requirements / Notes",
+                "type": "textarea",
+                "placeholder": "Describe what modules you need or specific business processes to automate...",
+                "required": false,
+                "order": 5
+            }
+        ]
+    },
+    {
+        "id": "questionnaire",
+        "title": "ERP Implementation Questionnaire",
+        "description": "Detailed project questionnaire to prepare scope estimator and quotes.",
+        "submitButtonText": "Submit Project Scope",
+        "successMessage": "Thank you for completing the questionnaire! We have recorded your project parameters and will generate a customized Odoo implementation proposal.",
+        "fields": [
+            {
+                "id": "customerName",
+                "label": "Contact Person Name",
+                "type": "text",
+                "placeholder": "Full name",
+                "required": true,
+                "order": 1
+            },
+            {
+                "id": "email",
+                "label": "Email Address",
+                "type": "email",
+                "placeholder": "Email address",
+                "required": true,
+                "order": 2
+            },
+            {
+                "id": "phone",
+                "label": "Phone Number",
+                "type": "phone",
+                "placeholder": "Phone number",
+                "required": true,
+                "order": 3
+            },
+            {
+                "id": "companyName",
+                "label": "Company Name",
+                "type": "text",
+                "placeholder": "Your registered company name",
+                "required": true,
+                "order": 4
+            },
+            {
+                "id": "managementIndustry",
+                "label": "Industry Sector",
+                "type": "select",
+                "placeholder": "Select sector",
+                "required": true,
+                "options": [
+                    "Manufacturing",
+                    "Retail & E-commerce",
+                    "Services & Consulting",
+                    "Healthcare",
+                    "Logistics & Transport",
+                    "Public Sector / NGO",
+                    "Construction & Real Estate",
+                    "Other"
+                ],
+                "order": 5
+            },
+            {
+                "id": "numEmployees",
+                "label": "Total Employees",
+                "type": "select",
+                "placeholder": "Select employee count",
+                "required": true,
+                "options": [
+                    "1 - 10 employees",
+                    "11 - 50 employees",
+                    "51 - 200 employees",
+                    "201 - 500 employees",
+                    "500+ employees"
+                ],
+                "order": 6
+            },
+            {
+                "id": "numBranches",
+                "label": "Number of Operating Branches",
+                "type": "select",
+                "placeholder": "Select branches count",
+                "required": true,
+                "options": [
+                    "Single location",
+                    "2 - 5 branches",
+                    "6 - 10 branches",
+                    "11+ branches"
+                ],
+                "order": 7
+            },
+            {
+                "id": "cities",
+                "label": "Operating Cities / Regions",
+                "type": "text",
+                "placeholder": "e.g. Mogadishu, Garowe, Hargeisa",
+                "required": true,
+                "order": 8
+            },
+            {
+                "id": "currentSystem",
+                "label": "Current Accounting / ERP Software",
+                "type": "text",
+                "placeholder": "e.g. QuickBooks, Excel, Tally, None",
+                "required": true,
+                "order": 9
+            },
+            {
+                "id": "interest",
+                "label": "Primary Modules Needed",
+                "type": "select",
+                "placeholder": "Select primary interest",
+                "required": true,
+                "options": [
+                    "Full ERP Suite (All Modules)",
+                    "Finance & Accounting",
+                    "Supply Chain & Inventory",
+                    "HR & Payroll",
+                    "CRM & Sales"
+                ],
+                "order": 10
+            },
+            {
+                "id": "briefNeed",
+                "label": "Briefly describe your objectives",
+                "type": "textarea",
+                "placeholder": "What are your primary goals for implementing this system?",
+                "required": true,
+                "order": 11
+            }
+        ]
+    },
+    {
+        "id": "internship",
+        "title": "Future Leaders Internship Form",
+        "description": "Application form for the structured 6-month mentorship program.",
+        "submitButtonText": "Submit Internship Application",
+        "successMessage": "Application submitted successfully! Our AI Screening agent is evaluating your qualifications, and our HR team will contact you within 5 business days.",
+        "fields": [
+            {
+                "id": "name",
+                "label": "Full Name",
+                "type": "text",
+                "placeholder": "Enter your full name",
+                "required": true,
+                "order": 1
+            },
+            {
+                "id": "email",
+                "label": "Email Address",
+                "type": "email",
+                "placeholder": "Enter your email address",
+                "required": true,
+                "order": 2
+            },
+            {
+                "id": "phone",
+                "label": "Phone Number",
+                "type": "phone",
+                "placeholder": "e.g. +252 90 6XXXXXX",
+                "required": true,
+                "order": 3
+            },
+            {
+                "id": "linkedin",
+                "label": "LinkedIn Profile URL",
+                "type": "text",
+                "placeholder": "https://linkedin.com/in/username",
+                "required": false,
+                "order": 4
+            },
+            {
+                "id": "university",
+                "label": "University / Institution Name",
+                "type": "text",
+                "placeholder": "Which university did you graduate from?",
+                "required": true,
+                "order": 5
+            },
+            {
+                "id": "degree",
+                "label": "Highest Degree Level Earned",
+                "type": "select",
+                "placeholder": "Select degree",
+                "required": true,
+                "options": [
+                    "Bachelor",
+                    "Master",
+                    "PhD / Doctorate",
+                    "Diploma / Associate"
+                ],
+                "order": 6
+            },
+            {
+                "id": "graduationYear",
+                "label": "Graduation Year",
+                "type": "select",
+                "placeholder": "Select year",
+                "required": true,
+                "options": [
+                    "2026 (Upcoming)",
+                    "2025",
+                    "2024",
+                    "2023",
+                    "2022 or earlier"
+                ],
+                "order": 7
+            },
+            {
+                "id": "track",
+                "label": "Desired Specialization Track",
+                "type": "select",
+                "placeholder": "Select track",
+                "required": true,
+                "options": [
+                    "Odoo & ERP Systems (Consulting Track)",
+                    "Software Engineering & IT (Technical Track)",
+                    "Accounting & Financial Advisory (Finance Track)"
+                ],
+                "order": 8
+            },
+            {
+                "id": "motivation",
+                "label": "Motivation Statement (Min. 50 chars)",
+                "type": "textarea",
+                "placeholder": "Describe why you want to join the Future Leaders Program and what you hope to achieve...",
+                "required": true,
+                "order": 9
+            },
+            {
+                "id": "cvFile",
+                "label": "Upload CV / Resume (PDF / DOCX)",
+                "type": "file",
+                "placeholder": "Choose file",
+                "required": true,
+                "order": 10
+            }
+        ]
+    },
+    {
+        "id": "job-apply",
+        "title": "General Job Application Form",
+        "description": "Standard application form for professional roles at Merit Advisory.",
+        "submitButtonText": "Submit Job Application",
+        "successMessage": "Job application submitted! Our recruitment team will review your qualifications and contact you if there is a match.",
+        "fields": [
+            {
+                "id": "name",
+                "label": "Full Name",
+                "type": "text",
+                "placeholder": "Full name",
+                "required": true,
+                "order": 1
+            },
+            {
+                "id": "email",
+                "label": "Email Address",
+                "type": "email",
+                "placeholder": "Email address",
+                "required": true,
+                "order": 2
+            },
+            {
+                "id": "phone",
+                "label": "Phone Number",
+                "type": "phone",
+                "placeholder": "Phone number",
+                "required": true,
+                "order": 3
+            },
+            {
+                "id": "linkedin",
+                "label": "LinkedIn Profile URL",
+                "type": "text",
+                "placeholder": "https://linkedin.com/in/username",
+                "required": false,
+                "order": 4
+            },
+            {
+                "id": "degree",
+                "label": "Highest Education Level",
+                "type": "select",
+                "placeholder": "Select level",
+                "required": true,
+                "options": [
+                    "Bachelor",
+                    "Master",
+                    "PhD",
+                    "Diploma"
+                ],
+                "order": 5
+            },
+            {
+                "id": "resumeText",
+                "label": "Resume Summary / Cover Letter",
+                "type": "textarea",
+                "placeholder": "Summary of your qualifications...",
+                "required": true,
+                "order": 6
+            },
+            {
+                "id": "cvFile",
+                "label": "Upload CV File",
+                "type": "file",
+                "placeholder": "Select file",
+                "required": true,
+                "order": 7
+            }
+        ]
+    }
+]

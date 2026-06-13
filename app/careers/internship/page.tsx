@@ -219,15 +219,21 @@ export default function InternshipPage() {
         try {
             const data = new FormData()
             data.append("jobId", "internship-program")
+            data.append("formId", "internship")
+            data.append("formType", "internship")
             data.append("name", formData.name)
             data.append("email", formData.email)
             data.append("phone", formData.phone)
             data.append("linkedin", formData.linkedin)
             data.append("degree", formData.degree)
+            data.append("university", formData.university)
+            data.append("graduationYear", formData.graduationYear)
+            data.append("track", selectedTrack)
+            data.append("motivation", formData.motivation)
             data.append("resumeText", `Track: ${selectedTrack} | University: ${formData.university} | Graduation: ${formData.graduationYear} | Motivation: ${formData.motivation}`)
             if (formData.cvFile) data.append("cvFile", formData.cvFile)
 
-            const res = await fetch("/api/applications", { method: "POST", body: data })
+            const res = await fetch("/api/forms/submit", { method: "POST", body: data })
             const json = await res.json()
             if (res.ok) {
                 setSubmitted(true)
@@ -246,9 +252,9 @@ export default function InternshipPage() {
             <Navbar />
 
             {/* ─── HERO ─── */}
-            <section className="relative min-h-[90vh] lg:min-h-[80vh] grid grid-cols-1 lg:grid-cols-2 bg-slate-950 overflow-hidden">
+            <section className="relative min-h-[90vh] lg:min-h-[80vh] grid grid-cols-1 lg:grid-cols-2 bg-[#0f2a5e] overflow-hidden">
                 {/* Left Side: Content Column */}
-                <div className="flex flex-col justify-center pt-36 pb-20 px-6 sm:px-12 lg:px-20 xl:px-28 relative z-10 bg-slate-950">
+                <div className="flex flex-col justify-center pt-36 pb-20 px-6 sm:px-12 lg:px-20 xl:px-28 relative z-10 bg-[#0f2a5e]">
                     <div className="max-w-xl">
                         <motion.div 
                             initial={{ opacity: 0, y: 20 }} 
@@ -356,12 +362,12 @@ export default function InternshipPage() {
                 </div>
 
                 {/* Right Side: Beautiful, Compact, Crystal-Clear Image Slideshow Card */}
-                <div className="relative flex items-center justify-center p-8 lg:p-12 xl:p-16 bg-slate-950 overflow-hidden min-h-[450px]">
-                    <div className="relative w-full max-w-lg aspect-[4/3] sm:aspect-[16/10] rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(15,76,156,0.15)] border-4 border-slate-800 bg-slate-900 group">
+                <div className="relative flex items-center justify-center p-8 lg:p-12 xl:p-16 bg-gradient-to-br from-[#0f2a5e] to-[#1e4e8c] overflow-hidden min-h-[450px]">
+                    <div className="relative w-full max-w-lg aspect-[4/3] sm:aspect-[16/10] rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(15,76,156,0.3)] border-4 border-[#1e4e8c]/60 bg-[#0f2a5e] group">
                         {/* Elegant brand colors glow border */}
                         <div className="absolute -inset-1.5 bg-gradient-to-r from-[#b22222] to-[#0f4c9c] rounded-[2.5rem] blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
                         
-                        <div className="relative w-full h-full rounded-[2.3rem] overflow-hidden bg-slate-950">
+                        <div className="relative w-full h-full rounded-[2.3rem] overflow-hidden bg-[#0f2a5e]">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={bgIndex}
@@ -375,7 +381,7 @@ export default function InternshipPage() {
                             </AnimatePresence>
                             
                             {/* Slide indicators (dots) inside image */}
-                            <div className="absolute bottom-4 right-4 flex gap-1.5 z-20 bg-slate-950/60 backdrop-blur-md px-3 py-1.5 rounded-full">
+                            <div className="absolute bottom-4 right-4 flex gap-1.5 z-20 bg-[#0f2a5e]/80 backdrop-blur-md px-3 py-1.5 rounded-full">
                                 {heroBackgrounds.map((_, i) => (
                                     <button
                                         key={i}
@@ -389,7 +395,7 @@ export default function InternshipPage() {
                             </div>
 
                             {/* Floating Mogadishu Live Status Badge */}
-                            <div className="absolute top-4 right-4 bg-slate-950/80 backdrop-blur-md border border-slate-700/50 rounded-lg px-3 py-1.5 flex items-center gap-1.5 z-20 shadow-md">
+                            <div className="absolute top-4 right-4 bg-[#0f2a5e]/90 backdrop-blur-md border border-white/20 rounded-lg px-3 py-1.5 flex items-center gap-1.5 z-20 shadow-md">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#b22222]"></span>
@@ -404,7 +410,7 @@ export default function InternshipPage() {
             </section>
 
             {/* ─── HERO STATS ROW ─── */}
-            <section className="bg-slate-950 py-12 border-y border-slate-800/80">
+            <section className="bg-[#1e4e8c] py-12 border-y border-white/10">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {[
@@ -557,7 +563,7 @@ export default function InternshipPage() {
             </section>
 
             {/* ─── TIMELINE ─── */}
-            <section className="py-20 bg-slate-950">
+            <section className="py-20 bg-gradient-to-br from-[#0f2a5e] to-[#1e4e8c]">
                 <div className="mx-auto max-w-4xl px-6">
                     <div className="text-center mb-14">
                         <Badge className="mb-4 bg-white/10 text-white border-none font-black text-[10px] uppercase tracking-widest">Program Roadmap</Badge>
@@ -582,7 +588,7 @@ export default function InternshipPage() {
                                         transition={{ delay: i * 0.1 }}
                                         className="flex gap-8 relative"
                                     >
-                                        <div className="h-12 w-12 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center shrink-0 z-10">
+                                        <div className="h-12 w-12 rounded-full bg-[#1e4e8c] border border-white/20 flex items-center justify-center shrink-0 z-10">
                                             <Icon className="h-5 w-5 text-red-400" />
                                         </div>
                                         <div className="pt-1 pb-4">

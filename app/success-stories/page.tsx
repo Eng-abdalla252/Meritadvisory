@@ -30,8 +30,8 @@ interface Testimonial {
   impact: string
 }
 
-// Hardcoded — no fetch needed, instant render, real local photos
-const STORIES: Testimonial[] = [
+// Fallback stories in case fetch fails
+const DEFAULT_STORIES: Testimonial[] = [
   {
     id: "arafat-hospital",
     title: "Empowering Healthcare Management",
@@ -74,8 +74,20 @@ const STORIES: Testimonial[] = [
 ]
 
 export default function SuccessStoriesPage() {
+  const [stories, setStories] = React.useState<Testimonial[]>(DEFAULT_STORIES)
   const [selectedVideo, setSelectedVideo] = React.useState<string | null>(null)
   const [activeCategory, setActiveCategory] = React.useState("All")
+
+  React.useEffect(() => {
+    fetch("/api/admin/data-api?type=success-stories")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setStories(data)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   // Close modal on Escape key
   React.useEffect(() => {
@@ -86,10 +98,10 @@ export default function SuccessStoriesPage() {
     return () => window.removeEventListener("keydown", handleKey)
   }, [])
 
-  const categories = ["All", ...Array.from(new Set(STORIES.map((s) => s.category)))]
+  const categories = ["All", ...Array.from(new Set(stories.map((s) => s.category)))]
 
   const filteredStories =
-    activeCategory === "All" ? STORIES : STORIES.filter((s) => s.category === activeCategory)
+    activeCategory === "All" ? stories : stories.filter((s) => s.category === activeCategory)
 
   return (
     <div className="flex min-h-screen flex-col bg-white">

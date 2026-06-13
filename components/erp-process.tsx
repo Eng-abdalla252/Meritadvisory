@@ -203,7 +203,7 @@ export function ERPProcess() {
         </div>
 
         {/* Bottom Banner */}
-        <div className="mt-32 p-12 rounded-[3rem] bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div className="mt-32 p-12 rounded-[3rem] bg-gradient-to-br from-[#1e4e8c] to-[#0f2a5e] text-white flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#1e4e8c]/10 rounded-full blur-3xl" />
           <div className="relative z-10">
             <h4 className="text-3xl font-black mb-2">Ready to transform your business?</h4>

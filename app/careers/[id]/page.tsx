@@ -87,8 +87,10 @@ export default function JobDetailPage() {
                 submitData.append('cvFile', formData.cvFile)
             }
             submitData.append('jobId', id as string)
+            submitData.append('formType', 'job-apply')
+            submitData.append('formId', 'job-apply')
 
-            const response = await fetch("/api/applications", {
+            const response = await fetch("/api/forms/submit", {
                 method: "POST",
                 body: submitData
             })
@@ -236,15 +238,15 @@ export default function JobDetailPage() {
                             </Card>
 
                             {/* Recruitment Process */}
-                            <Card className="p-8 md:p-12 rounded-[2rem] border-none shadow-xl shadow-slate-200/50 bg-slate-900 text-white">
+                            <Card className="p-8 md:p-12 rounded-[2rem] border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-[#1e4e8c] to-[#0f2a5e] text-white">
                                 <h2 className="text-3xl font-black mb-12 text-blue-400">Recruitment Process</h2>
                                 <div className="space-y-8">
                                     {job.process.map((p, i) => (
                                         <div key={i} className="flex gap-6 relative">
                                             {i !== job.process.length - 1 && (
-                                                <div className="absolute left-6 top-12 bottom-0 w-px bg-slate-700" />
+                                                <div className="absolute left-6 top-12 bottom-0 w-px bg-white/20" />
                                             )}
-                                            <div className="h-12 w-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-black text-blue-400 shrink-0 z-10">
+                                            <div className="h-12 w-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center font-black text-blue-200 shrink-0 z-10">
                                                 {i + 1}
                                             </div>
                                             <div className="pt-1">

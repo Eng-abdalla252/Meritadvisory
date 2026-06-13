@@ -19,7 +19,8 @@ import {
     Briefcase,
     Inbox,
     Calculator,
-    GraduationCap
+    GraduationCap,
+    ClipboardCheck
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -30,6 +31,8 @@ const sidebarLinks = [
     { label: "Careers & Internships", href: "/admin/careers", icon: GraduationCap },
     { label: "Webinars", href: "/admin/webinars", icon: Video },
     { label: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
+    { label: "Success Stories", href: "/admin/success-stories", icon: Video },
+    { label: "Form Builder", href: "/admin/forms", icon: ClipboardCheck },
     { label: "Blog Posts", href: "/admin/blog", icon: FileText },
     { label: "Team Members", href: "/admin/team", icon: Users },
     { label: "Client Logos", href: "/admin/clients", icon: ImageIcon },

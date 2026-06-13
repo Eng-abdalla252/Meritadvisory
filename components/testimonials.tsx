@@ -21,8 +21,8 @@ interface Testimonial {
   impact: string
 }
 
-// Hardcoded testimonials - no fetch needed, fastest load possible
-const TESTIMONIALS: Testimonial[] = [
+// Fallback testimonials in case fetch fails
+const DEFAULT_TESTIMONIALS: Testimonial[] = [
   {
     id: "arafat-hospital",
     title: "Empowering Healthcare Management",
@@ -65,11 +65,21 @@ const TESTIMONIALS: Testimonial[] = [
 ]
 
 export function Testimonials() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(DEFAULT_TESTIMONIALS)
   const [activeIndex, setActiveIndex] = useState(0)
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null)
   const { ref, isVisible } = useScrollAnimation()
 
-  const testimonials = TESTIMONIALS
+  useEffect(() => {
+    fetch("/api/admin/data-api?type=testimonials")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setTestimonials(data)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   const next = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length)
@@ -80,9 +90,10 @@ export function Testimonials() {
   }, [testimonials.length])
 
   useEffect(() => {
+    if (testimonials.length === 0) return
     const interval = setInterval(next, 7000)
     return () => clearInterval(interval)
-  }, [next])
+  }, [next, testimonials.length])
 
   // Close modal on Escape key
   useEffect(() => {

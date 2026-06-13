@@ -165,7 +165,7 @@ export async function POST(request: Request) {
         
         return NextResponse.json({ 
             message: "Application submitted successfully",
-            aiScore 
+            aiScore: aiAnalysis.score 
         })
     } catch (error) {
         console.error("Application Error:", error)

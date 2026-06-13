@@ -2,6 +2,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import { ArrowLeft, Calendar, Tag, Clock } from "lucide-react"
 import fs from "fs"
 import path from "path"
@@ -91,7 +92,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                             As we navigate through 2026, the integration of advanced ERP systems and real-time data analytics is no longer a luxury but a necessity for multi-location retail and logistics networks. The ability to sync inventory, finance, and operations across diverse geographies provides a competitive edge that defines market leaders.
                         </p>
 
-                        <div className="my-16 p-12 bg-slate-900 rounded-[3rem] text-white relative overflow-hidden shadow-2xl">
+                        <div className="my-16 p-12 bg-gradient-to-br from-[#1e4e8c] to-[#0f2a5e] rounded-[3rem] text-white relative overflow-hidden shadow-2xl">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-[#e31e24]/20 rounded-full blur-[100px] -mr-32 -mt-32" />
                             <h3 className="text-3xl font-black mb-6 relative z-10 text-white uppercase tracking-tight">Expert Insight</h3>
                             <p className="text-xl text-slate-300 mb-0 relative z-10 leading-relaxed font-medium italic">

@@ -1,14 +1,12 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
-import { Badge } from "@/components/ui/badge"
 import { useClients } from "@/hooks/use-clients"
 import { Loader2, Quote } from "lucide-react"
-import { useMedia } from "@/hooks/use-media"
 import { cn } from "@/lib/utils"
 
-const categories = [
+const DEFAULT_CATEGORIES = [
   "All",
   "Petroleum and Logistics",
   "Construction",
@@ -26,34 +24,19 @@ export function Clients({ showHeader = true }: { showHeader?: boolean }) {
     const { clients: clientsData, loading } = useClients()
     const { ref, isVisible } = useScrollAnimation()
     const [activeCategory, setActiveCategory] = useState("All")
-    const { media: dynamicLogos } = useMedia('clients')
+    const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES)
 
-    const allClients = useMemo(() => {
-        const dynamic = (dynamicLogos || []).map(m => ({
-            name: m.name.split('.')[0].replace(/-/g, ' ').replace(/_/g, ' '),
-            industry: "General Services",
-            logo: m.url,
-            country: "Somalia"
-        }))
-        
-        const seenLogos = new Set(clientsData.map(c => c.logo.toLowerCase().trim()))
-        const seenNames = new Set(clientsData.map(c => c.name.toLowerCase().trim()))
+    // Load categories dynamically from JSON
+    useEffect(() => {
+        fetch("/data/client-categories.json")
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) setCategories(data)
+            })
+            .catch(() => {})
+    }, [])
 
-        const uniqueDynamic = dynamic.filter(d => {
-            const logoNorm = d.logo.toLowerCase().trim()
-            const nameNorm = d.name.toLowerCase().trim()
-            
-            if (seenLogos.has(logoNorm) || seenNames.has(nameNorm)) {
-                return false
-            }
-            
-            seenLogos.add(logoNorm)
-            seenNames.add(nameNorm)
-            return true
-        })
-        
-        return [...clientsData, ...uniqueDynamic]
-    }, [clientsData, dynamicLogos])
+    const allClients = useMemo(() => clientsData, [clientsData])
 
     const filteredClients = useMemo(() => {
         if (activeCategory === "All") return allClients

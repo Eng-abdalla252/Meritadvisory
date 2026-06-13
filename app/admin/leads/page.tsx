@@ -65,6 +65,7 @@ interface Lead {
     name?: string
     email?: string
     phone?: string
+    phoneNumber?: string
     company?: string
     message?: string
     // Recruitment specific
@@ -75,6 +76,10 @@ interface Lead {
     aiScore?: number
     aiCategory?: string
     aiInsights?: string[]
+    aiSummary?: string
+    aiStrengths?: string[]
+    aiGaps?: string[]
+    aiRecommendations?: string[]
     // Demo specific
     system?: string
     // Webinar specific
@@ -605,37 +610,100 @@ export default function LeadsAdmin() {
                     <div className="space-y-8 mt-8">
                         {/* AI Intelligence Card (Recruitment only) */}
                         {selectedLead?.type === 'recruitment' && selectedLead.aiScore && (
-                            <div className="p-8 bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] text-white overflow-hidden relative group">
-                                <Sparkles className="absolute top-4 right-4 h-12 w-12 text-white/10 group-hover:scale-110 transition-transform" />
-                                <div className="relative z-10">
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <div className="h-12 w-12 rounded-xl bg-white/10 flex items-center justify-center">
-                                            <TrendingUp className="h-6 w-6 text-green-400" />
+                            <div className="p-8 bg-gradient-to-br from-[#0f2a5e] to-[#1e4e8c] rounded-[2rem] text-white overflow-hidden relative">
+                                <Sparkles className="absolute top-4 right-4 h-12 w-12 text-white/10" />
+                                <div className="relative z-10 space-y-6">
+                                    {/* Score + Category */}
+                                    <div className="flex items-center gap-4">
+                                        <div className="h-16 w-16 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
+                                            <TrendingUp className="h-8 w-8 text-green-400" />
                                         </div>
-                                        <div>
-                                            <h4 className="font-black uppercase text-[10px] tracking-widest text-white/50">AI Qualification Score</h4>
-                                            <p className="text-3xl font-black">{selectedLead.aiScore}% Match</p>
+                                        <div className="flex-1">
+                                            <p className="font-black uppercase text-[10px] tracking-widest text-white/50 mb-1">AI Qualification Score</p>
+                                            <p className="text-4xl font-black">{selectedLead.aiScore}<span className="text-lg text-white/50">/100</span></p>
                                         </div>
-                                        <Badge className={`ml-auto border-none font-black text-xs px-4 py-1.5 rounded-full ${
+                                        <Badge className={`border-none font-black text-xs px-4 py-2 rounded-full ${
                                             selectedLead.aiCategory === 'Top Talent' ? 'bg-green-500 text-white' :
-                                            selectedLead.aiCategory === 'Qualified' ? 'bg-blue-500 text-white' :
+                                            selectedLead.aiCategory === 'Qualified' ? 'bg-blue-400 text-white' :
+                                            selectedLead.aiCategory === 'Promising' ? 'bg-amber-400 text-white' :
                                             'bg-slate-500 text-white'
                                         }`}>
                                             {selectedLead.aiCategory}
                                         </Badge>
                                     </div>
 
-                                    <div className="space-y-3">
-                                        <p className="text-xs font-black uppercase tracking-widest text-white/40">Key AI Insights</p>
-                                        <div className="grid grid-cols-1 gap-2">
-                                            {selectedLead.aiInsights?.map((insight, i) => (
-                                                <div key={i} className="flex items-center gap-2 text-sm font-medium text-white/80">
-                                                    <CheckCircle2 className="h-3.5 w-3.5 text-green-400" />
-                                                    {insight}
-                                                </div>
-                                            ))}
-                                        </div>
+                                    {/* Score Bar */}
+                                    <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-blue-400 to-green-400 rounded-full transition-all"
+                                            style={{ width: `${selectedLead.aiScore}%` }}
+                                        />
                                     </div>
+
+                                    {/* AI Summary */}
+                                    {selectedLead.aiSummary && (
+                                        <div className="p-4 bg-white/10 rounded-2xl">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-white/50 mb-2">AI Summary</p>
+                                            <p className="text-sm font-medium text-white/90 leading-relaxed">{selectedLead.aiSummary}</p>
+                                        </div>
+                                    )}
+
+                                    {/* Strengths & Gaps Grid */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {selectedLead.aiStrengths && selectedLead.aiStrengths.length > 0 && (
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-green-400 mb-3">✓ Strengths</p>
+                                                <div className="space-y-2">
+                                                    {selectedLead.aiStrengths.map((s, i) => (
+                                                        <div key={i} className="flex items-start gap-2 text-xs font-medium text-white/80">
+                                                            <CheckCircle2 className="h-3.5 w-3.5 text-green-400 shrink-0 mt-0.5" />
+                                                            {s}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                        {selectedLead.aiGaps && selectedLead.aiGaps.length > 0 && (
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-amber-400 mb-3">⚠ Areas to Explore</p>
+                                                <div className="space-y-2">
+                                                    {selectedLead.aiGaps.map((g, i) => (
+                                                        <div key={i} className="flex items-start gap-2 text-xs font-medium text-white/70">
+                                                            <span className="h-3.5 w-3.5 shrink-0 mt-0.5 text-amber-400">–</span>
+                                                            {g}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* HR Recommendations */}
+                                    {selectedLead.aiRecommendations && selectedLead.aiRecommendations.length > 0 && (
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-blue-300 mb-3">HR Recommendations</p>
+                                            <div className="space-y-2">
+                                                {selectedLead.aiRecommendations.map((rec, i) => (
+                                                    <div key={i} className="flex items-start gap-2 text-xs font-medium text-white/80">
+                                                        <Sparkles className="h-3.5 w-3.5 text-blue-300 shrink-0 mt-0.5" />
+                                                        {rec}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Key Data Points */}
+                                    {selectedLead.aiInsights && selectedLead.aiInsights.length > 0 && (
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Key Data Points</p>
+                                            <div className="flex flex-wrap gap-2">
+                                                {selectedLead.aiInsights.map((insight, i) => (
+                                                    <span key={i} className="text-[10px] font-bold bg-white/10 text-white/70 px-3 py-1 rounded-full">{insight}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}

@@ -17,7 +17,8 @@ import {
     Inbox,
     Settings,
     Calculator,
-    GraduationCap
+    GraduationCap,
+    ClipboardCheck
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -98,7 +99,9 @@ export default function AdminDashboard() {
                             { title: "Site Settings", desc: "Manage hero text, contact info, and site configuration.", href: "/admin/settings", icon: Settings },
                             { title: "Manage Webinars", desc: "Schedule new sessions and manage recordings.", href: "/admin/webinars", icon: Video },
                             { title: "Update Blog", desc: "Publish new expert insights and industry news.", href: "/admin/blog", icon: FileText },
-                            { title: "Client Success", desc: "Add new testimonials and case studies.", href: "/admin/testimonials", icon: MessageSquare },
+                            { title: "Client Testimonials", desc: "Add new client quote endorsements.", href: "/admin/testimonials", icon: MessageSquare },
+                            { title: "Success Stories", desc: "Manage success story videos and metric details.", href: "/admin/success-stories", icon: Video },
+                            { title: "Form Builder", desc: "Build, configure, and assign forms dynamically.", href: "/admin/forms", icon: ClipboardCheck },
                             { title: "Team Profiles", desc: "Update leadership team information.", href: "/admin/team", icon: Users },
                         ].map((action) => (
                             <Link key={action.href} href={action.href}>

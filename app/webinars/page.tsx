@@ -61,7 +61,7 @@ export default function WebinarsPage() {
             <main className="flex-1 pt-32 pb-20">
                 {/* Hero Section */}
                 <section className="relative mb-16 overflow-hidden">
-                    <div className="absolute inset-0 bg-slate-900 -z-10">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#0f2a5e] to-[#1e4e8c] -z-10">
                         <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-transparent opacity-50" />
                         <div className="absolute inset-0 bg-[url('https://www.ksolves.com/static/images/webinar-bg.png')] bg-cover bg-center opacity-20" />
                     </div>

@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { createOdooLead } from "@/lib/odoo";
 import { NextResponse } from "next/server"
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
