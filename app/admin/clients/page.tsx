@@ -72,9 +72,10 @@ export default function ClientsAdmin() {
         try {
             const res = await fetch("/api/admin/data-api?type=clients")
             const data = await res.json()
-            setClients(data)
+            setClients(Array.isArray(data) ? data : [])
         } catch (error) {
             console.error("Failed to fetch clients")
+            setClients([])
         } finally {
             setLoading(false)
         }
@@ -84,9 +85,10 @@ export default function ClientsAdmin() {
         try {
             const res = await fetch("/api/admin/data-api?type=client-categories")
             const data = await res.json()
-            setCategories(data)
+            setCategories(Array.isArray(data) ? data : [])
         } catch (error) {
             console.error("Failed to fetch categories")
+            setCategories([])
         }
     }
 

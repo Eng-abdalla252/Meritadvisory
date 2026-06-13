@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
@@ -28,6 +28,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ImageUpload } from "@/components/admin/image-upload"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface TeamMember {
     name: string
@@ -52,16 +59,19 @@ export default function TeamAdmin() {
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
     const [editingMember, setEditingMember] = React.useState<{data: TeamMember, index: number} | null>(null)
     
-    // Image State
+    // Image & Category State
     const [imageUrl, setImageUrl] = React.useState("")
+    const [selectedCategory, setSelectedCategory] = React.useState("core")
 
     React.useEffect(() => {
         if (editingMember) {
             setImageUrl(editingMember.data.image)
+            setSelectedCategory(activeTab)
         } else {
             setImageUrl("")
+            setSelectedCategory(activeTab)
         }
-    }, [editingMember, isDialogOpen])
+    }, [editingMember, isDialogOpen, activeTab])
 
     const fetchData = async () => {
         try {
@@ -71,10 +81,12 @@ export default function TeamAdmin() {
             ])
             const core = await resCore.json()
             const other = await resOther.json()
-            setCoreTeam(core)
-            setOtherTeam(other)
+            setCoreTeam(Array.isArray(core) ? core : [])
+            setOtherTeam(Array.isArray(other) ? other : [])
         } catch (error) {
             console.error("Failed to fetch team data")
+            setCoreTeam([])
+            setOtherTeam([])
         } finally {
             setLoading(false)
         }
@@ -106,26 +118,69 @@ export default function TeamAdmin() {
             email: formData.get("email") as string,
         }
 
-        let updatedList = activeTab === "core" ? [...coreTeam] : [...otherTeam]
-        
-        if (editingMember) {
-            updatedList[editingMember.index] = memberData
-        } else {
-            updatedList = [memberData, ...updatedList]
-        }
-
         try {
-            const res = await fetch(`/api/admin/data-api?type=${activeTab === "core" ? "team" : "other-team"}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedList)
-            })
-            if (res.ok) {
-                if (activeTab === "core") setCoreTeam(updatedList)
-                else setOtherTeam(updatedList)
-                setIsDialogOpen(false)
-                setEditingMember(null)
+            if (editingMember) {
+                const oldCategory = activeTab
+                const newCategory = selectedCategory
+
+                if (oldCategory === newCategory) {
+                    const updatedList = oldCategory === "core" ? [...coreTeam] : [...otherTeam]
+                    updatedList[editingMember.index] = memberData
+
+                    const res = await fetch(`/api/admin/data-api?type=${oldCategory === "core" ? "team" : "other-team"}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(updatedList)
+                    })
+
+                    if (res.ok) {
+                        if (oldCategory === "core") setCoreTeam(updatedList)
+                        else setOtherTeam(updatedList)
+                    }
+                } else {
+                    const oldListCleaned = (oldCategory === "core" ? coreTeam : otherTeam).filter((_, i) => i !== editingMember.index)
+                    const newListAdded = [memberData, ...(newCategory === "core" ? coreTeam : otherTeam)]
+
+                    const [resOld, resNew] = await Promise.all([
+                        fetch(`/api/admin/data-api?type=${oldCategory === "core" ? "team" : "other-team"}`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(oldListCleaned)
+                        }),
+                        fetch(`/api/admin/data-api?type=${newCategory === "core" ? "team" : "other-team"}`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(newListAdded)
+                        })
+                    ])
+
+                    if (resOld.ok && resNew.ok) {
+                        if (oldCategory === "core") {
+                            setCoreTeam(oldListCleaned)
+                            setOtherTeam(newListAdded)
+                        } else {
+                            setOtherTeam(oldListCleaned)
+                            setCoreTeam(newListAdded)
+                        }
+                    }
+                }
+            } else {
+                const targetCategory = selectedCategory
+                const updatedList = [memberData, ...(targetCategory === "core" ? coreTeam : otherTeam)]
+
+                const res = await fetch(`/api/admin/data-api?type=${targetCategory === "core" ? "team" : "other-team"}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updatedList)
+                })
+
+                if (res.ok) {
+                    if (targetCategory === "core") setCoreTeam(updatedList)
+                    else setOtherTeam(updatedList)
+                }
             }
+            setIsDialogOpen(false)
+            setEditingMember(null)
         } catch (error) {
             console.error("Failed to save team member")
         } finally {
@@ -152,8 +207,8 @@ export default function TeamAdmin() {
         }
     }
 
-    const filteredCore = coreTeam.filter(m => m.name.toLowerCase().includes(search.toLowerCase()))
-    const filteredOther = otherTeam.filter(m => m.name.toLowerCase().includes(search.toLowerCase()))
+    const filteredCore = coreTeam.filter(m => (m?.name || "").toLowerCase().includes(search.toLowerCase()))
+    const filteredOther = otherTeam.filter(m => (m?.name || "").toLowerCase().includes(search.toLowerCase()))
 
     return (
         <div className="space-y-10">
@@ -191,12 +246,31 @@ export default function TeamAdmin() {
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Profile Image URL</Label>
-                                <Input name="image" defaultValue={editingMember?.data.image} required className="h-12 rounded-xl" />
+                            <div className="grid grid-cols-2 gap-6">
+                                <ImageUpload 
+                                    label="Profile Image" 
+                                    value={imageUrl} 
+                                    onChange={setImageUrl} 
+                                />
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Team Category</Label>
+                                    <Select 
+                                        value={selectedCategory}
+                                        onValueChange={setSelectedCategory}
+                                    >
+                                        <SelectTrigger className="h-12 rounded-xl">
+                                            <SelectValue placeholder="Select Category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="core">Leadership Partner</SelectItem>
+                                            <SelectItem value="associates">Associate Team</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <input type="hidden" name="category" value={selectedCategory} />
+                                </div>
                             </div>
 
-                            {activeTab === "core" && (
+                            {selectedCategory === "core" && (
                                 <>
                                     <div className="grid grid-cols-2 gap-6">
                                         <div className="space-y-2">
