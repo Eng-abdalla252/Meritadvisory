@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 
@@ -17,7 +17,7 @@ export function useClients() {
     useEffect(() => {
         const fetchClients = async () => {
             try {
-                const res = await fetch("/api/admin/data-api?type=clients")
+                const res = await fetch(`/api/admin/data-api?type=clients&_=${Date.now()}`)
                 if (!res.ok) throw new Error("Failed to fetch")
                 const data = await res.json()
                 setClients(data)

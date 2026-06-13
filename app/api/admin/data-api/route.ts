@@ -2,6 +2,9 @@ import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
 
+// Always dynamically rendered — never cached by Next.js
+export const dynamic = "force-dynamic"
+
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const type = searchParams.get("type")
@@ -12,11 +15,14 @@ export async function GET(request: Request) {
     
     try {
         if (!fs.existsSync(filePath)) {
-            // Return empty array if file does not exist to avoid breaking clients
-            return NextResponse.json([])
+            return NextResponse.json([], { 
+                headers: { "Cache-Control": "no-store, max-age=0" }
+            })
         }
         const fileContents = fs.readFileSync(filePath, "utf8")
-        return NextResponse.json(JSON.parse(fileContents))
+        return NextResponse.json(JSON.parse(fileContents), {
+            headers: { "Cache-Control": "no-store, max-age=0" }
+        })
     } catch (error) {
         return NextResponse.json({ error: "Failed to read data" }, { status: 500 })
     }

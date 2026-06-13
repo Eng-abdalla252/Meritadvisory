@@ -26,9 +26,9 @@ export function Clients({ showHeader = true }: { showHeader?: boolean }) {
     const [activeCategory, setActiveCategory] = useState("All")
     const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES)
 
-    // Load categories dynamically from JSON
+    // Load categories dynamically with cache-busting
     useEffect(() => {
-        fetch("/data/client-categories.json")
+        fetch(`/api/admin/data-api?type=client-categories&_=${Date.now()}`)
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data) && data.length > 0) setCategories(data)
