@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { removeTokenFromLocalStorage } from "@/lib/auth"
 
 const sidebarLinks = [
     { label: "Overview", href: "/admin", icon: LayoutDashboard },
@@ -102,7 +103,8 @@ export default function AdminLayout({
                         variant="ghost" 
                         className="w-full justify-start gap-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl font-bold"
                         onClick={() => {
-                            localStorage.removeItem("admin_auth")
+                            removeTokenFromLocalStorage()
+                            document.cookie = "admin_token=; path=/; max-age=0"
                             router.push("/admin/login")
                         }}
                     >
@@ -173,7 +175,8 @@ export default function AdminLayout({
                         </button>
                         <button
                             onClick={() => {
-                                localStorage.removeItem("admin_auth")
+                                removeTokenFromLocalStorage()
+                                document.cookie = "admin_token=; path=/; max-age=0"
                                 router.push("/admin/login")
                             }}
                             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold text-sm transition-colors"

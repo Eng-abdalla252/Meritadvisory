@@ -7,10 +7,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Shield, Lock, ArrowRight, AlertCircle, User } from "lucide-react"
 import { motion } from "framer-motion"
+import { createToken, setTokenInLocalStorage } from "@/lib/auth"
 
-// Credentials — change these to whatever you want
-const ADMIN_USERNAME = "merit_admin"
-const ADMIN_PASSWORD = "Merit@2026!"
+// Credentials — move these to environment variables in production
+const ADMIN_USERNAME = process.env.NEXT_PUBLIC_ADMIN_USERNAME || "merit_admin"
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "Merit@2026!"
 
 export default function LoginPage() {
     const router = useRouter()
@@ -39,7 +40,18 @@ export default function LoginPage() {
         await new Promise(r => setTimeout(r, 600))
 
         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            localStorage.setItem("admin_auth", "true")
+            // Create JWT token
+            const token = await createToken({
+                userId: "admin-1",
+                username: username
+            })
+            
+            // Store token in localStorage (will be moved to httpOnly cookie in production)
+            setTokenInLocalStorage(token)
+            
+            // Also set cookie for middleware
+            document.cookie = `admin_token=${token}; path=/; max-age=86400; secure; samesite=strict`
+            
             router.push("/admin")
         } else {
             const newAttempts = attempts + 1

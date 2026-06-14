@@ -1,17 +1,30 @@
 import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
+import { verifyAuth } from "@/lib/auth"
 
 // Always dynamically rendered — never cached by Next.js
 export const dynamic = "force-dynamic"
 
 export async function GET(request: Request) {
+    // Verify authentication
+    const auth = await verifyAuth(request)
+    if (!auth) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const { searchParams } = new URL(request.url)
     const type = searchParams.get("type")
 
     if (!type) return NextResponse.json({ error: "Type is required" }, { status: 400 })
 
-    const filePath = path.join(process.cwd(), "public", "data", `${type}.json`)
+    // Sanitize type to prevent path traversal
+    const safeType = type.replace(/[^a-zA-Z0-9-_]/g, '')
+    if (safeType !== type) {
+        return NextResponse.json({ error: "Invalid type" }, { status: 400 })
+    }
+
+    const filePath = path.join(process.cwd(), "public", "data", `${safeType}.json`)
     
     try {
         console.log("Attempting to read file:", filePath)
@@ -37,13 +50,25 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+    // Verify authentication
+    const auth = await verifyAuth(request)
+    if (!auth) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const { searchParams } = new URL(request.url)
     const type = searchParams.get("type")
     const data = await request.json()
 
     if (!type) return NextResponse.json({ error: "Type is required" }, { status: 400 })
 
-    const filePath = path.join(process.cwd(), "public", "data", `${type}.json`)
+    // Sanitize type to prevent path traversal
+    const safeType = type.replace(/[^a-zA-Z0-9-_]/g, '')
+    if (safeType !== type) {
+        return NextResponse.json({ error: "Invalid type" }, { status: 400 })
+    }
+
+    const filePath = path.join(process.cwd(), "public", "data", `${safeType}.json`)
 
     try {
         fs.writeFileSync(filePath, JSON.stringify(data, null, 4), "utf8")

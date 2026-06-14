@@ -30,6 +30,21 @@ const writeApps = (data: any) => {
     fs.writeFileSync(APP_DATA_PATH, JSON.stringify(data, null, 4), "utf8")
 }
 
+// Input validation helpers
+function sanitizeString(input: string): string {
+    return input.trim().replace(/[<>]/g, '')
+}
+
+function validateEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+}
+
+function validatePhone(phone: string): boolean {
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/
+    return phoneRegex.test(phone) && phone.length >= 10
+}
+
 // Advanced AI Scoring Simulation
 const calculateAIScore = (formData: any, requirements: string[]) => {
     let score = 30 // Base score for applying
@@ -106,12 +121,46 @@ export async function POST(request: Request) {
         const degree = formData.get("degree") as string
         const resumeText = formData.get("resumeText") as string
         const cvFile = formData.get("cvFile") as File | null
+
+        // Input validation
+        if (!name || name.trim().length === 0) {
+            return NextResponse.json({ error: "Name is required" }, { status: 400 })
+        }
+
+        if (!email || !validateEmail(email)) {
+            return NextResponse.json({ error: "Valid email is required" }, { status: 400 })
+        }
+
+        if (!phone || !validatePhone(phone)) {
+            return NextResponse.json({ error: "Valid phone number is required" }, { status: 400 })
+        }
+
+        // Sanitize inputs
+        const sanitizedName = sanitizeString(name)
+        const sanitizedEmail = sanitizeString(email)
+        const sanitizedPhone = sanitizeString(phone)
+        const sanitizedLinkedin = linkedin ? sanitizeString(linkedin) : ""
+        const sanitizedDegree = degree ? sanitizeString(degree) : ""
+        const sanitizedResumeText = resumeText ? sanitizeString(resumeText) : ""
         
         let cvUrl = ""
         if (cvFile) {
+            // Validate CV file type and size
+            const ALLOWED_CV_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+            const MAX_CV_SIZE = 10 * 1024 * 1024 // 10MB
+            
+            if (!ALLOWED_CV_TYPES.includes(cvFile.type)) {
+                return NextResponse.json({ error: "Invalid CV file type. Only PDF and Word documents are allowed." }, { status: 400 })
+            }
+            
+            if (cvFile.size > MAX_CV_SIZE) {
+                return NextResponse.json({ error: "CV file too large. Maximum size is 10MB." }, { status: 400 })
+            }
+
             const bytes = await cvFile.arrayBuffer()
             const buffer = Buffer.from(bytes)
-            const fileName = `${Date.now()}-${cvFile.name.replace(/\s+/g, '-')}`
+            const safeName = cvFile.name.replace(/[^a-zA-Z0-9.-]/g, '')
+            const fileName = `${Date.now()}-${safeName}`
             const filePath = path.join(process.cwd(), "public", "uploads", "cvs", fileName)
             fs.writeFileSync(filePath, buffer)
             cvUrl = `/uploads/cvs/${fileName}`
@@ -121,7 +170,7 @@ export async function POST(request: Request) {
         const job = jobs.find((j: any) => j.id === jobId)
         
         const aiAnalysis = calculateAIScore(
-            { resumeText, degree, linkedin }, 
+            { resumeText: sanitizedResumeText, degree: sanitizedDegree, linkedin: sanitizedLinkedin }, 
             job?.requirements || []
         )
 
@@ -130,12 +179,12 @@ export async function POST(request: Request) {
             id: Date.now().toString(),
             jobId,
             jobTitle: job?.title || "Unknown Position",
-            name,
-            email,
-            phone,
-            linkedin,
-            degree,
-            resumeText,
+            name: sanitizedName,
+            email: sanitizedEmail,
+            phone: sanitizedPhone,
+            linkedin: sanitizedLinkedin,
+            degree: sanitizedDegree,
+            resumeText: sanitizedResumeText,
             cvUrl,
             aiScore: aiAnalysis.score,
             aiCategory: aiAnalysis.category,

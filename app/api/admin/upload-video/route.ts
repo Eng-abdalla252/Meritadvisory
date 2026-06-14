@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
+import { verifyAuth } from "@/lib/auth"
 
 export async function POST(request: Request) {
+    // Verify authentication
+    const auth = await verifyAuth(request)
+    if (!auth) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     try {
         const formData = await request.formData()
         const file = formData.get("file") as File
@@ -26,8 +33,9 @@ export async function POST(request: Request) {
         const bytes = await file.arrayBuffer()
         const buffer = Buffer.from(bytes)
 
-        // Create unique filename
-        const filename = `${Date.now()}-${file.name.replace(/ /g, "-")}`
+        // Sanitize filename
+        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '')
+        const filename = `${Date.now()}-${safeName}`
         const uploadDir = path.join(process.cwd(), "public", "uploads", "videos")
         
         if (!fs.existsSync(uploadDir)) {

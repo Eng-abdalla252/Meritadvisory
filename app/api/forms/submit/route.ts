@@ -30,6 +30,21 @@ function appendLead(lead: any) {
     writeJSON(LEADS_PATH, leads)
 }
 
+// Input validation helpers
+function sanitizeString(input: string): string {
+    return input.trim().replace(/[<>]/g, '')
+}
+
+function validateEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+}
+
+function validatePhone(phone: string): boolean {
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/
+    return phoneRegex.test(phone) && phone.length >= 10
+}
+
 // ── POST handler ─────────────────────────────────────────────────────────────
 
 export async function POST(request: Request) {
@@ -47,10 +62,23 @@ export async function POST(request: Request) {
 
             const cvFile = formData.get("cvFile") as File | null
             if (cvFile && cvFile.size > 0) {
+                // Validate CV file type and size
+                const ALLOWED_CV_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+                const MAX_CV_SIZE = 10 * 1024 * 1024 // 10MB
+                
+                if (!ALLOWED_CV_TYPES.includes(cvFile.type)) {
+                    return NextResponse.json({ error: "Invalid CV file type. Only PDF and Word documents are allowed." }, { status: 400 })
+                }
+                
+                if (cvFile.size > MAX_CV_SIZE) {
+                    return NextResponse.json({ error: "CV file too large. Maximum size is 10MB." }, { status: 400 })
+                }
+                
                 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true })
                 const bytes = await cvFile.arrayBuffer()
                 const buffer = Buffer.from(bytes)
-                const fileName = `${Date.now()}-${cvFile.name.replace(/\s+/g, "-")}`
+                const safeName = cvFile.name.replace(/[^a-zA-Z0-9.-]/g, '')
+                const fileName = `${Date.now()}-${safeName}`
                 const filePath = path.join(UPLOADS_DIR, fileName)
                 fs.writeFileSync(filePath, buffer)
                 cvUrl = `/uploads/cvs/${fileName}`
@@ -62,6 +90,24 @@ export async function POST(request: Request) {
         const formId = data.formId || data.formType || "contact"
         const formType = data.formType || formId
         const now = new Date().toISOString()
+
+        // ── Input validation ───────────────────────────────────────────────
+        // Validate email if present
+        if (data.email && !validateEmail(data.email)) {
+            return NextResponse.json({ error: "Invalid email address" }, { status: 400 })
+        }
+
+        // Validate phone if present
+        if (data.phone && !validatePhone(data.phone)) {
+            return NextResponse.json({ error: "Invalid phone number" }, { status: 400 })
+        }
+
+        // Sanitize string inputs
+        Object.keys(data).forEach(key => {
+            if (typeof data[key] === 'string') {
+                data[key] = sanitizeString(data[key])
+            }
+        })
 
         // ── Resolve display name ─────────────────────────────────────────────
         const displayName =
