@@ -1,5 +1,47 @@
 [
     {
+        "name": "Hogol pharmacy",
+        "industry": "Healthcare",
+        "logo": "/uploads/1781341045021-hogol-hospital.jpg",
+        "country": ""
+    },
+    {
+        "name": "Carafaat Hospital",
+        "industry": "Healthcare",
+        "logo": "/uploads/1781341021620-Carafat-hospital.jpg",
+        "country": ""
+    },
+    {
+        "name": "Puntland Diagnostic",
+        "industry": "Healthcare",
+        "logo": "/uploads/1781340988181-puntiland-diagnostic.jpg",
+        "country": ""
+    },
+    {
+        "name": "pure gas",
+        "industry": "Petroleum and Logistics",
+        "logo": "/uploads/1781340954581-Pure-gas.jpg",
+        "country": ""
+    },
+    {
+        "name": "Baalade resort",
+        "industry": "Hotel and Cafes",
+        "logo": "/uploads/1781340930813-Balade-resort.jpg",
+        "country": ""
+    },
+    {
+        "name": "Bun house",
+        "industry": "Hotel and Cafes",
+        "logo": "/uploads/1781340906199-bun-house.jpg",
+        "country": ""
+    },
+    {
+        "name": "Cafe",
+        "industry": "Hotel and Cafes",
+        "logo": "/uploads/1781339588055-9one-cafe.jpg",
+        "country": "Somalia"
+    },
+    {
         "name": "Aamiin Wast Mant Utility",
         "industry": "Utility",
         "logo": "/clients/aamiin wast mant utility.jpg",
@@ -13,7 +55,7 @@
     },
     {
         "name": "Afro France",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/afro france.jpg",
         "country": "Somalia"
     },
@@ -49,7 +91,7 @@
     },
     {
         "name": "Aleed Perfumes",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/Aleed perfumes.jpg",
         "country": "Somalia"
     },
@@ -79,19 +121,13 @@
     },
     {
         "name": "Amin Busines",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/amin busines.png",
         "country": "Somalia"
     },
     {
-        "name": "Amtel",
-        "industry": "General Services",
-        "logo": "/uploads/clients/amtel.png",
-        "country": "Somalia"
-    },
-    {
         "name": "Anfac Business",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/anfac business.jpg",
         "country": "Somalia"
     },
@@ -205,7 +241,7 @@
     },
     {
         "name": "Cajiib Trade",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/cajiib trade.jpg",
         "country": "Somalia"
     },
@@ -241,7 +277,7 @@
     },
     {
         "name": "Dhagasayn Dental Hospital",
-        "industry": "Petroleum and Logistics",
+        "industry": "Healthcare",
         "logo": "/clients/dhagasayn dental hospital.png",
         "country": "Somalia"
     },
@@ -319,13 +355,13 @@
     },
     {
         "name": "Gargaar Petroluem",
-        "industry": "General Services",
+        "industry": "Petroleum and Logistics",
         "logo": "/clients/gargaar petroluem.png",
         "country": "Somalia"
     },
     {
         "name": "GDG",
-        "industry": "General Services",
+        "industry": "Public Sectors",
         "logo": "/clients/GDG.jpeg",
         "country": "Somalia"
     },
@@ -403,13 +439,13 @@
     },
     {
         "name": "Hays Pharmacuticals",
-        "industry": "Healthcare",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/hays pharmacuticals.png",
         "country": "Somalia"
     },
     {
         "name": "Heegan Pharma",
-        "industry": "Healthcare",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/Heegan Pharma.jpeg",
         "country": "Somalia"
     },
@@ -427,7 +463,7 @@
     },
     {
         "name": "Horn Iphones",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/horn iphones.png",
         "country": "Somalia"
     },
@@ -499,7 +535,7 @@
     },
     {
         "name": "Koshin Pharmacy",
-        "industry": "Healthcare",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/koshin pharmacy.jpeg",
         "country": "Somalia"
     },
@@ -523,7 +559,7 @@
     },
     {
         "name": "Maahir Tech",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/maahir tech.jpg",
         "country": "Somalia"
     },
@@ -571,7 +607,7 @@
     },
     {
         "name": "Miiqaat General Trade",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/miiqaad general trade.jpg",
         "country": "Somalia"
     },
@@ -607,7 +643,7 @@
     },
     {
         "name": "Naafic Business",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/naafic business.jpg",
         "country": "Somalia"
     },
@@ -631,7 +667,7 @@
     },
     {
         "name": "Nugaal Service",
-        "industry": "General Services",
+        "industry": "Utility",
         "logo": "/clients/nugaal service.jpg",
         "country": "Somalia"
     },
@@ -673,7 +709,7 @@
     },
     {
         "name": "Puntland Highway Authority",
-        "industry": "General Services",
+        "industry": "Public Sectors",
         "logo": "/clients/Puntland_Highway_Authority.png",
         "country": "Somalia"
     },
@@ -715,7 +751,7 @@
     },
     {
         "name": "Saacid General Trading",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/Saacid General Trading.jpg",
         "country": "Somalia"
     },
@@ -769,7 +805,7 @@
     },
     {
         "name": "Shire Food",
-        "industry": "General Services",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/shire food.png",
         "country": "Somalia"
     },
@@ -817,13 +853,13 @@
     },
     {
         "name": "Sunway Som Power",
-        "industry": "Utility",
+        "industry": "General Services",
         "logo": "/clients/sunway som power.png",
         "country": "Somalia"
     },
     {
         "name": "Tayo San Pharmaceuticals",
-        "industry": "Healthcare",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/tayo san pharmacuticals.jpg",
         "country": "Somalia"
     },
@@ -847,7 +883,7 @@
     },
     {
         "name": "Trust Pharmacuticals",
-        "industry": "Healthcare",
+        "industry": "Retailers & Wholesalers",
         "logo": "/clients/trust pharmacuticals.png",
         "country": "Somalia"
     },
@@ -901,7 +937,7 @@
     },
     {
         "name": "Zamwave",
-        "industry": "General Services",
+        "industry": "Petroleum and Logistics",
         "logo": "/clients/Zamwave.jpg",
         "country": "Somalia"
     }

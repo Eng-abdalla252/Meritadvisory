@@ -10,7 +10,8 @@ import {
     Image as ImageIcon,
     Loader2,
     CheckCircle2,
-    RefreshCw
+    RefreshCw,
+    Minimize2
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -71,11 +72,29 @@ export default function ClientsAdmin() {
         }
     }, [isDialogOpen, editingClient])
 
+    const fetchJson = async (type: string) => {
+        const ts = Date.now()
+        try {
+            const res = await fetch(`/api/admin/data-api?type=${type}&_=${ts}`, { cache: "no-store" })
+            if (res.ok) {
+                const data = await res.json()
+                if (Array.isArray(data)) return data
+            }
+        } catch {}
+        try {
+            const res = await fetch(`/data/${type}.json?_=${ts}`, { cache: "no-store" })
+            if (res.ok) {
+                const data = await res.json()
+                if (Array.isArray(data)) return data
+            }
+        } catch {}
+        return []
+    }
+
     const fetchClients = async () => {
         try {
-            const res = await fetch(`/api/admin/data-api?type=clients&_=${Date.now()}`)
-            const data = await res.json()
-            setClients(Array.isArray(data) ? data : [])
+            const data = await fetchJson("clients")
+            setClients(data)
         } catch (error) {
             console.error("Failed to fetch clients")
             setClients([])
@@ -86,8 +105,7 @@ export default function ClientsAdmin() {
 
     const fetchCategories = async () => {
         try {
-            const res = await fetch(`/api/admin/data-api?type=client-categories&_=${Date.now()}`)
-            const data = await res.json()
+            const data = await fetchJson("client-categories")
             setCategories(Array.isArray(data) ? data : [])
         } catch (error) {
             console.error("Failed to fetch categories")
@@ -314,10 +332,19 @@ export default function ClientsAdmin() {
                         </DialogTrigger>
                         <DialogContent className="max-w-lg rounded-[2.5rem] p-0 overflow-hidden flex flex-col max-h-[90vh]">
                             {/* Fixed header */}
-                            <DialogHeader className="px-10 pt-10 pb-0 shrink-0">
+                            <DialogHeader className="px-10 pt-10 pb-0 shrink-0 flex items-center justify-between">
                                 <DialogTitle className="text-2xl font-black uppercase tracking-tight">
                                     {editingClient ? "Edit Client" : "New Client Logo"}
                                 </DialogTitle>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setIsDialogOpen(false)}
+                                    className="h-8 w-8 rounded-xl hover:bg-slate-100"
+                                >
+                                    <Minimize2 className="h-4 w-4" />
+                                </Button>
                             </DialogHeader>
 
                             {/* Scrollable form body */}

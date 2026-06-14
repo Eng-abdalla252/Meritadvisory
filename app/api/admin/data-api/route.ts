@@ -14,17 +14,25 @@ export async function GET(request: Request) {
     const filePath = path.join(process.cwd(), "public", "data", `${type}.json`)
     
     try {
+        console.log("Attempting to read file:", filePath)
         if (!fs.existsSync(filePath)) {
+            console.log("File does not exist:", filePath)
             return NextResponse.json([], { 
                 headers: { "Cache-Control": "no-store, max-age=0" }
             })
         }
-        const fileContents = fs.readFileSync(filePath, "utf8")
+        let fileContents = fs.readFileSync(filePath, "utf8")
+        // Remove BOM if present
+        if (fileContents.charCodeAt(0) === 0xFEFF) {
+            fileContents = fileContents.slice(1)
+        }
+        console.log("File read successfully, parsing JSON...")
         return NextResponse.json(JSON.parse(fileContents), {
             headers: { "Cache-Control": "no-store, max-age=0" }
         })
     } catch (error) {
-        return NextResponse.json({ error: "Failed to read data" }, { status: 500 })
+        console.error("Error reading data file:", error)
+        return NextResponse.json({ error: "Failed to read data", details: String(error) }, { status: 500 })
     }
 }
 

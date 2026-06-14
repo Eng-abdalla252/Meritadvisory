@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { Badge } from "@/components/ui/badge"
 import { Mail, Star, Facebook, Linkedin } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -24,11 +23,22 @@ const FALLBACK_AVATAR = "https://images.unsplash.com/photo-1507003211169-0a1dd72
 
 function getMemberImage(image?: string): string {
     if (!image) return FALLBACK_AVATAR
-    // Accept both base64 data URLs and file paths
+    // Accept base64, absolute URLs, and relative paths
     if (image.startsWith("data:") || image.startsWith("http") || image.startsWith("/")) {
         return image
     }
-    return FALLBACK_AVATAR
+    return `/${image}`
+}
+
+async function fetchJson(url: string): Promise<TeamMember[]> {
+    try {
+        const res = await fetch(url, { cache: "no-store" })
+        if (!res.ok) return []
+        const data = await res.json()
+        return Array.isArray(data) ? data : []
+    } catch {
+        return []
+    }
 }
 
 export function Team({ showHeader = true }: { showHeader?: boolean }) {
@@ -36,27 +46,28 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
     const [otherTeamMembers, setOtherTeamMembers] = React.useState<TeamMember[]>([])
     const [loading, setLoading] = React.useState(true)
 
-    const loadTeamData = React.useCallback(() => {
+    React.useEffect(() => {
+        // Fetch from static JSON files in /public/data/ — works everywhere (dev, prod, Vercel)
+        // Also try API route as fallback for fresh data after admin saves
         const ts = Date.now()
-        const normalize = (value: unknown) => Array.isArray(value) ? value : []
-
         Promise.all([
-            fetch(`/api/admin/data-api?type=team&_=${ts}`).then(res => res.json()),
-            fetch(`/api/admin/data-api?type=other-team&_=${ts}`).then(res => res.json())
+            // Try API first (returns fresh data), fall back to static JSON
+            fetch(`/api/admin/data-api?type=team&_=${ts}`, { cache: "no-store" })
+                .then(r => r.json())
+                .catch(() => fetch(`/data/team.json?_=${ts}`).then(r => r.json()).catch(() => [])),
+            fetch(`/api/admin/data-api?type=other-team&_=${ts}`, { cache: "no-store" })
+                .then(r => r.json())
+                .catch(() => fetch(`/data/other-team.json?_=${ts}`).then(r => r.json()).catch(() => [])),
         ]).then(([team, other]) => {
-            setTeamMembers(normalize(team))
-            setOtherTeamMembers(normalize(other))
-            setLoading(false)
+            setTeamMembers(Array.isArray(team) ? team : [])
+            setOtherTeamMembers(Array.isArray(other) ? other : [])
         }).catch(() => {
             setTeamMembers([])
             setOtherTeamMembers([])
+        }).finally(() => {
             setLoading(false)
         })
     }, [])
-
-    React.useEffect(() => {
-        loadTeamData()
-    }, [loadTeamData])
 
     if (loading) return (
         <section className="py-24 bg-slate-50/50">
@@ -88,7 +99,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                     </div>
                 )}
 
-                {/* Leadership Section */}
+                {/* Leadership Partners Section */}
                 {teamMembers.length > 0 && (
                     <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 mb-32">
                         {teamMembers.map((member, i) => (
@@ -137,28 +148,30 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                                 )}
 
                                 {/* Social Links */}
-                                <div className="flex gap-4 mb-8">
-                                    {member.facebook && (
-                                        <a 
-                                            href={member.facebook} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e4e8c]/5 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-all duration-300"
-                                        >
-                                            <Facebook className="h-5 w-5" />
-                                        </a>
-                                    )}
-                                    {member.linkedin && (
-                                        <a 
-                                            href={member.linkedin} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e4e8c]/5 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-all duration-300"
-                                        >
-                                            <Linkedin className="h-5 w-5" />
-                                        </a>
-                                    )}
-                                </div>
+                                {(member.facebook || member.linkedin) && (
+                                    <div className="flex gap-4 mb-8">
+                                        {member.facebook && (
+                                            <a 
+                                                href={member.facebook} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e4e8c]/5 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-all duration-300"
+                                            >
+                                                <Facebook className="h-5 w-5" />
+                                            </a>
+                                        )}
+                                        {member.linkedin && (
+                                            <a 
+                                                href={member.linkedin} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e4e8c]/5 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-all duration-300"
+                                            >
+                                                <Linkedin className="h-5 w-5" />
+                                            </a>
+                                        )}
+                                    </div>
+                                )}
 
                                 {member.email && (
                                     <a 
@@ -174,7 +187,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                     </div>
                 )}
 
-                {/* Team Behind Merit Section */}
+                {/* Associate Team Section */}
                 {otherTeamMembers.length > 0 && (
                     <div className={cn(teamMembers.length > 0 ? "mt-40" : "mt-0")}>
                         <div className="flex flex-col items-center text-center mb-16">
@@ -215,7 +228,8 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                     </div>
                 )}
 
-                {teamMembers.length === 0 && otherTeamMembers.length === 0 && (
+                {/* Empty state only when both arrays are empty after loading */}
+                {!loading && teamMembers.length === 0 && otherTeamMembers.length === 0 && (
                     <div className="text-center py-24 text-slate-400">
                         <p className="text-lg">No team members published yet.</p>
                     </div>

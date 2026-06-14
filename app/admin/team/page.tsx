@@ -11,7 +11,8 @@ import {
     Loader2,
     CheckCircle2,
     RefreshCw,
-    X
+    X,
+    Minimize2
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -77,16 +78,35 @@ export default function TeamAdmin() {
         }
     }, [isDialogOpen, editingMember])
 
+    const fetchJson = async (apiType: string): Promise<TeamMember[]> => {
+        const ts = Date.now()
+        // Try API route first (fresh after admin saves)
+        try {
+            const res = await fetch(`/api/admin/data-api?type=${apiType}&_=${ts}`, { cache: "no-store" })
+            if (res.ok) {
+                const data = await res.json()
+                if (Array.isArray(data)) return data
+            }
+        } catch {}
+        // Fall back to static public/data JSON
+        try {
+            const res = await fetch(`/data/${apiType}.json?_=${ts}`, { cache: "no-store" })
+            if (res.ok) {
+                const data = await res.json()
+                if (Array.isArray(data)) return data
+            }
+        } catch {}
+        return []
+    }
+
     const fetchData = async () => {
         try {
-            const [resCore, resOther] = await Promise.all([
-                fetch(`/api/admin/data-api?type=team&_=${Date.now()}`),
-                fetch(`/api/admin/data-api?type=other-team&_=${Date.now()}`)
+            const [core, other] = await Promise.all([
+                fetchJson("team"),
+                fetchJson("other-team")
             ])
-            const core = await resCore.json()
-            const other = await resOther.json()
-            setCoreTeam(Array.isArray(core) ? core : [])
-            setOtherTeam(Array.isArray(other) ? other : [])
+            setCoreTeam(core)
+            setOtherTeam(other)
         } catch (error) {
             console.error("Failed to fetch team data")
             setCoreTeam([])
@@ -301,10 +321,19 @@ export default function TeamAdmin() {
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl rounded-[2.5rem] p-0 overflow-hidden flex flex-col max-h-[90vh]">
                             {/* Fixed header */}
-                            <DialogHeader className="px-10 pt-10 pb-0 shrink-0">
+                            <DialogHeader className="px-10 pt-10 pb-0 shrink-0 flex items-center justify-between">
                                 <DialogTitle className="text-2xl font-black uppercase tracking-tight">
                                     {editingMember ? "Edit Profile" : "New Team Profile"}
                                 </DialogTitle>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setIsDialogOpen(false)}
+                                    className="h-8 w-8 rounded-xl hover:bg-slate-100"
+                                >
+                                    <Minimize2 className="h-4 w-4" />
+                                </Button>
                             </DialogHeader>
 
                             {/* Scrollable body */}

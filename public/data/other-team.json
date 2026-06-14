@@ -1,4 +1,15 @@
-﻿[
+[
+    {
+        "name": "Ahmed Qasim",
+        "role": "Finance Officer",
+        "image": "/uploads/1781339401891-Ahmed-Qasim.jpg",
+        "expHeader": null,
+        "yearsExp": null,
+        "qualification": null,
+        "qualLabel": null,
+        "bio": null,
+        "email": null
+    },
     {
         "name": "Yusuf Hagar",
         "role": "Functional Consultant",
@@ -186,4 +197,3 @@
         "image": "/team/Abdijabar.jpg"
     }
 ]
-

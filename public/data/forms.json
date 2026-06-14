@@ -394,14 +394,6 @@
                 "order": 3
             },
             {
-                "id": "linkedin",
-                "label": "LinkedIn Profile URL",
-                "type": "text",
-                "placeholder": "https://linkedin.com/in/username",
-                "required": false,
-                "order": 4
-            },
-            {
                 "id": "degree",
                 "label": "Highest Education Level",
                 "type": "select",
@@ -411,7 +403,9 @@
                     "Bachelor",
                     "Master",
                     "PhD",
-                    "Diploma"
+                    "Diploma",
+                    "ACCA",
+                    "Related Profissional Certificates"
                 ],
                 "order": 5
             },
