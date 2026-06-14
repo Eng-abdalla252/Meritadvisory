@@ -22,6 +22,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Allow GET requests to data-api (public data access)
+  if (pathname.startsWith('/api/admin/data-api') && request.method === 'GET') {
+    return NextResponse.next()
+  }
+
   // Check for admin token
   const token = request.cookies.get('admin_token')?.value || ''
   

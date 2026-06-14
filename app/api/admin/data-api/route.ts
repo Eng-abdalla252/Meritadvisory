@@ -7,12 +7,7 @@ import { verifyAuth } from "@/lib/auth"
 export const dynamic = "force-dynamic"
 
 export async function GET(request: Request) {
-    // Verify authentication
-    const auth = await verifyAuth(request)
-    if (!auth) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
+    // GET requests are public (for displaying data on frontend)
     const { searchParams } = new URL(request.url)
     const type = searchParams.get("type")
 
@@ -50,7 +45,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-    // Verify authentication
+    // POST requests require authentication (for admin editing)
     const auth = await verifyAuth(request)
     if (!auth) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
