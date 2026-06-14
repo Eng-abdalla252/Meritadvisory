@@ -238,6 +238,17 @@ export function Navbar() {
 
           <Button
             size="sm"
+            variant="outline"
+            className="rounded-full border-primary text-primary hover:bg-primary/10"
+            asChild
+          >
+            <Link href="/admin">
+              Admin Portal
+            </Link>
+          </Button>
+
+          <Button
+            size="sm"
             className="rounded-full bg-accent px-6 text-accent-foreground shadow-sm hover:bg-accent/90"
             asChild
           >
@@ -378,6 +389,11 @@ export function Navbar() {
               <Button variant="outline" className="w-full rounded-full border-accent text-accent" asChild>
                 <Link href="/portal" onClick={() => setMobileOpen(false)}>
                   Client Portal Login
+                </Link>
+              </Button>
+              <Button variant="outline" className="w-full rounded-full border-primary text-primary" asChild>
+                <Link href="/admin" onClick={() => setMobileOpen(false)}>
+                  Admin Portal
                 </Link>
               </Button>
             </div>
