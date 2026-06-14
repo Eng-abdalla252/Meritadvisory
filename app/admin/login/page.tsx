@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Shield, Lock, ArrowRight, AlertCircle, User } from "lucide-react"
+import { Shield, Lock, ArrowRight, AlertCircle, User, ArrowLeft } from "lucide-react"
 import { motion } from "framer-motion"
 import { createToken, setTokenInLocalStorage } from "@/lib/auth"
 
@@ -87,6 +87,15 @@ export default function LoginPage() {
             {/* Background Effects */}
             <div className="absolute top-0 right-0 -mr-20 h-[500px] w-[500px] rounded-full bg-red-600/10 blur-[120px]" />
             <div className="absolute bottom-0 left-0 -ml-20 h-[500px] w-[500px] rounded-full bg-blue-600/10 blur-[120px]" />
+            
+            {/* Back Button */}
+            <button
+                onClick={() => router.push("/")}
+                className="absolute top-6 left-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors z-20"
+            >
+                <ArrowLeft className="h-5 w-5" />
+                <span className="text-sm font-medium">Back to Website</span>
+            </button>
             
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
