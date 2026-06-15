@@ -63,3 +63,24 @@ export async function verifyAuth(request: Request): Promise<TokenPayload | null>
   
   return verifyToken(token)
 }
+
+// Helper function for authenticated fetch requests from client
+export async function authenticatedFetch(url: string, options: RequestInit = {}): Promise<Response> {
+  const token = getTokenFromLocalStorage()
+  if (!token) {
+    throw new Error("No authentication token found")
+  }
+  
+  const headers = {
+    ...options.headers,
+    "Content-Type": "application/json",
+  }
+  
+  const response = await fetch(url, {
+    ...options,
+    headers,
+    credentials: "include"
+  })
+  
+  return response
+}

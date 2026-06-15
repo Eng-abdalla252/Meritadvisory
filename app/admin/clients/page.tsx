@@ -114,8 +114,8 @@ export default function ClientsAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchClients()
@@ -126,10 +126,15 @@ export default function ClientsAdmin() {
     const handleSaveCategories = async (updatedCategories: string[]) => {
         setSavingCategories(true)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=client-categories", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedCategories)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedCategories),
+                credentials: "include"
             })
             if (res.ok) {
                 setCategories(updatedCategories)
@@ -196,10 +201,15 @@ export default function ClientsAdmin() {
         }
 
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=clients", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedClients)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedClients),
+                credentials: "include"
             })
             if (res.ok) {
                 setClients(updatedClients)
@@ -221,10 +231,15 @@ export default function ClientsAdmin() {
         
         const updatedClients = clients.filter((_, i) => i !== index)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=clients", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedClients)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedClients),
+                credentials: "include"
             })
             if (res.ok) {
                 setClients(updatedClients)

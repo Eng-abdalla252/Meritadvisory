@@ -82,8 +82,8 @@ export default function SuccessStoriesAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchStories()
@@ -116,10 +116,15 @@ export default function SuccessStoriesAdmin() {
         }
 
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=success-stories", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedStories)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedStories),
+                credentials: "include"
             })
             if (res.ok) {
                 setStories(updatedStories)
@@ -138,10 +143,15 @@ export default function SuccessStoriesAdmin() {
         
         const updatedStories = stories.filter(s => s.id !== id)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=success-stories", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedStories)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedStories),
+                credentials: "include"
             })
             if (res.ok) {
                 setStories(updatedStories)

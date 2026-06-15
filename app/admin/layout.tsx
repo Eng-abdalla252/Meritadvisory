@@ -24,7 +24,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { removeTokenFromLocalStorage } from "@/lib/auth"
+import { removeTokenFromLocalStorage, getTokenFromLocalStorage } from "@/lib/auth"
 
 const sidebarLinks = [
     { label: "Overview", href: "/admin", icon: LayoutDashboard },
@@ -51,8 +51,19 @@ export default function AdminLayout({
     const router = useRouter()
     const [isMobileOpen, setIsMobileOpen] = React.useState(false)
     const isLoginPage = pathname === "/admin/login"
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false)
+
+    React.useEffect(() => {
+        const token = getTokenFromLocalStorage()
+        if (!token && !isLoginPage) {
+            router.push("/admin/login")
+        } else if (token) {
+            setIsAuthenticated(true)
+        }
+    }, [router, isLoginPage])
 
     if (isLoginPage) return <>{children}</>
+    if (!isAuthenticated) return null
 
     return (
         <div className="flex min-h-screen bg-slate-50">

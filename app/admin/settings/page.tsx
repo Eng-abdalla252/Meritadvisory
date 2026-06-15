@@ -40,8 +40,8 @@ export default function SettingsAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchSettings()
@@ -53,10 +53,15 @@ export default function SettingsAdmin() {
         setSaving(true)
         
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/settings", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(settings)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(settings),
+                credentials: "include"
             })
             if (res.ok) {
                 toast.success("Settings saved successfully")

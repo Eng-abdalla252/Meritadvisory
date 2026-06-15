@@ -70,8 +70,8 @@ export default function TestimonialsAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchTestimonials()
@@ -100,10 +100,15 @@ export default function TestimonialsAdmin() {
         }
 
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=testimonials", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedTestimonials)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedTestimonials),
+                credentials: "include"
             })
             if (res.ok) {
                 setTestimonials(updatedTestimonials)
@@ -122,10 +127,15 @@ export default function TestimonialsAdmin() {
         
         const updatedTestimonials = testimonials.filter(t => t.id !== id)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=testimonials", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedTestimonials)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedTestimonials),
+                credentials: "include"
             })
             if (res.ok) {
                 setTestimonials(updatedTestimonials)

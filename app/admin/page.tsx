@@ -34,8 +34,8 @@ export default function AdminDashboard() {
     ])
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
             return
         }

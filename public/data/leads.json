@@ -1,5 +1,21 @@
 [
   {
+    "firstName": "Jaamac ",
+    "lastName": "Tuug",
+    "email": "outreach@meritadvisory.so",
+    "phone": "0906795155",
+    "company": "merit",
+    "message": "marabno waxba",
+    "type": "contact",
+    "category": "sales",
+    "customerName": "Jaamac  Tuug",
+    "companyName": "merit",
+    "subject": "Website Inquiry",
+    "id": "lead-1781501967934",
+    "createdAt": "2026-06-15T05:39:27.934Z",
+    "status": "new"
+  },
+  {
     "id": "1779180569614",
     "jobId": "senior-erp-pm",
     "jobTitle": "Senior ERP Project Manager",

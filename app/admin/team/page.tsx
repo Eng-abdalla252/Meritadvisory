@@ -117,8 +117,8 @@ export default function TeamAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchData()
@@ -126,10 +126,15 @@ export default function TeamAdmin() {
     }, [router])
 
     const saveList = async (type: "team" | "other-team", list: TeamMember[]) => {
+        const token = localStorage.getItem("admin_token")
         const res = await fetch(`/api/admin/data-api?type=${type}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(list)
+            headers: { 
+                "Content-Type": "application/json",
+                "Cookie": `admin_token=${token}`
+            },
+            body: JSON.stringify(list),
+            credentials: "include"
         })
         if (!res.ok) throw new Error("Failed to save")
         return res

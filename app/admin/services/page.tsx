@@ -68,8 +68,8 @@ export default function ServicesAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchData()
@@ -99,10 +99,15 @@ export default function ServicesAdmin() {
         }
 
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=services", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedServices)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedServices),
+                credentials: "include"
             })
             if (res.ok) {
                 setServices(updatedServices)
@@ -121,10 +126,15 @@ export default function ServicesAdmin() {
         
         const updatedServices = services.filter((_, i) => i !== index)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=services", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedServices)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedServices),
+                credentials: "include"
             })
             if (res.ok) {
                 setServices(updatedServices)

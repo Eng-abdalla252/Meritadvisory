@@ -78,8 +78,8 @@ export default function FormsAdminPage() {
     const [newOptionsText, setNewOptionsText] = React.useState("")
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) { router.push("/admin/login"); return }
+        const token = localStorage.getItem("admin_token")
+        if (!token) { router.push("/admin/login"); return }
         fetchForms()
     }, [router])
 
@@ -100,10 +100,15 @@ export default function FormsAdminPage() {
     const saveForms = async (updated: FormSchema[]) => {
         setSaving(true)
         try {
+            const token = localStorage.getItem("admin_token")
             await fetch("/api/admin/data-api?type=forms", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
                 body: JSON.stringify(updated),
+                credentials: "include"
             })
             setForms(updated)
             toast.success("Forms saved successfully")

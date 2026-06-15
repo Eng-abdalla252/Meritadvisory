@@ -78,8 +78,8 @@ export default function BlogAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchPosts()
@@ -111,10 +111,15 @@ export default function BlogAdmin() {
         }
 
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=blog", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedPosts)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedPosts),
+                credentials: "include"
             })
             if (res.ok) {
                 setPosts(updatedPosts)
@@ -133,10 +138,15 @@ export default function BlogAdmin() {
         
         const updatedPosts = posts.filter(p => p.slug !== slug)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=blog", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedPosts)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedPosts),
+                credentials: "include"
             })
             if (res.ok) {
                 setPosts(updatedPosts)

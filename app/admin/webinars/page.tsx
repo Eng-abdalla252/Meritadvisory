@@ -76,8 +76,8 @@ export default function WebinarsAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchWebinars()
@@ -111,10 +111,15 @@ export default function WebinarsAdmin() {
         }
 
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=webinars", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedWebinars)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedWebinars),
+                credentials: "include"
             })
             if (res.ok) {
                 setWebinars(updatedWebinars)
@@ -133,10 +138,15 @@ export default function WebinarsAdmin() {
         
         const updatedWebinars = webinars.filter(w => w.id !== id)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=webinars", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedWebinars)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedWebinars),
+                credentials: "include"
             })
             if (res.ok) {
                 setWebinars(updatedWebinars)

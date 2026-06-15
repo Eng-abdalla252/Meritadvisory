@@ -65,8 +65,8 @@ export default function AwardsAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchData()
@@ -92,10 +92,15 @@ export default function AwardsAdmin() {
         }
 
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=awards", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedAwards)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedAwards),
+                credentials: "include"
             })
             if (res.ok) {
                 setAwards(updatedAwards)
@@ -114,10 +119,15 @@ export default function AwardsAdmin() {
         
         const updatedAwards = awards.filter((_, i) => i !== index)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/data-api?type=awards", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedAwards)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(updatedAwards),
+                credentials: "include"
             })
             if (res.ok) {
                 setAwards(updatedAwards)

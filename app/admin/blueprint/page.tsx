@@ -78,8 +78,8 @@ export default function BlueprintAdmin() {
     }
 
     React.useEffect(() => {
-        const auth = localStorage.getItem("admin_auth")
-        if (!auth) {
+        const token = localStorage.getItem("admin_token")
+        if (!token) {
             router.push("/admin/login")
         } else {
             fetchBlueprintData()
@@ -90,10 +90,15 @@ export default function BlueprintAdmin() {
         if (!data) return
         setSaving(true)
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch("/api/admin/estimator", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Cookie": `admin_token=${token}`
+                },
+                body: JSON.stringify(data),
+                credentials: "include"
             })
             if (res.ok) {
                 toast.success("Blueprint Planner saved successfully!")

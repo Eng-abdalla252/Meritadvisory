@@ -53,9 +53,14 @@ export default function MediaAdminPage() {
         formData.append('folder', selectedFolder)
 
         try {
+            const token = localStorage.getItem("admin_token")
             const res = await fetch('/api/media/upload', {
                 method: 'POST',
+                headers: {
+                    "Cookie": `admin_token=${token}`
+                },
                 body: formData,
+                credentials: "include"
             })
             const data = await res.json()
             if (res.ok) {
