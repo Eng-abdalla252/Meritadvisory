@@ -9,12 +9,14 @@ interface ImageUploadProps {
     onChange: (url: string) => void
     label: string
     hint?: string
+    folder?: string
+    acceptVideo?: boolean
 }
 
-const MAX_SIZE_MB = 2
-const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml", "image/webp"]
+const MAX_SIZE_MB = 50
+const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml", "image/webp", "video/mp4", "video/webm", "video/ogg"]
 
-export function ImageUpload({ value, onChange, label, hint }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, label, hint, folder = "uploads", acceptVideo = false }: ImageUploadProps) {
     const [uploading, setUploading] = React.useState(false)
     const [error, setError] = React.useState("")
     const [success, setSuccess] = React.useState(false)
@@ -26,8 +28,13 @@ export function ImageUpload({ value, onChange, label, hint }: ImageUploadProps) 
         setSuccess(false)
 
         // Validate type
-        if (!ACCEPTED_TYPES.includes(file.type)) {
-            setError("Invalid format. Use PNG, JPG, JPEG, SVG, or WEBP.")
+        const imageTypes = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml", "image/webp"]
+        const videoTypes = ["video/mp4", "video/webm", "video/ogg"]
+        const allowedTypes = acceptVideo ? [...imageTypes, ...videoTypes] : imageTypes
+        
+        if (!allowedTypes.includes(file.type)) {
+            const formatList = acceptVideo ? "PNG, JPG, JPEG, SVG, WEBP, MP4, WebM, OGG" : "PNG, JPG, JPEG, SVG, WEBP"
+            setError(`Invalid format. Use ${formatList}.`)
             return
         }
 
@@ -41,9 +48,18 @@ export function ImageUpload({ value, onChange, label, hint }: ImageUploadProps) 
 
         // Try server upload first
         try {
+            const token = localStorage.getItem("admin_token")
             const formData = new FormData()
             formData.append("file", file)
-            const res = await fetch("/api/admin/upload", { method: "POST", body: formData })
+            formData.append("folder", folder)
+            const res = await fetch("/api/media/upload", { 
+                method: "POST", 
+                headers: {
+                    "Cookie": `admin_token=${token}`
+                },
+                body: formData,
+                credentials: "include"
+            })
             if (res.ok) {
                 const data = await res.json()
                 if (data.url) {
@@ -128,11 +144,19 @@ export function ImageUpload({ value, onChange, label, hint }: ImageUploadProps) 
                     <div className="flex items-center gap-4 p-3">
                         {/* Fixed-size thumbnail - never expands */}
                         <div className="relative shrink-0 h-16 w-16 rounded-lg overflow-hidden border border-slate-200 bg-white shadow-sm">
-                            <img
-                                src={value}
-                                alt="Preview"
-                                className="h-full w-full object-contain p-1"
-                            />
+                            {value.match(/\.(mp4|webm|ogg)$/i) ? (
+                                <video
+                                    src={value}
+                                    className="h-full w-full object-cover"
+                                    muted
+                                />
+                            ) : (
+                                <img
+                                    src={value}
+                                    alt="Preview"
+                                    className="h-full w-full object-contain p-1"
+                                />
+                            )}
                             <button
                                 type="button"
                                 onClick={handleRemove}
@@ -142,16 +166,18 @@ export function ImageUpload({ value, onChange, label, hint }: ImageUploadProps) 
                             </button>
                         </div>
                         <div className="min-w-0 flex-1">
-                            <p className="text-xs font-bold text-slate-700 truncate">Image uploaded</p>
+                            <p className="text-xs font-bold text-slate-700 truncate">
+                                {value.match(/\.(mp4|webm|ogg)$/i) ? "Video uploaded" : "Image uploaded"}
+                            </p>
                             <p className="text-[10px] text-slate-400 mt-0.5 truncate max-w-[200px]">
-                                {value.startsWith("data:") ? "Base64 encoded image" : value}
+                                {value.startsWith("data:") ? "Base64 encoded file" : value}
                             </p>
                             <button
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click() }}
                                 className="mt-1.5 text-[10px] font-bold text-[#e31e24] hover:underline"
                             >
-                                Change image
+                                Change {value.match(/\.(mp4|webm|ogg)$/i) ? "video" : "image"}
                             </button>
                         </div>
                     </div>
@@ -173,7 +199,7 @@ export function ImageUpload({ value, onChange, label, hint }: ImageUploadProps) 
                                         <span className="text-[#e31e24]">Click to upload</span> or drag & drop
                                     </p>
                                     <p className="text-[10px] text-slate-400 mt-0.5">
-                                        PNG, JPG, JPEG, SVG, WEBP · Max {MAX_SIZE_MB}MB
+                                        {acceptVideo ? "PNG, JPG, JPEG, SVG, WEBP, MP4, WebM, OGG" : "PNG, JPG, JPEG, SVG, WEBP"} · Max {MAX_SIZE_MB}MB
                                     </p>
                                 </div>
                             </>
@@ -203,7 +229,7 @@ export function ImageUpload({ value, onChange, label, hint }: ImageUploadProps) 
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                accept={ACCEPTED_TYPES.join(",")}
+                accept={acceptVideo ? ACCEPTED_TYPES.join(",") : "image/png,image/jpeg,image/jpg,image/svg+xml,image/webp"}
                 className="hidden"
             />
         </div>

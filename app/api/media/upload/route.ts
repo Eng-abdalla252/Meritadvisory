@@ -3,8 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import { verifyAuth } from "@/lib/auth"
 
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
-const MAX_SIZE = 5 * 1024 * 1024 // 5MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml', 'video/mp4', 'video/webm', 'video/ogg']
+const MAX_SIZE = 50 * 1024 * 1024 // 50MB (for videos)
 
 export async function POST(req: NextRequest) {
     // Verify authentication
@@ -29,7 +29,8 @@ export async function POST(req: NextRequest) {
             'blog',
             'team',
             'testimonials',
-            'events'
+            'events',
+            'uploads'
         ];
 
         if (!validFolders.includes(folder)) {

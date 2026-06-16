@@ -17,7 +17,8 @@ export async function GET(req: NextRequest) {
         'blog',
         'team',
         'testimonials',
-        'events'
+        'events',
+        'uploads'
     ];
 
     if (!validFolders.includes(folder)) {

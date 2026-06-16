@@ -227,17 +227,6 @@ export function Navbar() {
 
           <Button
             size="sm"
-            variant="outline"
-            className="rounded-full border-primary text-primary hover:bg-primary/10"
-            asChild
-          >
-            <Link href="/staff-registration">
-              Staff Registration
-            </Link>
-          </Button>
-
-          <Button
-            size="sm"
             className="rounded-full bg-accent px-6 text-accent-foreground shadow-sm hover:bg-accent/90"
             asChild
           >
@@ -373,11 +362,6 @@ export function Navbar() {
               <Button className="w-full rounded-full bg-accent text-accent-foreground" asChild>
                 <Link href={`https://wa.me/${contactData.whatsapp}`} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}>
                   Get Started
-                </Link>
-              </Button>
-              <Button variant="outline" className="w-full rounded-full border-primary text-primary" asChild>
-                <Link href="/staff-registration" onClick={() => setMobileOpen(false)}>
-                  Staff Registration
                 </Link>
               </Button>
             </div>
