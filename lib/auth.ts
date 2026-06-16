@@ -23,7 +23,23 @@ export async function createToken(payload: Omit<TokenPayload, 'exp'>): Promise<s
 export async function verifyToken(token: string): Promise<TokenPayload | null> {
   try {
     const { payload } = await jwtVerify(token, SECRET_KEY)
-    return payload as TokenPayload
+    
+    // Validate that the payload contains required fields
+    if (!payload || typeof payload !== 'object') {
+      return null
+    }
+    
+    const jwtPayload = payload as unknown as { userId?: string; username?: string; exp?: number }
+    
+    if (!jwtPayload.userId || !jwtPayload.username || !jwtPayload.exp) {
+      return null
+    }
+    
+    return {
+      userId: jwtPayload.userId,
+      username: jwtPayload.username,
+      exp: jwtPayload.exp
+    }
   } catch (error) {
     return null
   }
