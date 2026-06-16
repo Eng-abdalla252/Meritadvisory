@@ -28,7 +28,8 @@ import {
     Square,
     Star,
     Sparkles,
-    TrendingUp
+    TrendingUp,
+    GraduationCap
 } from "lucide-react"
 import { 
     PieChart, 
@@ -57,9 +58,9 @@ import { toast } from "sonner"
 
 interface Lead {
     id: string
-    type: "recruitment" | "demo" | "questionnaire" | "webinar" | "contact"
+    type: "recruitment" | "demo" | "questionnaire" | "webinar" | "contact" | "internship" | "sales" | "support"
     createdAt: string
-    status: "new" | "read" | "handled"
+    status: "new" | "contacted" | "qualified" | "proposal_sent" | "won" | "lost" | "closed"
     isShortlisted?: boolean
     // Common fields
     name?: string
@@ -68,6 +69,13 @@ interface Lead {
     phoneNumber?: string
     company?: string
     message?: string
+    // CRM fields
+    serviceName?: string
+    selectedPackage?: string
+    packagePrice?: string
+    pricingTier?: string
+    leadSource?: string
+    assignedTeamMember?: string
     // Recruitment specific
     jobTitle?: string
     degree?: string
@@ -97,6 +105,20 @@ interface Lead {
     managementIndustry?: string
     currentSystem?: string
     briefNeed?: string
+    // Internship specific
+    university?: string
+    department?: string
+    major?: string
+    graduationYear?: string
+    internshipArea?: string
+    // Sales specific
+    serviceInterested?: string
+    budgetRange?: string
+    projectDetails?: string
+    // Support specific
+    productService?: string
+    issueDescription?: string
+    priorityLevel?: string
 }
 
 export default function LeadsAdmin() {
@@ -286,6 +308,9 @@ export default function LeadsAdmin() {
             case "demo": return <LayoutDashboard className="h-4 w-4" />
             case "questionnaire": return <ClipboardCheck className="h-4 w-4" />
             case "webinar": return <Calendar className="h-4 w-4" />
+            case "internship": return <GraduationCap className="h-4 w-4" />
+            case "sales": return <TrendingUp className="h-4 w-4" />
+            case "support": return <FileText className="h-4 w-4" />
             default: return <Mail className="h-4 w-4" />
         }
     }
@@ -293,8 +318,12 @@ export default function LeadsAdmin() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case "new": return <Badge className="bg-red-50 text-red-600 border-none font-black text-[10px] uppercase">New</Badge>
-            case "read": return <Badge className="bg-blue-50 text-blue-600 border-none font-black text-[10px] uppercase">Read</Badge>
-            case "handled": return <Badge className="bg-green-50 text-green-600 border-none font-black text-[10px] uppercase">Handled</Badge>
+            case "contacted": return <Badge className="bg-blue-50 text-blue-600 border-none font-black text-[10px] uppercase">Contacted</Badge>
+            case "qualified": return <Badge className="bg-purple-50 text-purple-600 border-none font-black text-[10px] uppercase">Qualified</Badge>
+            case "proposal_sent": return <Badge className="bg-amber-50 text-amber-600 border-none font-black text-[10px] uppercase">Proposal Sent</Badge>
+            case "won": return <Badge className="bg-green-50 text-green-600 border-none font-black text-[10px] uppercase">Won</Badge>
+            case "lost": return <Badge className="bg-slate-50 text-slate-600 border-none font-black text-[10px] uppercase">Lost</Badge>
+            case "closed": return <Badge className="bg-gray-50 text-gray-600 border-none font-black text-[10px] uppercase">Closed</Badge>
             default: return null
         }
     }
@@ -348,14 +377,14 @@ export default function LeadsAdmin() {
 
             {/* Sub-header with Filter and Bulk Actions */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div className="flex bg-white p-1 rounded-2xl shadow-sm">
-                    {["all", "recruitment", "demo", "questionnaire", "webinar", "contact"].map((t) => (
+                <div className="flex bg-white p-1 rounded-2xl shadow-sm flex-wrap gap-1">
+                    {["all", "recruitment", "demo", "questionnaire", "webinar", "contact", "internship", "sales", "support"].map((t) => (
                         <button
                             key={t}
                             onClick={() => setFilter(t)}
-                            className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filter === t ? "bg-[#b22222] text-white shadow-lg shadow-red-200" : "text-slate-400 hover:text-slate-600"}`}
+                            className={`px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${filter === t ? "bg-[#b22222] text-white shadow-lg shadow-red-200" : "text-slate-400 hover:text-slate-600"}`}
                         >
-                            {t}
+                            {t.replace('_', ' ')}
                         </button>
                     ))}
                 </div>
@@ -363,14 +392,20 @@ export default function LeadsAdmin() {
                 {selectedIds.length > 0 && (
                     <div className="flex items-center gap-3 animate-in fade-in slide-in-from-right-4">
                         <span className="text-xs font-black uppercase text-slate-400 mr-2">{selectedIds.length} Selected</span>
-                        <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="rounded-full h-10 px-4 font-bold border-slate-200"
-                            onClick={() => handleBulkStatus('handled')}
-                        >
-                            Mark Handled
-                        </Button>
+                        <div className="relative">
+                            <select 
+                                className="h-10 px-4 rounded-full font-bold border-slate-200 bg-white text-sm"
+                                onChange={(e) => handleBulkStatus(e.target.value)}
+                            >
+                                <option value="">Update Status...</option>
+                                <option value="contacted">Mark Contacted</option>
+                                <option value="qualified">Mark Qualified</option>
+                                <option value="proposal_sent">Mark Proposal Sent</option>
+                                <option value="won">Mark Won</option>
+                                <option value="lost">Mark Lost</option>
+                                <option value="closed">Mark Closed</option>
+                            </select>
+                        </div>
                         <Button 
                             size="sm" 
                             variant="outline" 
@@ -508,6 +543,9 @@ export default function LeadsAdmin() {
                                         lead.type === 'recruitment' ? 'bg-purple-50 text-purple-600' :
                                         lead.type === 'demo' ? 'bg-blue-50 text-blue-600' :
                                         lead.type === 'questionnaire' ? 'bg-amber-50 text-amber-600' :
+                                        lead.type === 'internship' ? 'bg-green-50 text-green-600' :
+                                        lead.type === 'sales' ? 'bg-indigo-50 text-indigo-600' :
+                                        lead.type === 'support' ? 'bg-orange-50 text-orange-600' :
                                         'bg-red-50 text-red-600'
                                     }`}>
                                         {getLeadIcon(lead.type)}
