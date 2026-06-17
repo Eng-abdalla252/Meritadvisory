@@ -211,6 +211,92 @@ export default function LeadsAdmin() {
         document.body.removeChild(link)
     }
 
+    const downloadExcel = () => {
+        // Create a simple Excel-compatible format (TSV with BOM)
+        const headers = ["Name", "Email", "Phone", "Type", "Status", "Date", "Job Title", "Company"]
+        const rows = filteredLeads.map(l => [
+            l.name || l.customerName || "",
+            l.email || "",
+            l.phone || l.phoneNumber || "",
+            l.type,
+            l.status,
+            new Date(l.createdAt).toLocaleDateString(),
+            l.jobTitle || "",
+            l.company || l.companyName || ""
+        ])
+
+        const tsvContent = [headers, ...rows].map(e => e.join("\t")).join("\n")
+        const bom = "\uFEFF"
+        const blob = new Blob([bom + tsvContent], { type: "text/tab-separated-values;charset=utf-8;" })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        link.setAttribute("href", url)
+        link.setAttribute("download", `merit-leads-${new Date().toISOString().split('T')[0]}.xls`)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+    }
+
+    const downloadPDF = () => {
+        // Create a simple HTML-to-PDF export
+        const headers = ["Name", "Email", "Phone", "Type", "Status", "Date", "Job Title", "Company"]
+        const rows = filteredLeads.map(l => [
+            l.name || l.customerName || "",
+            l.email || "",
+            l.phone || l.phoneNumber || "",
+            l.type,
+            l.status,
+            new Date(l.createdAt).toLocaleDateString(),
+            l.jobTitle || "",
+            l.company || l.companyName || ""
+        ])
+
+        let html = `
+            <html>
+            <head>
+                <title>Merit Advisory - Business Leads</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    h1 { color: #b22222; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th { background-color: #b22222; color: white; padding: 10px; text-align: left; }
+                    td { border: 1px solid #ddd; padding: 8px; }
+                    tr:nth-child(even) { background-color: #f9f9f9; }
+                </style>
+            </head>
+            <body>
+                <h1>Merit Advisory - Business Leads</h1>
+                <p>Export Date: ${new Date().toLocaleDateString()}</p>
+                <table>
+                    <thead>
+                        <tr>
+                            ${headers.map(h => `<th>${h}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows.map(row => `
+                            <tr>
+                                ${row.map(cell => `<td>${cell}</td>`).join('')}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `
+
+        const blob = new Blob([html], { type: "text/html" })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        link.setAttribute("href", url)
+        link.setAttribute("download", `merit-leads-${new Date().toISOString().split('T')[0]}.html`)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        
+        toast.success("HTML file downloaded. Open in browser and print to PDF.")
+    }
+
     const toggleShortlist = async (id: string) => {
         const lead = leads.find(l => l.id === id)
         const isShortlisted = !lead?.isShortlisted
@@ -354,14 +440,42 @@ export default function LeadsAdmin() {
                         </button>
                     </div>
 
-                    <Button 
-                        variant="outline" 
-                        className="h-14 rounded-2xl bg-white border-none shadow-sm px-6 font-black uppercase text-[10px] tracking-widest text-slate-600 hover:bg-slate-50"
-                        onClick={downloadCSV}
-                    >
-                        <Download className="h-4 w-4 mr-2" />
-                        Export CSV
-                    </Button>
+                    <div className="relative">
+                        <Button 
+                            variant="outline" 
+                            className="h-14 rounded-2xl bg-white border-none shadow-sm px-6 font-black uppercase text-[10px] tracking-widest text-slate-600 hover:bg-slate-50"
+                            onClick={() => {
+                                const dropdown = document.getElementById('export-dropdown')
+                                dropdown?.classList.toggle('hidden')
+                            }}
+                        >
+                            <Download className="h-4 w-4 mr-2" />
+                            Export
+                        </Button>
+                        <div 
+                            id="export-dropdown"
+                            className="hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden z-50"
+                        >
+                            <button
+                                onClick={downloadCSV}
+                                className="w-full px-4 py-3 text-left text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                            >
+                                Export as CSV
+                            </button>
+                            <button
+                                onClick={downloadExcel}
+                                className="w-full px-4 py-3 text-left text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                            >
+                                Export as Excel
+                            </button>
+                            <button
+                                onClick={downloadPDF}
+                                className="w-full px-4 py-3 text-left text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                            >
+                                Export as PDF
+                            </button>
+                        </div>
+                    </div>
 
                     <div className="relative">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
