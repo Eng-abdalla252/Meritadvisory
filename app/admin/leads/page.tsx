@@ -372,7 +372,31 @@ export default function LeadsAdmin() {
         })
         const degreeData = Object.entries(degreeCounts).map(([name, value]) => ({ name, value }))
 
-        return { typeData, statusData, degreeData }
+        // Monthly trends
+        const monthlyData: any = {}
+        leads.forEach(l => {
+            const date = new Date(l.createdAt)
+            const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+            monthlyData[monthKey] = (monthlyData[monthKey] || 0) + 1
+        })
+        const monthlyTrends = Object.entries(monthlyData)
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([name, value]) => ({ name, value }))
+
+        // Lead source tracking
+        const sourceCounts: any = {}
+        leads.forEach(l => {
+            const source = l.leadSource || 'unknown'
+            sourceCounts[source] = (sourceCounts[source] || 0) + 1
+        })
+        const sourceData = Object.entries(sourceCounts).map(([name, value]) => ({ name: name.replace('-', ' ').toUpperCase(), value }))
+
+        // Conversion rate (new to handled)
+        const newLeads = leads.filter(l => l.status === 'new').length
+        const handledLeads = leads.filter(l => l.status === 'handled' || l.status === 'won').length
+        const conversionRate = newLeads > 0 ? ((handledLeads / newLeads) * 100).toFixed(1) : '0'
+
+        return { typeData, statusData, degreeData, monthlyTrends, sourceData, conversionRate }
     }, [leads])
 
     const filteredLeads = leads.filter(l => {
@@ -541,78 +565,176 @@ export default function LeadsAdmin() {
             </div>
 
             {viewMode === "analytics" ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-in fade-in zoom-in duration-500">
-                    <Card className="p-8 border-none shadow-sm rounded-[2.5rem] bg-white">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2">
-                            <Filter className="h-4 w-4 text-blue-500" />
-                            Leads by Category
-                        </h3>
-                        <div className="h-[250px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={analyticsData.typeData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={60}
-                                        outerRadius={80}
-                                        paddingAngle={5}
-                                        dataKey="value"
-                                    >
-                                        {[0, 1, 2, 3, 4, 5].map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={['#1e4e8c', '#b22222', '#f59e0b', '#10b981', '#6366f1'][index % 5]} />
-                                        ))}
-                                    </Pie>
-                                    <RechartsTooltip />
-                                    <Legend verticalAlign="bottom" height={36}/>
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </Card>
+                <div className="space-y-8 animate-in fade-in zoom-in duration-500">
+                    {/* Key Metrics */}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <Card className="p-6 border-none shadow-sm rounded-2xl bg-white">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">Total Leads</p>
+                                    <p className="text-3xl font-black text-slate-900">{leads.length}</p>
+                                </div>
+                                <div className="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center">
+                                    <Inbox className="h-6 w-6 text-blue-500" />
+                                </div>
+                            </div>
+                        </Card>
+                        
+                        <Card className="p-6 border-none shadow-sm rounded-2xl bg-white">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">New Leads</p>
+                                    <p className="text-3xl font-black text-red-600">{leads.filter(l => l.status === 'new').length}</p>
+                                </div>
+                                <div className="h-12 w-12 rounded-xl bg-red-50 flex items-center justify-center">
+                                    <Clock className="h-6 w-6 text-red-500" />
+                                </div>
+                            </div>
+                        </Card>
+                        
+                        <Card className="p-6 border-none shadow-sm rounded-2xl bg-white">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">Conversion Rate</p>
+                                    <p className="text-3xl font-black text-green-600">{analyticsData.conversionRate}%</p>
+                                </div>
+                                <div className="h-12 w-12 rounded-xl bg-green-50 flex items-center justify-center">
+                                    <TrendingUp className="h-6 w-6 text-green-500" />
+                                </div>
+                            </div>
+                        </Card>
+                        
+                        <Card className="p-6 border-none shadow-sm rounded-2xl bg-white">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">This Month</p>
+                                    <p className="text-3xl font-black text-slate-900">{analyticsData.monthlyTrends.length > 0 ? analyticsData.monthlyTrends[analyticsData.monthlyTrends.length - 1]?.value || 0 : 0}</p>
+                                </div>
+                                <div className="h-12 w-12 rounded-xl bg-purple-50 flex items-center justify-center">
+                                    <Calendar className="h-6 w-6 text-purple-500" />
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
+                    
+                    {/* Charts */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <Card className="p-8 border-none shadow-sm rounded-[2.5rem] bg-white">
+                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2">
+                                <Filter className="h-4 w-4 text-blue-500" />
+                                Leads by Category
+                            </h3>
+                            <div className="h-[250px] w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={analyticsData.typeData}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={60}
+                                            outerRadius={80}
+                                            paddingAngle={5}
+                                            dataKey="value"
+                                        >
+                                            {[0, 1, 2, 3, 4, 5].map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={['#1e4e8c', '#b22222', '#f59e0b', '#10b981', '#6366f1'][index % 5]} />
+                                            ))}
+                                        </Pie>
+                                        <RechartsTooltip />
+                                        <Legend verticalAlign="bottom" height={36}/>
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </Card>
 
-                    <Card className="p-8 border-none shadow-sm rounded-[2.5rem] bg-white">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-green-500" />
-                            Lead Status Overview
-                        </h3>
-                        <div className="h-[250px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={analyticsData.statusData}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 900}} />
-                                    <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10}} />
-                                    <RechartsTooltip />
-                                    <Bar dataKey="value" fill="#b22222" radius={[4, 4, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </Card>
+                        <Card className="p-8 border-none shadow-sm rounded-[2.5rem] bg-white">
+                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2">
+                                <Clock className="h-4 w-4 text-green-500" />
+                                Lead Status Overview
+                            </h3>
+                            <div className="h-[250px] w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={analyticsData.statusData}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 900}} />
+                                        <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10}} />
+                                        <RechartsTooltip />
+                                        <Bar dataKey="value" fill="#b22222" radius={[4, 4, 0, 0]} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </Card>
 
-                    <Card className="p-8 border-none shadow-sm rounded-[2.5rem] bg-white">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2">
-                            <Briefcase className="h-4 w-4 text-purple-500" />
-                            Recruitment Degrees
-                        </h3>
-                        <div className="h-[250px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={analyticsData.degreeData}
-                                        cx="50%"
-                                        cy="50%"
-                                        outerRadius={80}
-                                        label
-                                        dataKey="value"
-                                    >
-                                        {analyticsData.degreeData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={['#6366f1', '#ec4899', '#8b5cf6', '#3b82f6'][index % 4]} />
-                                        ))}
-                                    </Pie>
-                                    <RechartsTooltip />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </Card>
+                        <Card className="p-8 border-none shadow-sm rounded-[2.5rem] bg-white">
+                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2">
+                                <Briefcase className="h-4 w-4 text-purple-500" />
+                                Recruitment Degrees
+                            </h3>
+                            <div className="h-[250px] w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={analyticsData.degreeData}
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={80}
+                                            label
+                                            dataKey="value"
+                                        >
+                                            {analyticsData.degreeData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={['#6366f1', '#ec4899', '#8b5cf6', '#3b82f6'][index % 4]} />
+                                            ))}
+                                        </Pie>
+                                        <RechartsTooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </Card>
+                        
+                        <Card className="p-8 border-none shadow-sm rounded-[2.5rem] bg-white">
+                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2">
+                                <TrendingUp className="h-4 w-4 text-indigo-500" />
+                                Monthly Trends
+                            </h3>
+                            <div className="h-[250px] w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={analyticsData.monthlyTrends}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 900}} />
+                                        <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10}} />
+                                        <RechartsTooltip />
+                                        <Bar dataKey="value" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </Card>
+                        
+                        <Card className="p-8 border-none shadow-sm rounded-[2.5rem] bg-white">
+                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2">
+                                <Mail className="h-4 w-4 text-amber-500" />
+                                Lead Sources
+                            </h3>
+                            <div className="h-[250px] w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={analyticsData.sourceData}
+                                            cx="50%"
+                                            cy="50%"
+                                            outerRadius={80}
+                                            label
+                                            dataKey="value"
+                                        >
+                                            {analyticsData.sourceData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={['#f59e0b', '#10b981', '#3b82f6', '#ec4899'][index % 4]} />
+                                            ))}
+                                        </Pie>
+                                        <RechartsTooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </Card>
+                    </div>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 gap-4">
