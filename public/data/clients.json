@@ -1,5 +1,35 @@
 [
     {
+        "name": "hadraawi general trading",
+        "industry": "Retailers & Wholesalers",
+        "logo": "/uploads/uploads/hadrawiest.logo.jpeg",
+        "country": ""
+    },
+    {
+        "name": "Stone brook",
+        "industry": "Petroleum and Logistics",
+        "logo": "/uploads/uploads/stonebrook.jpeg",
+        "country": ""
+    },
+    {
+        "name": "Dansoor",
+        "industry": "Petroleum and Logistics",
+        "logo": "/uploads/uploads/dansoorlogistics.png",
+        "country": ""
+    },
+    {
+        "name": "Kaaf",
+        "industry": "Retailers & Wholesalers",
+        "logo": "/uploads/uploads/kaaf.jpg",
+        "country": ""
+    },
+    {
+        "name": "Samo",
+        "industry": "Petroleum and Logistics",
+        "logo": "/uploads/uploads/samo.png",
+        "country": ""
+    },
+    {
         "name": "Hogol pharmacy",
         "industry": "Healthcare",
         "logo": "/uploads/1781341045021-hogol-hospital.jpg",
