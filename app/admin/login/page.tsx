@@ -7,11 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Shield, Lock, ArrowRight, AlertCircle, User, ArrowLeft } from "lucide-react"
 import { motion } from "framer-motion"
-import { createToken, setTokenInLocalStorage } from "@/lib/auth"
-
-// Credentials — move these to environment variables in production
-const ADMIN_USERNAME = process.env.NEXT_PUBLIC_ADMIN_USERNAME || "merit_admin"
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "Merit@2026!"
+import { setTokenInLocalStorage } from "@/lib/auth"
 
 export default function LoginPage() {
     const router = useRouter()
@@ -39,21 +35,19 @@ export default function LoginPage() {
         // Simulate network delay for realism
         await new Promise(r => setTimeout(r, 600))
 
-        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            // Create JWT token
-            const token = await createToken({
-                userId: "admin-1",
-                username: username
+        try {
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
             })
-            
-            // Store token in localStorage (will be moved to httpOnly cookie in production)
-            setTokenInLocalStorage(token)
-            
-            // Also set cookie for middleware
-            document.cookie = `admin_token=${token}; path=/; max-age=86400; secure; samesite=strict`
-            
-            router.push("/admin")
-        } else {
+
+            if (res.ok) {
+                const data = await res.json()
+                // Store token in localStorage for legacy client components (though cookie is better)
+                setTokenInLocalStorage(data.token)
+                router.push("/admin")
+            } else {
             const newAttempts = attempts + 1
             setAttempts(newAttempts)
 
@@ -65,6 +59,9 @@ export default function LoginPage() {
             } else {
                 setError(`Invalid credentials. ${5 - newAttempts} attempt${5 - newAttempts === 1 ? '' : 's'} remaining.`)
             }
+            }
+        } catch (err) {
+            setError("An error occurred during login. Please try again.")
             setIsLoading(false)
         }
     }

@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import ImplementationEstimator from "@/components/implementation-estimator"
@@ -21,10 +22,12 @@ export default function EstimatorPage() {
                 
                 {/* Hero Background Logo Watermark */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-[0.12] pointer-events-none select-none overflow-hidden">
-                    <img 
+                    <Image 
                         src="/logo.png" 
                         alt="Merit Background" 
-                        className="w-full max-w-5xl object-contain translate-x-1/4 scale-125"
+                        fill
+                        className="object-contain translate-x-1/4 scale-125"
+                        priority
                     />
                 </div>
                 

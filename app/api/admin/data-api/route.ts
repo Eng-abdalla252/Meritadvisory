@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
-import { verifyAuth } from "@/lib/auth"
+import { verifyAuth } from "@/lib/session"
 
 // Always dynamically rendered — never cached by Next.js
 export const dynamic = "force-dynamic"

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Linkedin, Twitter, Facebook, Youtube } from "lucide-react"
 import { servicesDetail } from "@/lib/services-data"
 
@@ -71,9 +72,11 @@ export function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-1">
             <Link href="/" className="mb-6 inline-block">
-              <img
+              <Image
                 src="/logo.png"
                 alt="Merit Advisory Logo"
+                width={200}
+                height={60}
                 className="h-10 w-auto object-contain mix-blend-multiply"
               />
             </Link>

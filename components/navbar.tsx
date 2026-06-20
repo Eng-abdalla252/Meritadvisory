@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Phone, ChevronDown, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -118,7 +119,7 @@ export function Navbar() {
 
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo.png" alt="Merit Advisory Logo" className="h-12 w-auto object-contain mix-blend-multiply" />
+          <Image src="/logo.png" alt="Merit Advisory Logo" width={200} height={60} className="h-12 w-auto object-contain mix-blend-multiply" priority />
         </Link>
 
         {/* Desktop Navigation */}

@@ -30,8 +30,17 @@ export async function POST(request: Request) {
 
         let currentLeads = []
         if (fs.existsSync(DATA_PATH)) {
-            const fileContent = fs.readFileSync(DATA_PATH, "utf8")
-            currentLeads = JSON.parse(fileContent)
+            try {
+                const fileContent = fs.readFileSync(DATA_PATH, "utf8")
+                currentLeads = JSON.parse(fileContent)
+            } catch (e) {
+                console.error("Error parsing leads.json:", e)
+            }
+        }
+
+        const dir = path.dirname(DATA_PATH)
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true })
         }
 
         currentLeads.unshift(leadWithMeta)

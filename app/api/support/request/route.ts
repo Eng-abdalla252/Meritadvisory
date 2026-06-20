@@ -45,11 +45,15 @@ export async function POST(req: NextRequest) {
         
         // Save to leads.json
         const leadsPath = path.join(process.cwd(), 'public', 'data', 'leads.json')
+        const dir = path.dirname(leadsPath)
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
         let leads = []
         
         if (fs.existsSync(leadsPath)) {
-            const leadsContent = fs.readFileSync(leadsPath, 'utf8')
-            leads = JSON.parse(leadsContent)
+            try {
+                const leadsContent = fs.readFileSync(leadsPath, 'utf8')
+                leads = JSON.parse(leadsContent)
+            } catch (e) { console.error("Error parsing leads.json:", e) }
         }
         
         leads.unshift(supportData)

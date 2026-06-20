@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 import { useMemo } from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { useMedia } from "@/hooks/use-media"
@@ -61,9 +63,11 @@ export function LogoCarousel() {
               >
                 <div className="h-14 flex items-center justify-center">
                   {client.logo ? (
-                    <img
+                    <Image
                       src={client.logo}
                       alt={`${client.name} Logo`}
+                      width={160}
+                      height={56}
                       className="max-h-full w-auto object-contain"
                     />
                   ) : (

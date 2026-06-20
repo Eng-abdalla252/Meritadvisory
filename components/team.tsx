@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Mail, Star, Facebook, Linkedin } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -106,11 +107,14 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                             <div key={member.name + i} className="group relative flex flex-col items-center">
                                 <div className="relative mb-8">
                                     <div className="h-48 w-48 rounded-full border-[6px] border-white shadow-2xl overflow-hidden bg-slate-200">
-                                        <img
+                                        <Image
                                             src={getMemberImage(member.image)}
                                             alt={member.name}
+                                            width={192}
+                                            height={192}
+                                            unoptimized
                                             className="h-full w-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-                                            onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_AVATAR }}
+                                            onError={(e: any) => { e.target.src = FALLBACK_AVATAR }}
                                         />
                                     </div>
                                 </div>
@@ -205,11 +209,13 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                                     className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1"
                                 >
                                     <div className="aspect-[4/5] bg-slate-100 overflow-hidden">
-                                        <img 
+                                        <Image 
                                             src={getMemberImage(member.image)} 
                                             alt={member.name} 
+                                            fill
+                                            unoptimized
                                             className="h-full w-full object-cover"
-                                            onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_AVATAR }}
+                                            onError={(e: any) => { e.target.src = FALLBACK_AVATAR }}
                                         />
                                     </div>
                                     <div className="bg-[#b22222] p-4 text-center">

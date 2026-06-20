@@ -7,16 +7,11 @@ import {
     Trash2, 
     Inbox,
     Mail,
-    Phone,
-    Building2,
     Calendar,
-    Loader2,
     Eye,
     Filter,
     CheckCircle2,
     Clock,
-    User,
-    ChevronDown,
     X,
     Briefcase,
     LayoutDashboard,
@@ -60,7 +55,7 @@ interface Lead {
     id: string
     type: "recruitment" | "demo" | "questionnaire" | "webinar" | "contact" | "internship" | "sales" | "support"
     createdAt: string
-    status: "new" | "contacted" | "qualified" | "proposal_sent" | "won" | "lost" | "closed"
+    status: "new" | "read" | "handled" | "contacted" | "qualified" | "proposal_sent" | "won" | "lost" | "closed"
     isShortlisted?: boolean
     // Common fields
     name?: string
@@ -428,9 +423,11 @@ export default function LeadsAdmin() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case "new": return <Badge className="bg-red-50 text-red-600 border-none font-black text-[10px] uppercase">New</Badge>
+            case "read": return <Badge className="bg-slate-50 text-slate-600 border-none font-black text-[10px] uppercase">Read</Badge>
             case "contacted": return <Badge className="bg-blue-50 text-blue-600 border-none font-black text-[10px] uppercase">Contacted</Badge>
             case "qualified": return <Badge className="bg-purple-50 text-purple-600 border-none font-black text-[10px] uppercase">Qualified</Badge>
             case "proposal_sent": return <Badge className="bg-amber-50 text-amber-600 border-none font-black text-[10px] uppercase">Proposal Sent</Badge>
+            case "handled": return <Badge className="bg-emerald-50 text-emerald-600 border-none font-black text-[10px] uppercase">Handled</Badge>
             case "won": return <Badge className="bg-green-50 text-green-600 border-none font-black text-[10px] uppercase">Won</Badge>
             case "lost": return <Badge className="bg-slate-50 text-slate-600 border-none font-black text-[10px] uppercase">Lost</Badge>
             case "closed": return <Badge className="bg-gray-50 text-gray-600 border-none font-black text-[10px] uppercase">Closed</Badge>

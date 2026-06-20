@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
 
-const DATA_PATH = path.join(process.cwd(), "data", "jobs.json")
+const DATA_PATH = path.join(process.cwd(), "public", "data", "jobs.json")
 
 const readData = () => {
     try {
@@ -15,6 +15,8 @@ const readData = () => {
 }
 
 const writeData = (data: any) => {
+    const dir = path.dirname(DATA_PATH)
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
     fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 4), "utf8")
 }
 

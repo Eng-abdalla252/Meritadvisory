@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useState, useEffect, useMemo } from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { useClients } from "@/hooks/use-clients"
@@ -49,10 +50,11 @@ export function Clients({ showHeader = true }: { showHeader?: boolean }) {
                 <div className="relative bg-gradient-to-r from-[#1e4e8c] via-[#1e4e8c] to-[#2b6cb0] pt-40 pb-32 overflow-hidden mb-20 shadow-inner">
                     {/* Hero Background Logo Watermark */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-[0.12] pointer-events-none select-none overflow-hidden">
-                        <img 
+                        <Image 
                             src="/logo.png" 
                             alt="Merit Background" 
-                            className="w-full max-w-5xl object-contain translate-x-1/4 scale-125"
+                            fill
+                            className="object-contain translate-x-1/4 scale-125"
                         />
                     </div>
                     
@@ -76,9 +78,11 @@ export function Clients({ showHeader = true }: { showHeader?: boolean }) {
             {/* Subtle Grid Watermark (only if no hero) */}
             {!showHeader && (
                 <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
-                    <img 
+                    <Image 
                         src="/logo.png" 
                         alt="Merit Background" 
+                        width={800}
+                        height={800}
                         className="w-full max-w-4xl object-contain"
                     />
                 </div>
@@ -131,9 +135,11 @@ export function Clients({ showHeader = true }: { showHeader?: boolean }) {
                         >
                             <div className="h-24 w-full flex items-center justify-center relative z-10">
                                 {client.logo ? (
-                                    <img
+                                    <Image
                                         src={client.logo}
                                         alt={`${client.name} Logo`}
+                                        width={96}
+                                        height={96}
                                         className="max-h-full max-w-full object-contain transition-all duration-500 group-hover:scale-110"
                                     />
                                 ) : (
@@ -169,7 +175,7 @@ export function Clients({ showHeader = true }: { showHeader?: boolean }) {
                     <div className="bg-[#1e4e8c] rounded-[3rem] overflow-hidden shadow-2xl relative">
                         {/* Background Pattern */}
                         <div className="absolute inset-0 opacity-10 pointer-events-none">
-                            <img src="/logo.png" alt="" className="w-full h-full object-contain scale-150 translate-x-1/4" />
+                            <Image src="/logo.png" alt="" fill className="object-contain scale-150 translate-x-1/4" />
                         </div>
 
                         <div className="flex flex-col lg:flex-row items-center relative z-10">
@@ -187,9 +193,10 @@ export function Clients({ showHeader = true }: { showHeader?: boolean }) {
                                 </div>
                             </div>
                             <div className="w-full lg:w-1/2 aspect-square lg:aspect-auto lg:h-[600px] relative">
-                                <img 
+                                <Image 
                                     src="/team/burhan-ismail.jpeg" 
                                     alt="CEO Burhan Ismael Hassan" 
+                                    fill
                                     className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-700"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#1e4e8c] via-transparent to-transparent lg:bg-gradient-to-l" />
