@@ -605,7 +605,7 @@ export default function LeadsAdmin() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">This Month</p>
-                                    <p className="text-3xl font-black text-slate-900">{analyticsData.monthlyTrends.length > 0 ? analyticsData.monthlyTrends[analyticsData.monthlyTrends.length - 1]?.value || 0 : 0}</p>
+                                    <p className="text-3xl font-black text-slate-900">{analyticsData.monthlyTrends.length > 0 ? Number(analyticsData.monthlyTrends[analyticsData.monthlyTrends.length - 1]?.value ?? 0) : 0}</p>
                                 </div>
                                 <div className="h-12 w-12 rounded-xl bg-purple-50 flex items-center justify-center">
                                     <Calendar className="h-6 w-6 text-purple-500" />

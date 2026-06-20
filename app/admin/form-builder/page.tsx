@@ -17,7 +17,7 @@ import {
     Type,
     Mail,
     Phone,
-    Textarea,
+    MessageSquare,
     List,
     CheckSquare,
     Radio,
@@ -261,7 +261,7 @@ export default function FormBuilderPage() {
             case 'text': return <Type className="h-4 w-4" />
             case 'email': return <Mail className="h-4 w-4" />
             case 'phone': return <Phone className="h-4 w-4" />
-            case 'textarea': return <Textarea className="h-4 w-4" />
+            case 'textarea': return <MessageSquare className="h-4 w-4" />
             case 'select': return <List className="h-4 w-4" />
             case 'checkbox': return <CheckSquare className="h-4 w-4" />
             case 'radio': return <Radio className="h-4 w-4" />
