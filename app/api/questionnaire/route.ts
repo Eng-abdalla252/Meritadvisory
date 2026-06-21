@@ -35,6 +35,42 @@ export async function POST(req: Request) {
         submissions.unshift(submissionData)
         fs.writeFileSync(submissionsPath, JSON.stringify(submissions, null, 4), "utf8")
 
+        // Create Sales Lead in leads.json for Sales Module integration
+        const salesLeadData = {
+            id: `sales_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            type: 'sales' as const,
+            status: 'new' as const,
+            createdAt: new Date().toISOString(),
+            name: data.customerName,
+            company: data.companyName,
+            email: data.email || '',
+            phone: data.phoneNumber,
+            serviceInterested: data.blueprintData?.name || data.interest || 'Project Questionnaire',
+            budgetRange: data.blueprintData ? `${data.blueprintData.currency} ${data.blueprintData.price.toLocaleString()}` : 'Not specified',
+            projectDetails: data.briefNeed,
+            timeline: 'Not specified',
+            teamSize: data.numEmployees,
+            currentSolution: data.currentSystem,
+            goals: data.interest,
+            leadSource: 'questionnaire',
+            questionnaireId: submissionId,
+            blueprintData: data.blueprintData || null
+        }
+        
+        // Save to leads.json
+        const leadsPath = path.join(process.cwd(), 'public', 'data', 'leads.json')
+        let leads = []
+        
+        if (fs.existsSync(leadsPath)) {
+            try {
+                const leadsContent = fs.readFileSync(leadsPath, 'utf8')
+                leads = JSON.parse(leadsContent)
+            } catch (e) { console.error("Error parsing leads.json:", e) }
+        }
+        
+        leads.unshift(salesLeadData)
+        fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 4), 'utf8')
+
         // 1. Send Email Notification with blueprint pricing
         if (resend) {
             const blueprintInfo = data.blueprintData 
@@ -76,6 +112,7 @@ export async function POST(req: Request) {
             return NextResponse.json({
                 message: "Questionnaire submitted and synced to Odoo CRM",
                 id: submissionId,
+                salesLeadId: salesLeadData.id,
                 odooLeadId: result.lead_id
             })
         } else {
@@ -85,6 +122,7 @@ export async function POST(req: Request) {
             return NextResponse.json({
                 message: "Questionnaire submitted successfully (Odoo sync pending)",
                 id: submissionId,
+                salesLeadId: salesLeadData.id,
                 error: result.error
             }, { status: 200 })
         }

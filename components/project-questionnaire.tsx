@@ -225,9 +225,13 @@ export default function ProjectQuestionnaireForm() {
                 <div className="flex gap-4 justify-center">
                     <Button
                         className="rounded-full bg-[#b22222] text-white font-black uppercase tracking-widest hover:bg-[#8b1818] transition-colors"
-                        onClick={() => window.location.href = '/sales/inquiry'}
+                        onClick={() => {
+                            setSubmitted(false)
+                            form.reset()
+                            setSelectedBlueprint(null)
+                        }}
                     >
-                        Request Proposal
+                        Request Another Proposal
                     </Button>
                     <Button
                         className="rounded-full"
@@ -238,7 +242,7 @@ export default function ProjectQuestionnaireForm() {
                             setSelectedBlueprint(null)
                         }}
                     >
-                        Submit Another Request
+                        Submit Request
                     </Button>
                 </div>
             </Card>
