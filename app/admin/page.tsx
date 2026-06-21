@@ -18,7 +18,8 @@ import {
     Settings,
     Calculator,
     GraduationCap,
-    ClipboardCheck
+    ClipboardCheck,
+    Package
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -93,6 +94,7 @@ export default function AdminDashboard() {
                     <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Quick Management</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {[
+                            { title: "Blueprint Services", desc: "Manage blueprint services with pricing for project questionnaires.", href: "/admin/blueprint-services", icon: Package },
                             { title: "Blueprint Planner", desc: "Configure pricing, hours, and available modules for the Budget Planner.", href: "/admin/blueprint", icon: Calculator },
                             { title: "Careers & Internships", desc: "Manage job postings and structured Internship program specifications.", href: "/admin/careers", icon: GraduationCap },
                             { title: "Business Leads", desc: "View and manage new inquiries and job applications.", href: "/admin/leads", icon: Inbox },

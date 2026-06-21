@@ -1,6 +1,8 @@
 import { Resend } from 'resend';
 import { createOdooLead } from "@/lib/odoo";
 import { NextResponse } from "next/server"
+import fs from "fs"
+import path from "path"
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
@@ -8,23 +10,59 @@ export async function POST(req: Request) {
     try {
         const data = await req.json()
 
-        // 1. Send Email Notification
+        // Store questionnaire submission with blueprint data
+        const submissionId = `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        const submissionData = {
+            id: submissionId,
+            ...data,
+            submittedAt: new Date().toISOString(),
+            blueprintData: data.blueprintData || null
+        }
+
+        // Save to questionnaire submissions file
+        const submissionsPath = path.join(process.cwd(), "public", "data", "questionnaire-submissions.json")
+        let submissions = []
+        
+        if (fs.existsSync(submissionsPath)) {
+            try {
+                const fileContent = fs.readFileSync(submissionsPath, "utf8")
+                submissions = JSON.parse(fileContent)
+            } catch (e) {
+                console.error("Error parsing questionnaire submissions:", e)
+            }
+        }
+
+        submissions.unshift(submissionData)
+        fs.writeFileSync(submissionsPath, JSON.stringify(submissions, null, 4), "utf8")
+
+        // 1. Send Email Notification with blueprint pricing
         if (resend) {
+            const blueprintInfo = data.blueprintData 
+                ? `<p><strong>Selected Blueprint:</strong> ${data.blueprintData.name}</p>
+                   <p><strong>Blueprint Price:</strong> ${data.blueprintData.currency} ${data.blueprintData.price.toLocaleString()}</p>
+                   <p><strong>Category:</strong> ${data.blueprintData.category}</p>`
+                : ''
+
             await resend.emails.send({
                 from: 'Merit Advisory <onboarding@resend.dev>',
                 to: ['outreach@meritadvisory.so'],
-                subject: `New Inquiry from ${data.companyName}`,
+                subject: `New Project Questionnaire from ${data.companyName} - ${data.blueprintData?.name || 'No Blueprint'}`,
                 html: `
                     <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-                        <h2 style="color: #0f55ba; border-bottom: 1px solid #eee; padding-bottom: 10px;">New Website Inquiry</h2>
+                        <h2 style="color: #b22222; border-bottom: 1px solid #eee; padding-bottom: 10px;">New Project Questionnaire Submission</h2>
+                        ${blueprintInfo}
                         <p><strong>Company:</strong> ${data.companyName}</p>
                         <p><strong>Contact:</strong> ${data.customerName}</p>
                         <p><strong>Email:</strong> ${data.email}</p>
                         <p><strong>Phone:</strong> ${data.phoneNumber}</p>
+                        <p><strong>Employees:</strong> ${data.numEmployees}</p>
+                        <p><strong>Branches:</strong> ${data.numBranches}</p>
+                        <p><strong>Locations:</strong> ${data.cities}</p>
+                        <p><strong>Interest:</strong> ${data.interest}</p>
                         <hr style="border: 0; border-top: 1px solid #eee;" />
-                        <p><strong>Message:</strong></p>
+                        <p><strong>Brief Need:</strong></p>
                         <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">
-                            ${data.briefNeed || data.message}
+                            ${data.briefNeed}
                         </div>
                     </div>
                 `,
@@ -37,7 +75,8 @@ export async function POST(req: Request) {
         if (result.success) {
             return NextResponse.json({
                 message: "Questionnaire submitted and synced to Odoo CRM",
-                id: result.lead_id
+                id: submissionId,
+                odooLeadId: result.lead_id
             })
         } else {
             // Still return a successful response to the user so they aren't blocked, 
@@ -45,6 +84,7 @@ export async function POST(req: Request) {
             console.error("Failed to sync to Odoo:", result.error)
             return NextResponse.json({
                 message: "Questionnaire submitted successfully (Odoo sync pending)",
+                id: submissionId,
                 error: result.error
             }, { status: 200 })
         }

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "bp_erp_implementation",
+    "name": "ERP Implementation",
+    "category": "Management System",
+    "description": "Complete Enterprise Resource Planning system implementation",
+    "price": 5000,
+    "currency": "USD",
+    "status": "active",
+    "createdAt": "2026-06-21T00:00:00.000Z"
+  },
+  {
+    "id": "bp_digital_accounting",
+    "name": "Digital Accounting System",
+    "category": "Accounting",
+    "description": "Modern digital accounting and financial management solution",
+    "price": 3500,
+    "currency": "USD",
+    "status": "active",
+    "createdAt": "2026-06-21T00:00:00.000Z"
+  },
+  {
+    "id": "bp_audit_assurance",
+    "name": "Audit & Assurance Services",
+    "category": "Audit",
+    "description": "Comprehensive audit and assurance services",
+    "price": 4000,
+    "currency": "USD",
+    "status": "active",
+    "createdAt": "2026-06-21T00:00:00.000Z"
+  },
+  {
+    "id": "bp_training_program",
+    "name": "Corporate Training Program",
+    "category": "Training",
+    "description": "Professional training and development programs",
+    "price": 2500,
+    "currency": "USD",
+    "status": "active",
+    "createdAt": "2026-06-21T00:00:00.000Z"
+  },
+  {
+    "id": "bp_crm_implementation",
+    "name": "CRM Implementation",
+    "category": "Management System",
+    "description": "Customer Relationship Management system setup",
+    "price": 4500,
+    "currency": "USD",
+    "status": "active",
+    "createdAt": "2026-06-21T00:00:00.000Z"
+  }
+]

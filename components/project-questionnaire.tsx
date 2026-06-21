@@ -27,11 +27,22 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
-import { CheckCircle2, Send, ClipboardCheck } from "lucide-react"
+import { CheckCircle2, Send, ClipboardCheck, DollarSign, Package } from "lucide-react"
 
 import { toast } from "sonner"
 
+interface BlueprintService {
+    id: string
+    name: string
+    category: string
+    description: string
+    price: number
+    currency: string
+    status: 'active' | 'inactive'
+}
+
 const formSchema = z.object({
+    blueprintId: z.string().min(1, "Blueprint selection is required"),
     customerName: z.string().min(2, "Name is required"),
     phoneNumber: z.string().min(8, "Phone number is required"),
     email: z.string().email("Invalid email").optional().or(z.literal("")),
@@ -51,10 +62,14 @@ export default function ProjectQuestionnaireForm() {
     const { ref, isVisible } = useScrollAnimation()
     const [submitted, setSubmitted] = React.useState(false)
     const [isSubmitting, setIsSubmitting] = React.useState(false)
+    const [blueprints, setBlueprints] = React.useState<BlueprintService[]>([])
+    const [selectedBlueprint, setSelectedBlueprint] = React.useState<BlueprintService | null>(null)
+    const [submissionId, setSubmissionId] = React.useState<string | null>(null)
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            blueprintId: "",
             customerName: "",
             phoneNumber: "",
             email: "",
@@ -69,18 +84,49 @@ export default function ProjectQuestionnaireForm() {
         },
     })
 
+    React.useEffect(() => {
+        fetchBlueprints()
+    }, [])
+
+    const fetchBlueprints = async () => {
+        try {
+            const res = await fetch("/api/admin/data-api?type=blueprint-services")
+            const data = await res.json()
+            if (Array.isArray(data)) {
+                setBlueprints(data.filter((bp: BlueprintService) => bp.status === 'active'))
+            }
+        } catch (error) {
+            console.error("Failed to fetch blueprints:", error)
+        }
+    }
+
     async function onSubmit(values: FormValues) {
         setIsSubmitting(true)
         try {
-            const response = await fetch("/api/admin/leads", {
+            const blueprint = blueprints.find(bp => bp.id === values.blueprintId)
+            const submissionData = {
+                ...values,
+                type: "questionnaire",
+                blueprintData: blueprint ? {
+                    id: blueprint.id,
+                    name: blueprint.name,
+                    category: blueprint.category,
+                    price: blueprint.price,
+                    currency: blueprint.currency
+                } : null
+            }
+
+            const response = await fetch("/api/questionnaire", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...values, type: "questionnaire" }),
+                body: JSON.stringify(submissionData),
             })
 
             if (response.ok) {
+                const result = await response.json()
+                setSubmissionId(result.id || `sub_${Date.now()}`)
                 setSubmitted(true)
-                toast.success("Questionnaire synced to Odoo CRM")
+                toast.success("Questionnaire submitted successfully")
             } else {
                 toast.error("Submission failed. Please try again.")
             }
@@ -93,27 +139,108 @@ export default function ProjectQuestionnaireForm() {
     }
 
     if (submitted) {
+        const blueprint = blueprints.find(bp => bp.id === form.getValues().blueprintId)
         return (
-            <Card className="mx-auto max-w-2xl p-12 text-center shadow-lg border-primary/20 bg-primary/5">
+            <Card className="mx-auto max-w-4xl p-12 shadow-lg border-primary/20 bg-primary/5">
                 <div className="flex justify-center mb-6">
                     <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center">
                         <CheckCircle2 className="h-10 w-10 text-primary animate-in zoom-in duration-300" />
                     </div>
                 </div>
-                <h2 className="text-3xl font-bold text-foreground">Questionnaire Submitted!</h2>
-                <p className="mt-4 text-lg text-muted-foreground">
-                    Thank you for providing your project requirements. Our team will review your
-                    information and get back to you within 24 business hours.
-                </p>
-                <Button
-                    className="mt-8 rounded-full"
-                    onClick={() => {
-                        setSubmitted(false)
-                        form.reset()
-                    }}
-                >
-                    Submit Another Request
-                </Button>
+                <h2 className="text-3xl font-bold text-foreground text-center mb-8">Project Request Summary</h2>
+                
+                {/* Project Cost Summary Card */}
+                {blueprint && (
+                    <Card className="mb-8 p-6 bg-gradient-to-r from-[#b22222]/10 to-accent/10 border-2 border-[#b22222]/20">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Package className="h-5 w-5 text-[#b22222]" />
+                            <h3 className="text-lg font-black text-slate-900 uppercase tracking-widest">Project Cost Summary</h3>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div>
+                                <p className="text-xs font-black uppercase tracking-widest text-slate-500">Service Name</p>
+                                <p className="text-sm font-bold text-slate-900">{blueprint.name}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs font-black uppercase tracking-widest text-slate-500">Category</p>
+                                <p className="text-sm font-bold text-slate-900">{blueprint.category}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs font-black uppercase tracking-widest text-slate-500">Price</p>
+                                <p className="text-2xl font-black text-[#b22222]">
+                                    {blueprint.currency} {blueprint.price.toLocaleString()}
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-xs font-black uppercase tracking-widest text-slate-500">Organization</p>
+                                <p className="text-sm font-bold text-slate-900">{form.getValues().companyName}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs font-black uppercase tracking-widest text-slate-500">Employees</p>
+                                <p className="text-sm font-bold text-slate-900">{form.getValues().numEmployees}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs font-black uppercase tracking-widest text-slate-500">Submitted On</p>
+                                <p className="text-sm font-bold text-slate-900">{new Date().toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                    </Card>
+                )}
+
+                {/* Questionnaire Details */}
+                <div className="space-y-4 mb-8">
+                    <h3 className="text-lg font-black text-slate-900 uppercase tracking-widest">Questionnaire Details</h3>
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="p-4 bg-white rounded-lg">
+                            <p className="text-xs font-black uppercase tracking-widest text-slate-500">Customer Name</p>
+                            <p className="text-sm font-bold text-slate-900">{form.getValues().customerName}</p>
+                        </div>
+                        <div className="p-4 bg-white rounded-lg">
+                            <p className="text-xs font-black uppercase tracking-widest text-slate-500">Phone Number</p>
+                            <p className="text-sm font-bold text-slate-900">{form.getValues().phoneNumber}</p>
+                        </div>
+                        <div className="p-4 bg-white rounded-lg">
+                            <p className="text-xs font-black uppercase tracking-widest text-slate-500">Email</p>
+                            <p className="text-sm font-bold text-slate-900">{form.getValues().email || 'N/A'}</p>
+                        </div>
+                        <div className="p-4 bg-white rounded-lg">
+                            <p className="text-xs font-black uppercase tracking-widest text-slate-500">Branches</p>
+                            <p className="text-sm font-bold text-slate-900">{form.getValues().numBranches}</p>
+                        </div>
+                        <div className="p-4 bg-white rounded-lg">
+                            <p className="text-xs font-black uppercase tracking-widest text-slate-500">Cities/Locations</p>
+                            <p className="text-sm font-bold text-slate-900">{form.getValues().cities}</p>
+                        </div>
+                        <div className="p-4 bg-white rounded-lg">
+                            <p className="text-xs font-black uppercase tracking-widest text-slate-500">Interest</p>
+                            <p className="text-sm font-bold text-slate-900">{form.getValues().interest}</p>
+                        </div>
+                        <div className="p-4 bg-white rounded-lg md:col-span-2">
+                            <p className="text-xs font-black uppercase tracking-widest text-slate-500">Brief Need</p>
+                            <p className="text-sm font-bold text-slate-900">{form.getValues().briefNeed}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex gap-4 justify-center">
+                    <Button
+                        className="rounded-full bg-[#b22222] text-white font-black uppercase tracking-widest hover:bg-[#8b1818] transition-colors"
+                        onClick={() => window.location.href = '/sales/inquiry'}
+                    >
+                        Request Proposal
+                    </Button>
+                    <Button
+                        className="rounded-full"
+                        variant="outline"
+                        onClick={() => {
+                            setSubmitted(false)
+                            form.reset()
+                            setSelectedBlueprint(null)
+                        }}
+                    >
+                        Submit Another Request
+                    </Button>
+                </div>
             </Card>
         )
     }
@@ -137,6 +264,65 @@ export default function ProjectQuestionnaireForm() {
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="p-8 space-y-8">
+                        {/* Blueprint Selection */}
+                        <FormField
+                            control={form.control}
+                            name="blueprintId"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                    <FormLabel className="text-base font-bold">Select Blueprint/Service *</FormLabel>
+                                    <FormControl>
+                                        <Select
+                                            onValueChange={(value) => {
+                                                field.onChange(value)
+                                                const blueprint = blueprints.find(bp => bp.id === value)
+                                                setSelectedBlueprint(blueprint || null)
+                                            }}
+                                            defaultValue={field.value}
+                                        >
+                                            <SelectTrigger className="h-12 rounded-xl">
+                                                <SelectValue placeholder="Choose a blueprint service" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {blueprints.map((blueprint) => (
+                                                    <SelectItem key={blueprint.id} value={blueprint.id}>
+                                                        <div className="flex flex-col">
+                                                            <span className="font-medium">{blueprint.name}</span>
+                                                            <span className="text-xs text-slate-500">
+                                                                {blueprint.category} • {blueprint.currency} {blueprint.price.toLocaleString()}
+                                                            </span>
+                                                        </div>
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* Selected Blueprint Price Display */}
+                        {selectedBlueprint && (
+                            <Card className="p-4 bg-gradient-to-r from-[#b22222]/10 to-accent/10 border-2 border-[#b22222]/20">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <Package className="h-5 w-5 text-[#b22222]" />
+                                        <div>
+                                            <p className="text-sm font-bold text-slate-900">{selectedBlueprint.name}</p>
+                                            <p className="text-xs text-slate-500">{selectedBlueprint.category}</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-2xl font-black text-[#b22222]">
+                                            {selectedBlueprint.currency} {selectedBlueprint.price.toLocaleString()}
+                                        </p>
+                                        <p className="text-xs text-slate-500">Estimated Price</p>
+                                    </div>
+                                </div>
+                            </Card>
+                        )}
+
                         <div className="grid gap-6 md:grid-cols-2">
                             <FormField
                                 control={form.control}
