@@ -24,7 +24,9 @@ import {
     Star,
     Sparkles,
     TrendingUp,
-    GraduationCap
+    GraduationCap,
+    Package,
+    DollarSign
 } from "lucide-react"
 import { 
     PieChart, 
@@ -100,6 +102,14 @@ interface Lead {
     managementIndustry?: string
     currentSystem?: string
     briefNeed?: string
+    blueprintData?: {
+        id: string
+        name: string
+        category: string
+        price: number
+        currency: string
+    }
+    questionnaireId?: string
     // Internship specific
     university?: string
     department?: string
@@ -110,6 +120,9 @@ interface Lead {
     serviceInterested?: string
     budgetRange?: string
     projectDetails?: string
+    teamSize?: string
+    currentSolution?: string
+    goals?: string
     // Support specific
     productService?: string
     issueDescription?: string
@@ -1059,28 +1072,56 @@ export default function LeadsAdmin() {
                         )}
 
                         {selectedLead?.type === 'questionnaire' && (
-                            <div className="space-y-4">
-                                <h4 className="font-black uppercase text-xs tracking-widest text-amber-500">Project Questionnaire Details</h4>
-                                <div className="p-8 border border-slate-100 rounded-[2rem] grid grid-cols-2 gap-6">
-                                    <div className="col-span-full">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Interest Area</p>
-                                        <p className="font-bold text-lg text-slate-900">{selectedLead.interest}</p>
+                            <div className="space-y-6">
+                                {/* Service Information Card */}
+                                {selectedLead.blueprintData && (
+                                    <div className="p-8 bg-gradient-to-r from-[#b22222]/10 to-accent/10 border-2 border-[#b22222]/20 rounded-[2rem]">
+                                        <div className="flex items-center gap-2 mb-6">
+                                            <Package className="h-5 w-5 text-[#b22222]" />
+                                            <h4 className="font-black uppercase text-xs tracking-widest text-slate-900">Service Information</h4>
+                                        </div>
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Service Category</p>
+                                                <p className="font-bold text-slate-900">{selectedLead.blueprintData.category}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Service Name</p>
+                                                <p className="font-bold text-slate-900">{selectedLead.blueprintData.name}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Price</p>
+                                                <p className="text-2xl font-black text-[#b22222]">
+                                                    {selectedLead.blueprintData.currency} {selectedLead.blueprintData.price.toLocaleString()}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Employees</p>
-                                        <p className="font-bold">{selectedLead.numEmployees}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Branches</p>
-                                        <p className="font-bold">{selectedLead.numBranches}</p>
-                                    </div>
-                                    <div className="col-span-full">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Locations</p>
-                                        <p className="font-bold">{selectedLead.cities}</p>
-                                    </div>
-                                    <div className="col-span-full">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Brief Need</p>
-                                        <p className="text-slate-600 font-medium leading-relaxed bg-slate-50 p-6 rounded-2xl">{selectedLead.briefNeed}</p>
+                                )}
+
+                                <div className="space-y-4">
+                                    <h4 className="font-black uppercase text-xs tracking-widest text-amber-500">Project Questionnaire Details</h4>
+                                    <div className="p-8 border border-slate-100 rounded-[2rem] grid grid-cols-2 gap-6">
+                                        <div className="col-span-full">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Interest Area</p>
+                                            <p className="font-bold text-lg text-slate-900">{selectedLead.interest}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Employees</p>
+                                            <p className="font-bold">{selectedLead.numEmployees}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Branches</p>
+                                            <p className="font-bold">{selectedLead.numBranches}</p>
+                                        </div>
+                                        <div className="col-span-full">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Locations</p>
+                                            <p className="font-bold">{selectedLead.cities}</p>
+                                        </div>
+                                        <div className="col-span-full">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Brief Need</p>
+                                            <p className="text-slate-600 font-medium leading-relaxed bg-slate-50 p-6 rounded-2xl">{selectedLead.briefNeed}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1113,6 +1154,58 @@ export default function LeadsAdmin() {
                                     <div>
                                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Webinar Title</p>
                                         <p className="font-bold text-lg text-slate-900">{selectedLead.webinarTitle}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {selectedLead?.type === 'sales' && (
+                            <div className="space-y-6">
+                                {/* Service Information Card */}
+                                {selectedLead.blueprintData && (
+                                    <div className="p-8 bg-gradient-to-r from-[#b22222]/10 to-accent/10 border-2 border-[#b22222]/20 rounded-[2rem]">
+                                        <div className="flex items-center gap-2 mb-6">
+                                            <Package className="h-5 w-5 text-[#b22222]" />
+                                            <h4 className="font-black uppercase text-xs tracking-widest text-slate-900">Service Information</h4>
+                                        </div>
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Service Category</p>
+                                                <p className="font-bold text-slate-900">{selectedLead.blueprintData.category}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Service Name</p>
+                                                <p className="font-bold text-slate-900">{selectedLead.blueprintData.name}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Price</p>
+                                                <p className="text-2xl font-black text-[#b22222]">
+                                                    {selectedLead.blueprintData.currency} {selectedLead.blueprintData.price.toLocaleString()}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="space-y-4">
+                                    <h4 className="font-black uppercase text-xs tracking-widest text-blue-500">Sales Inquiry Details</h4>
+                                    <div className="p-8 border border-slate-100 rounded-[2rem] grid grid-cols-2 gap-6">
+                                        <div className="col-span-full">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Service Interested</p>
+                                            <p className="font-bold text-lg text-slate-900">{selectedLead.serviceInterested}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Budget Range</p>
+                                            <p className="font-bold">{selectedLead.budgetRange}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Team Size</p>
+                                            <p className="font-bold">{selectedLead.teamSize}</p>
+                                        </div>
+                                        <div className="col-span-full">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Project Details</p>
+                                            <p className="text-slate-600 font-medium leading-relaxed bg-slate-50 p-6 rounded-2xl">{selectedLead.projectDetails}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
