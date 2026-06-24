@@ -6,102 +6,79 @@ import { Footer } from "@/components/footer"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import {
-  Play,
-  Quote,
-  ChevronRight,
-  ArrowUpRight,
   Star,
-  CheckCircle2,
-  X,
 } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
+import { motion } from "framer-motion"
 
-interface Testimonial {
+interface SuccessStory {
   id: string
-  title: string
-  client: string
-  author: string
-  role: string
-  quote: string
-  image: string
-  videoUrl: string
-  category: string
-  impact: string
+  name: string
+  subtitle: string
+  description: string
+  category?: string
 }
 
 // Fallback stories in case fetch fails
-const DEFAULT_STORIES: Testimonial[] = [
+const DEFAULT_STORIES: SuccessStory[] = [
   {
-    id: "arafat-hospital",
-    title: "Empowering Healthcare Management",
-    client: "Arafat Hospital",
-    author: "Dr. Mohamed Ali Maslax",
-    role: "CEO",
-    image: "/testimonials/mohamed-ali-maslax.jpeg",
-    quote:
-      "Merit Advisory's Odoo ERP implementation has revolutionized our hospital management. Their deep understanding of healthcare workflows and commitment to data integrity has allowed us to focus more on patient care.",
-    videoUrl: "https://www.youtube.com/embed/5mI_fN-U9x0",
-    category: "Healthcare",
-    impact: "Unified Healthcare Workflows",
+    id: "faysal-ahmed",
+    name: "Faysal Ahmed Said",
+    subtitle: "Scaling Livestock Trading in Garowe",
+    description: "Faysal Ahmed Said is a livestock trader from Garowe who dreamed of expanding his business beyond the local market. Merit Advisory provided Faysal with a livestock financing facility, which enabled him to purchase larger herds and tap into regional markets. Within months, his trading volume tripled. He now employs two assistants and has become a respected figure in the regional livestock trade.",
   },
   {
-    id: "vista-real-estate",
-    title: "Scaling Real Estate Operations",
-    client: "Vista Real Estate",
-    author: "Mr. Hassan Abdi Awad",
-    role: "CEO",
-    image: "/testimonials/hassan-abdi-awad.jpeg",
-    quote:
-      "As a leader in real estate, we needed a partner who could handle the scale of our operations. Merit Advisory delivered a customized financial framework that provides us with real-time insights.",
-    videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
-    category: "Real Estate",
-    impact: "Real-time Financial Reporting",
+    id: "mama-mahado",
+    name: "Mama Mahado",
+    subtitle: "Improved Harvest Through Micro-Agricultural Loans",
+    description: "Mama Mahado is a small-scale farmer who had been struggling with low yield harvests for years. Through Merit's agribusiness financing program, she received a micro-agricultural loan that she used to purchase improved seeds, basic irrigation equipment, and storage solutions. The results were transformative — her harvest yields improved significantly, and she was able to sell surplus produce in the market. She can now sell to others and save for the future.",
   },
   {
-    id: "laws-advisory",
-    title: "Strategic Board Empowerment",
-    client: "LAWS",
-    author: "Sir Abdikani Ismail",
-    role: "Board Director",
-    image: "/testimonials/abdikani-ismail.jpeg",
-    quote:
-      "The strategic advisory provided by Merit has been instrumental in our organizational growth. Their ability to translate complex data into actionable strategies has strengthened our board's decision-making.",
-    videoUrl: "/testimonials/WhatsApp Video 2026-05-12 at 18.06.33.mp4",
-    category: "Public Sector",
-    impact: "Data-Driven Governance",
+    id: "mama-murayad",
+    name: "Mama Murayad",
+    subtitle: "Strengthening Livelihoods Through Bakery Expansion",
+    description: "Mama Murayad, a small bakery owner, struggled for years with limited equipment and inconsistent supplies. With support from Merit Advisory, she accessed an initial loan which she used to purchase bakery machines and secure essential inputs. After successfully repaying her first loan, she secured a second financing to expand her operations, including opening a second shop. This growth not only increased her income but also created employment opportunities for family members. Today, Mama Murayad operates two bakery outlets with improved productivity and stable income.",
+  },
+  {
+    id: "muhuba-mohamed",
+    name: "Muhuba Mohamed Hassan",
+    subtitle: "Expanding Market Presence",
+    description: "Muhuba Mohamed Hassan, a vegetable trader in Garowe, faced persistent financial constraints that limited her ability to grow her business. With support from Merit Advisory, Muhuba accessed her first business loan, enabling her to buy vegetables in larger volumes directly from farmers. Building on this progress, Muhuba secured a second loan to expand her operations. She transitioned from retail trading into vegetable wholesaling, supplying produce to other vendors and strengthening her market presence. Now she can support her family, save money, and plan for the future with confidence.",
+  },
+  {
+    id: "amina-osman",
+    name: "Amina Osman",
+    subtitle: "Scaling to Global Wholesale",
+    description: "Amina Osman, an entrepreneur from Garowe, started with a small retail shop but struggled to grow due to limited capital and lack of collateral. Her breakthrough came through Merit Advisory, which provided her with a first loan to expand her inventory and increase sales. After successfully repaying the loan, Amina secured a second one, allowing her to source clothing from Mogadishu and Dubai. She transitioned into wholesale, supplying other traders and expanding her market reach. Today, Amina runs a thriving wholesale and retail business, improving her family's livelihood and inspiring others.",
+  },
+  {
+    id: "khalif-ibrahim",
+    name: "Khalif Abdulle Ibrahim",
+    subtitle: "From Small Shop to Thriving Enterprise",
+    description: "Everyday, Khalif Abdulle Ibrahim opened his small shop near Garowe's Ex-Control checkpoint with determination but also with a clear sense that he wanted more. After years of working as an employee, he was driven by a simple goal: to become self-employed and build something of his own. While the location brought steady customer traffic, the business struggled to move beyond survival. His turning point came when he accessed microfinance support from Merit Advisory. He invested the financing directly into his shop, focusing on fast-moving products that customers demanded most. Reflecting on the experience, Khalif describes the process as 'supportive and flexible,' allowing him to take a meaningful step forward without overwhelming pressure. As his stock became consistent and cash flow improved, the business began to grow. With increased sales and better planning, Khalif expanded his shop and introduced a cafeteria alongside it. This diversification brought in new customers and created additional income streams. For the first time, he was able to hire employees—transforming his business from a one-person effort into a source of employment for others.",
   },
 ]
 
 export default function SuccessStoriesPage() {
-  const [stories, setStories] = React.useState<Testimonial[]>(DEFAULT_STORIES)
-  const [selectedVideo, setSelectedVideo] = React.useState<string | null>(null)
-  const [activeCategory, setActiveCategory] = React.useState("All")
+  const [stories, setStories] = React.useState<SuccessStory[]>(DEFAULT_STORIES)
 
   React.useEffect(() => {
     fetch("/api/admin/data-api?type=success-stories")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
-          setStories(data)
+          // Transform data to match new format if needed
+          const transformed = data.map((item: any) => ({
+            id: item.id,
+            name: item.author || item.client || item.name,
+            subtitle: item.title || item.subtitle,
+            description: item.quote || item.description,
+            category: item.category,
+          }))
+          setStories(transformed.length > 0 ? transformed : DEFAULT_STORIES)
         }
       })
       .catch(() => {})
   }, [])
-
-  // Close modal on Escape key
-  React.useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedVideo(null)
-    }
-    window.addEventListener("keydown", handleKey)
-    return () => window.removeEventListener("keydown", handleKey)
-  }, [])
-
-  const categories = ["All", ...Array.from(new Set(stories.map((s) => s.category)))]
-
-  const filteredStories =
-    activeCategory === "All" ? stories : stories.filter((s) => s.category === activeCategory)
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
@@ -118,7 +95,7 @@ export default function SuccessStoriesPage() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#b22222]/10 text-[#b22222] font-black text-[10px] uppercase tracking-[0.2em] mb-6"
             >
               <Star className="h-4 w-4 fill-current" />
-              Client Success Stories
+              Success Stories
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -126,8 +103,8 @@ export default function SuccessStoriesPage() {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6"
             >
-              Empowering Growth Through <br />
-              <span className="text-[#b22222]">Strategic Innovation</span>
+              Real stories of transformation and <br />
+              <span className="text-[#b22222]">empowerment</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -135,175 +112,39 @@ export default function SuccessStoriesPage() {
               transition={{ delay: 0.2 }}
               className="text-lg text-slate-500 font-medium max-w-3xl mx-auto"
             >
-              Discover how Merit Advisory partners with leading organizations across Africa and
-              beyond to deliver transformative ERP solutions and strategic advisory.
+              Discover how Merit Advisory partners with individuals and businesses to deliver transformative financial solutions and strategic advisory.
             </motion.p>
           </div>
         </section>
 
         <div className="mx-auto max-w-7xl px-6">
-          {/* Category Filters */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-16">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-3 rounded-full font-black text-sm uppercase tracking-widest transition-all ${
-                  activeCategory === cat
-                    ? "bg-slate-900 text-white shadow-xl scale-105"
-                    : "bg-slate-50 text-slate-500 hover:bg-slate-100"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Success Stories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredStories.map((story, i) => (
+          {/* Success Stories List */}
+          <div className="space-y-12">
+            {stories.map((story, i) => (
               <motion.div
                 key={story.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
+                className="border-b border-slate-100 pb-12 last:border-0"
               >
-                <Card className="group relative overflow-hidden rounded-[2.5rem] border-none bg-white shadow-2xl shadow-slate-200 transition-all hover:shadow-[#b22222]/10">
-                  {/* Video / Image Thumbnail */}
-                  <div
-                    className="relative aspect-video overflow-hidden cursor-pointer"
-                    onClick={() => setSelectedVideo(story.videoUrl)}
-                  >
-                    {!story.videoUrl.includes("youtube.com") &&
-                    !story.videoUrl.includes("vimeo.com") ? (
-                      <video
-                        src={story.videoUrl}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        muted
-                        loop
-                        playsInline
-                        poster={story.image}
-                        onMouseOver={(e) => (e.target as HTMLVideoElement).play()}
-                        onMouseOut={(e) => (e.target as HTMLVideoElement).pause()}
-                      />
-                    ) : (
-                      <img
-                        src={story.image}
-                        alt={story.client}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        loading={i === 0 ? "eager" : "lazy"}
-                        decoding="async"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/40 transition-colors flex items-center justify-center">
-                      <div className="h-20 w-20 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white border border-white/30 group-hover:bg-[#b22222] group-hover:border-none transition-all scale-90 group-hover:scale-100 shadow-2xl">
-                        <Play className="h-8 w-8 fill-current ml-1" />
-                      </div>
-                    </div>
-                    <Badge className="absolute top-6 left-6 bg-white/90 backdrop-blur-md text-slate-900 border-none font-black text-[10px] uppercase tracking-widest px-4 py-2 rounded-full">
-                      {story.category}
-                    </Badge>
-                    {story.impact && (
-                      <Badge className="absolute bottom-6 right-6 bg-[#b22222] text-white border-none font-black text-xs px-4 py-2 rounded-xl flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4" />
-                        {story.impact}
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-10 space-y-8">
-                    <div className="space-y-4">
-                      <h3 className="text-3xl font-black text-slate-900 leading-tight">
-                        {story.title}
-                      </h3>
-                      <p className="text-slate-500 font-bold uppercase text-xs tracking-[0.2em]">
-                        {story.client}
-                      </p>
-                    </div>
-
-                    <div className="relative">
-                      <Quote className="absolute -top-4 -left-4 h-12 w-12 text-slate-50 opacity-10" />
-                      <p className="text-lg text-slate-600 font-medium italic leading-relaxed relative z-10">
-                        &ldquo;{story.quote}&rdquo;
-                      </p>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-                      <div className="flex items-center gap-4">
-                        <div className="h-12 w-12 rounded-2xl overflow-hidden bg-slate-100 border-2 border-white shadow-sm">
-                          <img
-                            src={story.image}
-                            alt={story.author}
-                            className="h-full w-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        </div>
-                        <div>
-                          <p className="font-black text-slate-900 uppercase text-sm leading-none mb-1">
-                            {story.author}
-                          </p>
-                          <p className="text-[10px] font-black text-[#b22222] uppercase tracking-widest">
-                            {story.role}
-                          </p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => setSelectedVideo(story.videoUrl)}
-                        className="inline-flex items-center gap-2 text-sm font-black text-slate-900 uppercase tracking-widest hover:text-[#b22222] transition-colors"
-                      >
-                        Watch Story
-                        <ArrowUpRight className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </Card>
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+                    {story.name}
+                  </h2>
+                  <h3 className="text-xl font-bold text-[#b22222]">
+                    {story.subtitle}
+                  </h3>
+                  <p className="text-slate-600 font-medium leading-relaxed text-lg">
+                    {story.description}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </main>
-
-      {/* Video Modal */}
-      <AnimatePresence>
-        {selectedVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/95 backdrop-blur-sm"
-            onClick={() => setSelectedVideo(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-5xl aspect-video bg-black rounded-[2rem] overflow-hidden shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setSelectedVideo(null)}
-                className="absolute top-6 right-6 h-12 w-12 rounded-full bg-white/10 hover:bg-[#b22222] text-white flex items-center justify-center z-10 transition-colors backdrop-blur-md"
-                aria-label="Close video"
-              >
-                <X className="h-6 w-6" />
-              </button>
-              {selectedVideo.includes("youtube.com") || selectedVideo.includes("vimeo.com") ? (
-                <iframe
-                  src={selectedVideo + "?autoplay=1&rel=0"}
-                  className="w-full h-full"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                />
-              ) : (
-                <video src={selectedVideo} className="w-full h-full" controls autoPlay />
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <Footer />
     </div>

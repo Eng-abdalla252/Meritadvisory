@@ -168,23 +168,6 @@ export function Testimonials() {
                       {t.role} — {t.client}
                     </p>
                   </div>
-
-                  <div className="pt-8 flex items-center justify-center lg:justify-start gap-8">
-                    <button
-                      onClick={() => setSelectedVideo(t.videoUrl)}
-                      className="inline-flex items-center gap-2 text-sm font-black text-[#b22222] uppercase tracking-widest hover:text-slate-900 transition-colors"
-                    >
-                      Watch Video
-                      <Play className="h-4 w-4 fill-current" />
-                    </button>
-                    <Link
-                      href="/success-stories"
-                      className="inline-flex items-center gap-2 text-sm font-black text-slate-900 uppercase tracking-widest hover:text-[#b22222] transition-colors group"
-                    >
-                      More Stories
-                      <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
                 </div>
               </div>
             ))}
