@@ -17,12 +17,12 @@ export default function TeamPage() {
                 <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32">
                     <div className="absolute inset-0 z-0 bg-slate-900">
                         <img 
-                            src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" 
+                            src="/uploads/1778655388278-DSC00414.JPG" 
                             alt="Merit Advisory Team"
                             className="w-full h-full object-cover"
                             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectPosition: 'center' }}
                         />
-                        <div className="absolute inset-0 bg-black/70 backdrop-blur-[2px]" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80" />
                     </div>
 
                     <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
@@ -40,7 +40,31 @@ export default function TeamPage() {
 
                 <div className="bg-background">
                     <Team showHeader={false} />
-                    
+
+                    {/* Stats Section */}
+                    <section className="bg-slate-900 py-20">
+                        <div className="mx-auto max-w-7xl px-6">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                                <div className="text-center">
+                                    <div className="text-4xl md:text-5xl font-black text-white mb-2">50+</div>
+                                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest">Team Members</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-4xl md:text-5xl font-black text-white mb-2">100%</div>
+                                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest">Local Commitment</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-4xl md:text-5xl font-black text-white mb-2">15+</div>
+                                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest">Years Experience</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-4xl md:text-5xl font-black text-white mb-2">200+</div>
+                                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest">Projects Delivered</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
                     {/* Mission Section for Professionalism */}
                     <section className="bg-accent/5 py-24 border-y border-border">
                         <div className="mx-auto max-w-4xl px-6 text-center">
@@ -48,24 +72,6 @@ export default function TeamPage() {
                             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
                                 At Merit Advisory, we believe that technology is the bridge to a more prosperous future for Somalia. Our team is united by a single mission: to deliver excellence in every implementation and to be the most trusted partner for digital transformation in the region.
                             </p>
-                            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-8">
-                                <div>
-                                    <div className="text-3xl font-bold text-primary">100%</div>
-                                    <div className="text-sm text-muted-foreground">Local Commitment</div>
-                                </div>
-                                <div>
-                                    <div className="text-3xl font-bold text-primary">50+</div>
-                                    <div className="text-sm text-muted-foreground">Experts</div>
-                                </div>
-                                <div>
-                                    <div className="text-3xl font-bold text-primary">Global</div>
-                                    <div className="text-sm text-muted-foreground">Standards</div>
-                                </div>
-                                <div>
-                                    <div className="text-3xl font-bold text-primary">Proven</div>
-                                    <div className="text-sm text-muted-foreground">Integrity</div>
-                                </div>
-                            </div>
                         </div>
                     </section>
                 </div>
