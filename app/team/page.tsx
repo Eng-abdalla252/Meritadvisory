@@ -15,12 +15,12 @@ export default function TeamPage() {
             <main className="flex-1">
                 {/* Hero Section with Static Background Image */}
                 <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32">
-                    <div className="absolute inset-0 z-0">
+                    <div className="absolute inset-0 z-0 bg-slate-900">
                         <img 
                             src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" 
                             alt="Merit Advisory Team"
                             className="w-full h-full object-cover"
-                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectPosition: 'center' }}
                         />
                         <div className="absolute inset-0 bg-black/70 backdrop-blur-[2px]" />
                     </div>
