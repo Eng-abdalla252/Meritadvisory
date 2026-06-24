@@ -217,7 +217,9 @@ export default function TeamAdmin() {
             await saveList(isCoreTarget ? "team" : "other-team", updatedList)
             if (isCoreTarget) setCoreTeam(updatedList)
             else setOtherTeam(updatedList)
-            toast.success("Team member removed")
+            toast.success("Team member removed permanently")
+            // Force refresh to ensure data is persisted
+            await fetchData()
         } catch {
             toast.error("Failed to delete team member")
         }

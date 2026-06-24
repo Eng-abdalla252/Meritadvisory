@@ -102,7 +102,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
 
                 {/* Leadership Partners Section */}
                 {teamMembers.length > 0 && (
-                    <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 mb-32">
+                    <div className={`grid gap-10 mb-32 ${teamMembers.length <= 2 ? 'md:grid-cols-2 lg:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
                         {teamMembers.map((member, i) => (
                             <div key={member.name + i} className="group relative flex flex-col items-center">
                                 <div className="relative mb-8">
@@ -124,7 +124,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                                         {member.expHeader}
                                     </p>
                                 )}
-                                <h3 className="text-2xl font-black text-slate-900 text-center mb-2">{member.name}</h3>
+                                <h3 className="text-2xl font-black text-slate-900 text-center mb-2 group-hover:text-[#b22222] transition-colors">{member.name}</h3>
                                 <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-6">{member.role}</p>
 
                                 {/* Stats Grid */}
