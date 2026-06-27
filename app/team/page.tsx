@@ -13,18 +13,8 @@ export default function TeamPage() {
         <div className="flex min-h-screen flex-col bg-background">
             <Navbar />
             <main className="flex-1">
-                {/* Hero Section with Static Background Image */}
-                <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32">
-                    <div className="absolute inset-0 z-0 bg-slate-900">
-                        <img 
-                            src="/uploads/1778655388278-DSC00414.JPG" 
-                            alt="Merit Advisory Team"
-                            className="w-full h-full object-cover"
-                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectPosition: 'center' }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80" />
-                    </div>
-
+                {/* Hero Section without Background Image */}
+                <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32 bg-slate-900">
                     <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
                         <Badge variant="outline" className="mb-4 border-accent/20 bg-accent/5 text-accent backdrop-blur-sm">
                             Expert Leadership

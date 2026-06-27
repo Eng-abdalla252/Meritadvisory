@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         
         // Sanitize filename
         const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '')
-        const fileName = safeName.toLowerCase();
+        const fileName = `${Date.now()}-${safeName.toLowerCase()}`;
         const uploadDir = path.join(process.cwd(), 'public', 'uploads', folder);
 
         if (!fs.existsSync(uploadDir)) {

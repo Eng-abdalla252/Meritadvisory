@@ -12,7 +12,9 @@ import {
     CheckCircle2,
     RefreshCw,
     X,
-    Minimize2
+    Minimize2,
+    ArrowUp,
+    ArrowDown
 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -37,8 +39,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { toast } from "sonner"
+import { cn } from "@/lib/utils"
 
 interface TeamMember {
+    id: string
     name: string
     role: string
     image: string
@@ -48,6 +52,9 @@ interface TeamMember {
     qualLabel?: string
     bio?: string
     email?: string
+    facebook?: string
+    linkedin?: string
+    status: "active" | "inactive"
 }
 
 export default function TeamAdmin() {
@@ -61,9 +68,10 @@ export default function TeamAdmin() {
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
     const [editingMember, setEditingMember] = React.useState<{data: TeamMember, index: number, category: string} | null>(null)
     
-    // Image & Category State
+    // Image, Category & Status State
     const [imageUrl, setImageUrl] = React.useState("")
     const [selectedCategory, setSelectedCategory] = React.useState("core")
+    const [selectedStatus, setSelectedStatus] = React.useState("active")
 
     // Sync state when dialog opens
     React.useEffect(() => {
@@ -71,14 +79,16 @@ export default function TeamAdmin() {
             if (editingMember) {
                 setImageUrl(editingMember.data.image || "")
                 setSelectedCategory(editingMember.category)
+                setSelectedStatus(editingMember.data.status || "active")
             } else {
                 setImageUrl("")
                 setSelectedCategory(activeTab)
+                setSelectedStatus("active")
             }
         }
     }, [isDialogOpen, editingMember])
 
-    const fetchJson = async (apiType: string): Promise<TeamMember[]> => {
+    const fetchJson = async (apiType: string): Promise<any[]> => {
         const ts = Date.now()
         // Try API route first (fresh after admin saves)
         try {
@@ -99,14 +109,32 @@ export default function TeamAdmin() {
         return []
     }
 
+    const migrateList = (list: any[]): TeamMember[] => {
+        return list.map((item, idx) => ({
+            id: item.id || `member-${Date.now()}-${idx}-${Math.random().toString(36).substr(2, 9)}`,
+            name: item.name || "",
+            role: item.role || "",
+            image: item.image || "",
+            expHeader: item.expHeader || "",
+            yearsExp: item.yearsExp || "",
+            qualification: item.qualification || "",
+            qualLabel: item.qualLabel || "",
+            bio: item.bio || "",
+            email: item.email || "",
+            facebook: item.facebook || "",
+            linkedin: item.linkedin || "",
+            status: item.status || "active"
+        }))
+    }
+
     const fetchData = async () => {
         try {
             const [core, other] = await Promise.all([
                 fetchJson("team"),
                 fetchJson("other-team")
             ])
-            setCoreTeam(core)
-            setOtherTeam(other)
+            setCoreTeam(migrateList(core))
+            setOtherTeam(migrateList(other))
         } catch (error) {
             console.error("Failed to fetch team data")
             setCoreTeam([])
@@ -154,20 +182,35 @@ export default function TeamAdmin() {
             return
         }
 
+        const memberId = editingMember ? editingMember.data.id : `member-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
         const memberData: TeamMember = {
+            id: memberId,
             name,
             role,
             image: imageUrl,
-            expHeader: formData.get("expHeader") as string,
-            yearsExp: formData.get("yearsExp") as string,
-            qualification: formData.get("qualification") as string,
-            qualLabel: formData.get("qualLabel") as string,
-            bio: formData.get("bio") as string,
-            email: formData.get("email") as string,
+            status: selectedStatus as "active" | "inactive",
+            expHeader: formData.get("expHeader") as string || "",
+            yearsExp: formData.get("yearsExp") as string || "",
+            qualification: formData.get("qualification") as string || "",
+            qualLabel: formData.get("qualLabel") as string || "",
+            bio: formData.get("bio") as string || "",
+            email: formData.get("email") as string || "",
+            facebook: formData.get("facebook") as string || "",
+            linkedin: formData.get("linkedin") as string || "",
         }
 
         try {
             if (editingMember) {
+                // Delete old image from disk if it was replaced
+                const oldImage = editingMember.data.image
+                if (oldImage && oldImage !== imageUrl && oldImage.startsWith("/uploads/")) {
+                    await fetch("/api/media/delete", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ url: oldImage })
+                    }).catch(err => console.error("Error cleaning up old image file:", err))
+                }
+
                 const oldCat = editingMember.category
                 const newCat = selectedCategory
 
@@ -212,16 +255,51 @@ export default function TeamAdmin() {
         if (!confirm("Remove this team member?")) return
         
         const isCoreTarget = category === "core"
-        const updatedList = (isCoreTarget ? [...coreTeam] : [...otherTeam]).filter((_, i) => i !== index)
+        const list = isCoreTarget ? coreTeam : otherTeam
+        const memberToDelete = list[index]
+        const updatedList = list.filter((_, i) => i !== index)
+        
         try {
+            // Delete image file from server if it is an uploaded file
+            if (memberToDelete?.image && memberToDelete.image.startsWith("/uploads/")) {
+                await fetch("/api/media/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url: memberToDelete.image })
+                }).catch(err => console.error("Error deleting image file:", err))
+            }
+
             await saveList(isCoreTarget ? "team" : "other-team", updatedList)
             if (isCoreTarget) setCoreTeam(updatedList)
             else setOtherTeam(updatedList)
             toast.success("Team member removed permanently")
-            // Force refresh to ensure data is persisted
             await fetchData()
         } catch {
             toast.error("Failed to delete team member")
+        }
+    }
+
+    const handleMove = async (index: number, direction: 'up' | 'down', category: string) => {
+        const isCoreTarget = category === "core"
+        const list = isCoreTarget ? [...coreTeam] : [...otherTeam]
+        
+        if (direction === 'up' && index === 0) return
+        if (direction === 'down' && index === list.length - 1) return
+        
+        const targetIndex = direction === 'up' ? index - 1 : index + 1
+        
+        // Swap elements
+        const temp = list[index]
+        list[index] = list[targetIndex]
+        list[targetIndex] = temp
+        
+        try {
+            await saveList(isCoreTarget ? "team" : "other-team", list)
+            if (isCoreTarget) setCoreTeam(list)
+            else setOtherTeam(list)
+            toast.success("Order updated and published!")
+        } catch {
+            toast.error("Failed to save new team order")
         }
     }
 
@@ -229,7 +307,7 @@ export default function TeamAdmin() {
     const filteredOther = otherTeam.filter(m => (m?.name || "").toLowerCase().includes(search.toLowerCase()))
 
     const TeamMemberForm = () => (
-        <form id="team-member-form" onSubmit={handleSave} className="space-y-5">
+        <form id="team-member-form" key={editingMember ? editingMember.data.id : "new"} onSubmit={handleSave} className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Full Name *</Label>
@@ -241,24 +319,39 @@ export default function TeamAdmin() {
                 </div>
             </div>
 
-            <div className="space-y-2">
-                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Team Category</Label>
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger className="h-12 rounded-xl">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="core">Leadership Partner</SelectItem>
-                        <SelectItem value="associates">Associate Team</SelectItem>
-                    </SelectContent>
-                </Select>
-                <input type="hidden" name="category" value={selectedCategory} />
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Team Category</Label>
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                        <SelectTrigger className="h-12 rounded-xl">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="core">Leadership Partner</SelectItem>
+                            <SelectItem value="associates">Associate Team</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <input type="hidden" name="category" value={selectedCategory} />
+                </div>
+                <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Status</Label>
+                    <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                        <SelectTrigger className="h-12 rounded-xl">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="active">Active (Visible)</SelectItem>
+                            <SelectItem value="inactive">Inactive (Hidden)</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
 
             <ImageUpload
                 label="Profile Photo"
                 value={imageUrl}
                 onChange={setImageUrl}
+                folder="team"
                 hint="Upload a professional headshot. Recommended: 400×400px or portrait."
             />
 
@@ -282,6 +375,16 @@ export default function TeamAdmin() {
                         <div className="space-y-2">
                             <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Qual Label</Label>
                             <Input name="qualLabel" defaultValue={editingMember?.data.qualLabel} placeholder="e.g. QUALIFIED" className="h-12 rounded-xl" />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Facebook URL</Label>
+                            <Input name="facebook" defaultValue={editingMember?.data.facebook} placeholder="https://facebook.com/..." className="h-12 rounded-xl" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">LinkedIn URL</Label>
+                            <Input name="linkedin" defaultValue={editingMember?.data.linkedin} placeholder="https://linkedin.com/company/..." className="h-12 rounded-xl" />
                         </div>
                     </div>
                     <div className="space-y-2">
@@ -327,7 +430,6 @@ export default function TeamAdmin() {
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl rounded-[2.5rem] p-0 overflow-hidden flex flex-col max-h-[90vh]">
-                            {/* Fixed header */}
                             <DialogHeader className="px-10 pt-10 pb-0 shrink-0 flex items-center justify-between">
                                 <DialogTitle className="text-2xl font-black uppercase tracking-tight">
                                     {editingMember ? "Edit Profile" : "New Team Profile"}
@@ -343,12 +445,10 @@ export default function TeamAdmin() {
                                 </Button>
                             </DialogHeader>
 
-                            {/* Scrollable body */}
                             <div className="overflow-y-auto flex-1 px-10 py-6">
                                 <TeamMemberForm />
                             </div>
 
-                            {/* Fixed footer — Save button always visible */}
                             <div className="px-10 pb-10 pt-4 shrink-0 border-t border-slate-100 bg-white flex justify-end gap-4">
                                 <Button 
                                     type="button" 
@@ -428,7 +528,15 @@ export default function TeamAdmin() {
                                         )}
                                     </div>
                                     <div className="min-w-0">
-                                        <h3 className="text-lg font-black text-slate-900 group-hover:text-[#e31e24] transition-colors tracking-tight truncate">{member.name}</h3>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h3 className="text-lg font-black text-slate-900 group-hover:text-[#e31e24] transition-colors tracking-tight truncate">{member.name}</h3>
+                                            <Badge variant="outline" className={cn(
+                                                "text-[9px] font-black tracking-widest px-2 py-0.5 uppercase border-none",
+                                                member.status === "inactive" ? "bg-slate-100 text-slate-500" : "bg-green-50 text-green-600"
+                                            )}>
+                                                {member.status === "inactive" ? "Draft" : "Published"}
+                                            </Badge>
+                                        </div>
                                         <p className="text-[10px] font-black text-red-500 uppercase tracking-widest mb-2 truncate">{member.role}</p>
                                         <div className="flex items-center gap-2 flex-wrap">
                                             {member.qualification && (
@@ -449,6 +557,7 @@ export default function TeamAdmin() {
                                             setEditingMember({data: member, index: i, category: "core"})
                                             setIsDialogOpen(true)
                                         }}
+                                        title="Edit Profile"
                                     >
                                         <Edit2 className="h-4 w-4" />
                                     </Button>
@@ -457,9 +566,34 @@ export default function TeamAdmin() {
                                         size="icon" 
                                         className="h-9 w-9 rounded-xl hover:bg-red-50 text-red-500 transition-all"
                                         onClick={() => handleDelete(i, "core")}
+                                        title="Delete Profile"
                                     >
                                         <Trash2 className="h-4 w-4" />
                                     </Button>
+                                    {!search && (
+                                        <>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                disabled={i === 0}
+                                                className="h-9 w-9 rounded-xl hover:bg-slate-100 disabled:opacity-30"
+                                                onClick={() => handleMove(i, 'up', 'core')}
+                                                title="Move Up"
+                                            >
+                                                <ArrowUp className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                disabled={i === filteredCore.length - 1}
+                                                className="h-9 w-9 rounded-xl hover:bg-slate-100 disabled:opacity-30"
+                                                onClick={() => handleMove(i, 'down', 'core')}
+                                                title="Move Down"
+                                            >
+                                                <ArrowDown className="h-4 w-4" />
+                                            </Button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </Card>
@@ -489,11 +623,43 @@ export default function TeamAdmin() {
                                         )}
                                     </div>
                                     <div className="min-w-0">
-                                        <h3 className="text-sm font-black text-slate-900 group-hover:text-[#1e4e8c] transition-colors tracking-tight truncate">{member.name}</h3>
+                                        <div className="flex items-center gap-2 mb-0.5">
+                                            <h3 className="text-sm font-black text-slate-900 group-hover:text-[#1e4e8c] transition-colors tracking-tight truncate">{member.name}</h3>
+                                            <span className={cn(
+                                                "text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase",
+                                                member.status === "inactive" ? "bg-slate-100 text-slate-500" : "bg-green-50 text-green-600"
+                                            )}>
+                                                {member.status === "inactive" ? "Draft" : "Active"}
+                                            </span>
+                                        </div>
                                         <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest truncate">{member.role}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-1 shrink-0">
+                                    {!search && (
+                                        <>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                disabled={i === 0}
+                                                className="h-8 w-8 rounded-lg hover:bg-slate-100 disabled:opacity-30"
+                                                onClick={() => handleMove(i, 'up', 'associates')}
+                                                title="Move Up"
+                                            >
+                                                <ArrowUp className="h-3 w-3" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                disabled={i === filteredOther.length - 1}
+                                                className="h-8 w-8 rounded-lg hover:bg-slate-100 disabled:opacity-30"
+                                                onClick={() => handleMove(i, 'down', 'associates')}
+                                                title="Move Down"
+                                            >
+                                                <ArrowDown className="h-3 w-3" />
+                                            </Button>
+                                        </>
+                                    )}
                                     <Button 
                                         variant="ghost" 
                                         size="icon" 
@@ -502,6 +668,7 @@ export default function TeamAdmin() {
                                             setEditingMember({data: member, index: i, category: "associates"})
                                             setIsDialogOpen(true)
                                         }}
+                                        title="Edit Profile"
                                     >
                                         <Edit2 className="h-3 w-3" />
                                     </Button>
@@ -510,6 +677,7 @@ export default function TeamAdmin() {
                                         size="icon" 
                                         className="h-8 w-8 rounded-lg text-red-500 hover:bg-red-50"
                                         onClick={() => handleDelete(i, "associates")}
+                                        title="Delete Profile"
                                     >
                                         <Trash2 className="h-3 w-3" />
                                     </Button>

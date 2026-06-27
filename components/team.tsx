@@ -3,11 +3,12 @@
 import * as React from "react"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
-import { Mail, Star, Facebook, Linkedin, Award, Users, Globe, Target } from "lucide-react"
+import { Mail, Star, Facebook, Linkedin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 
 interface TeamMember {
+    id?: string
     name: string
     role: string
     image?: string
@@ -19,9 +20,11 @@ interface TeamMember {
     email?: string
     facebook?: string
     linkedin?: string
+    status?: "active" | "inactive"
 }
 
-const FALLBACK_AVATAR = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop"
+// Vector-based inline SVG avatar loader that is 100% reliable offline
+const FALLBACK_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23f1f5f9'/><circle cx='50' cy='35' r='18' fill='%23cbd5e1'/><path d='M15 85c0-18 15-30 35-30s35 12 35 30z' fill='%23cbd5e1'/></svg>"
 
 function getMemberImage(image?: string): string {
     if (!image) return FALLBACK_AVATAR
@@ -32,28 +35,15 @@ function getMemberImage(image?: string): string {
     return `/${image}`
 }
 
-async function fetchJson(url: string): Promise<TeamMember[]> {
-    try {
-        const res = await fetch(url, { cache: "no-store" })
-        if (!res.ok) return []
-        const data = await res.json()
-        return Array.isArray(data) ? data : []
-    } catch {
-        return []
-    }
-}
-
 export function Team({ showHeader = true }: { showHeader?: boolean }) {
     const [teamMembers, setTeamMembers] = React.useState<TeamMember[]>([])
     const [otherTeamMembers, setOtherTeamMembers] = React.useState<TeamMember[]>([])
     const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
-        // Fetch from static JSON files in /public/data/ — works everywhere (dev, prod, Vercel)
-        // Also try API route as fallback for fresh data after admin saves
         const ts = Date.now()
         Promise.all([
-            // Try API first (returns fresh data), fall back to static JSON
+            // Try API first (returns fresh data), fall back to static JSON files
             fetch(`/api/admin/data-api?type=team&_=${ts}`, { cache: "no-store" })
                 .then(r => r.json())
                 .catch(() => fetch(`/data/team.json?_=${ts}`).then(r => r.json()).catch(() => [])),
@@ -61,8 +51,12 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                 .then(r => r.json())
                 .catch(() => fetch(`/data/other-team.json?_=${ts}`).then(r => r.json()).catch(() => [])),
         ]).then(([team, other]) => {
-            setTeamMembers(Array.isArray(team) ? team : [])
-            setOtherTeamMembers(Array.isArray(other) ? other : [])
+            const parsedTeam = Array.isArray(team) ? team : []
+            const parsedOther = Array.isArray(other) ? other : []
+            
+            // Filter out inactive (draft) members
+            setTeamMembers(parsedTeam.filter((m: any) => m.status !== "inactive"))
+            setOtherTeamMembers(parsedOther.filter((m: any) => m.status !== "inactive"))
         }).catch(() => {
             setTeamMembers([])
             setOtherTeamMembers([])
@@ -103,7 +97,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
 
                 {/* Leadership Partners Section */}
                 {teamMembers.length > 0 && (
-                    <div className={`grid gap-10 mb-32 ${teamMembers.length <= 2 ? 'md:grid-cols-2 lg:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-32">
                         {teamMembers.map((member, i) => (
                             <motion.div
                                 key={member.name + i}
@@ -111,89 +105,88 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.1 }}
                                 viewport={{ once: true }}
-                                className="group relative flex flex-col items-center"
+                                className="group relative flex flex-col sm:flex-row gap-6 p-6 bg-white border border-slate-100 rounded-[2rem] shadow-xl shadow-slate-100/50 hover:shadow-2xl hover:border-[#b22222]/30 hover:-translate-y-1 transition-all duration-500"
                             >
-                                <div className="relative mb-8">
-                                    <div className="h-48 w-48 rounded-full border-[6px] border-white shadow-2xl overflow-hidden bg-slate-200">
-                                        <Image
-                                            src={getMemberImage(member.image)}
-                                            alt={member.name}
-                                            width={192}
-                                            height={192}
-                                            unoptimized
-                                            className="h-full w-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-                                            onError={(e: any) => { e.target.src = FALLBACK_AVATAR }}
-                                        />
-                                    </div>
+                                {/* Portrait Image Wrapper with overlay */}
+                                <div className="relative shrink-0 w-full sm:w-44 h-48 rounded-2xl overflow-hidden bg-slate-100 border border-slate-100 shadow-inner">
+                                    <Image
+                                        src={getMemberImage(member.image)}
+                                        alt={member.name}
+                                        fill
+                                        unoptimized
+                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                        onError={(e: any) => { e.target.src = FALLBACK_AVATAR }}
+                                    />
+                                    {member.yearsExp && (
+                                        <div className="absolute bottom-2 left-2 bg-[#b22222] text-white px-2 py-0.5 rounded-lg text-[9px] font-black tracking-widest uppercase shadow">
+                                            {member.yearsExp} Exp
+                                        </div>
+                                    )}
                                 </div>
 
-                                {member.expHeader && (
-                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                                        {member.expHeader}
-                                    </p>
-                                )}
-                                <h3 className="text-2xl font-black text-slate-900 text-center mb-2 group-hover:text-[#b22222] transition-colors">{member.name}</h3>
-                                <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-6">{member.role}</p>
+                                {/* Content Details */}
+                                <div className="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <div className="mb-2">
+                                            <span className="text-[9px] font-black text-[#b22222] tracking-wider uppercase block mb-1">
+                                                {member.role}
+                                            </span>
+                                            <h3 className="text-xl font-black text-slate-900 group-hover:text-[#b22222] transition-colors leading-tight">
+                                                {member.name}
+                                            </h3>
+                                        </div>
 
-                                {/* Stats Grid */}
-                                {(member.yearsExp || member.qualification) && (
-                                    <div className="grid grid-cols-2 w-full gap-2 mb-6">
-                                        {member.yearsExp && (
-                                            <div className="bg-slate-100/80 rounded-lg p-3 text-center border border-slate-200">
-                                                <div className="text-lg font-black text-primary">{member.yearsExp}</div>
-                                                <div className="text-[9px] font-bold text-red-600 uppercase">Years Exp</div>
-                                            </div>
-                                        )}
                                         {member.qualification && (
-                                            <div className="bg-slate-100/80 rounded-lg p-3 text-center border border-slate-200">
-                                                <div className="text-lg font-black text-primary">{member.qualification}</div>
-                                                <div className="text-[9px] font-bold text-red-600 uppercase">{member.qualLabel}</div>
+                                            <div className="flex gap-2 mb-3">
+                                                <Badge className="bg-slate-100 hover:bg-slate-100 text-slate-700 border-none text-[9px] font-bold py-0.5 px-2">
+                                                    {member.qualification} {member.qualLabel ? `(${member.qualLabel})` : ''}
+                                                </Badge>
                                             </div>
                                         )}
-                                    </div>
-                                )}
 
-                                {member.bio && (
-                                    <p className="text-sm leading-relaxed text-slate-600 text-center mb-6 px-2">
-                                        {member.bio}
-                                    </p>
-                                )}
-
-                                {/* Social Links */}
-                                {(member.facebook || member.linkedin) && (
-                                    <div className="flex gap-4 mb-8">
-                                        {member.facebook && (
-                                            <a 
-                                                href={member.facebook} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e4e8c]/5 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-all duration-300"
-                                            >
-                                                <Facebook className="h-5 w-5" />
-                                            </a>
-                                        )}
-                                        {member.linkedin && (
-                                            <a 
-                                                href={member.linkedin} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e4e8c]/5 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-all duration-300"
-                                            >
-                                                <Linkedin className="h-5 w-5" />
-                                            </a>
+                                        {member.bio && (
+                                            <p className="text-xs text-slate-500 leading-relaxed mb-4 line-clamp-3">
+                                                {member.bio}
+                                            </p>
                                         )}
                                     </div>
-                                )}
 
-                                {member.email && (
-                                    <a 
-                                        href={`mailto:${member.email}`}
-                                        className="mt-auto w-full flex items-center justify-center gap-2 bg-[#b22222] text-white py-3 rounded-lg font-bold text-sm hover:bg-[#8b0000] transition-colors shadow-md shadow-red-900/10"
-                                    >
-                                        <Mail className="h-4 w-4" />
-                                        {member.email}
-                                    </a>
-                                )}
+                                    {/* Footer Actions */}
+                                    <div className="flex items-center justify-between gap-4 pt-3 border-t border-slate-100">
+                                        <div className="flex gap-2">
+                                            {member.linkedin && (
+                                                <a 
+                                                    href={member.linkedin} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    className="h-8 w-8 flex items-center justify-center rounded-lg bg-slate-50 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-colors duration-300 border border-slate-100"
+                                                >
+                                                    <Linkedin className="h-4 w-4" />
+                                                </a>
+                                            )}
+                                            {member.facebook && (
+                                                <a 
+                                                    href={member.facebook} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    className="h-8 w-8 flex items-center justify-center rounded-lg bg-slate-50 text-[#1e4e8c] hover:bg-[#1e4e8c] hover:text-white transition-colors duration-300 border border-slate-100"
+                                                >
+                                                    <Facebook className="h-4 w-4" />
+                                                </a>
+                                            )}
+                                        </div>
+
+                                        {member.email && (
+                                            <a 
+                                                href={`mailto:${member.email}`}
+                                                className="flex items-center gap-1.5 bg-[#b22222] hover:bg-[#8b0000] text-white px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-colors shadow-md shadow-red-900/10"
+                                            >
+                                                <Mail className="h-3 w-3" />
+                                                Contact
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
@@ -223,7 +216,8 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                             </motion.h3>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                        {/* Responsive grid for Associate Team */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                             {otherTeamMembers.map((member, i) => (
                                 <motion.div
                                     key={member.name + i}
@@ -231,21 +225,27 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.05 }}
                                     viewport={{ once: true }}
-                                    className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:shadow-xl hover:-translate-y-1"
+                                    className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                                 >
-                                    <div className="aspect-[4/5] bg-slate-100 overflow-hidden">
+                                    {/* FIXED: added 'relative' to aspect wrapper, restricting image overflow */}
+                                    <div className="relative aspect-[4/5] bg-slate-100 overflow-hidden">
                                         <Image
                                             src={getMemberImage(member.image)}
                                             alt={member.name}
                                             fill
                                             unoptimized
-                                            className="h-full w-full object-cover"
+                                            className="object-cover group-hover:scale-105 transition-transform duration-500"
                                             onError={(e: any) => { e.target.src = FALLBACK_AVATAR }}
                                         />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3 justify-center">
+                                            <span className="text-[10px] text-white font-bold tracking-widest uppercase bg-[#b22222]/80 px-2.5 py-1 rounded-full backdrop-blur-sm shadow-lg">
+                                                Merit Consultant
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className="bg-[#b22222] p-4 text-center">
-                                        <p className="font-black text-white text-base">{member.name}</p>
-                                        <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest mt-1">{member.role}</p>
+                                    <div className="p-4 text-center bg-slate-50 group-hover:bg-[#b22222] transition-colors duration-300 flex-1 flex flex-col justify-center">
+                                        <p className="font-extrabold text-slate-800 text-sm group-hover:text-white transition-colors duration-300 line-clamp-1">{member.name}</p>
+                                        <p className="text-[9px] font-bold text-slate-400 group-hover:text-white/80 uppercase tracking-widest mt-1 transition-colors duration-300 line-clamp-1">{member.role}</p>
                                     </div>
                                 </motion.div>
                             ))}
@@ -266,7 +266,7 @@ export function Team({ showHeader = true }: { showHeader?: boolean }) {
                 )}
 
                 {/* Empty state only when both arrays are empty after loading */}
-                {!loading && teamMembers.length === 0 && otherTeamMembers.length === 0 && (
+                {teamMembers.length === 0 && otherTeamMembers.length === 0 && (
                     <div className="text-center py-24 text-slate-400">
                         <p className="text-lg">No team members published yet.</p>
                     </div>
