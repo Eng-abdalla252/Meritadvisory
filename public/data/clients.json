@@ -1,5 +1,47 @@
 [
     {
+        "name": "Rays Construction",
+        "industry": "Construction",
+        "logo": "/uploads/uploads/1785432993343-rayscompany.png",
+        "country": ""
+    },
+    {
+        "name": "Samawade Construction",
+        "industry": "Construction",
+        "logo": "/uploads/uploads/1785432956150-samawadecons.jpg",
+        "country": ""
+    },
+    {
+        "name": "Barwaaqo Construction",
+        "industry": "Construction",
+        "logo": "/uploads/uploads/1785432930040-barwaqo.png",
+        "country": ""
+    },
+    {
+        "name": "Dhay limited",
+        "industry": "Retailers & Wholesalers",
+        "logo": "/uploads/uploads/1785432655193-dhaylimited.jpg",
+        "country": ""
+    },
+    {
+        "name": "Khaliil Hospital",
+        "industry": "Healthcare",
+        "logo": "/uploads/uploads/1785432052870-khaliil.png",
+        "country": ""
+    },
+    {
+        "name": "Restuarent",
+        "industry": "Hotel and Cafes",
+        "logo": "/uploads/uploads/1785431841685-aksrestuarent.jpg",
+        "country": ""
+    },
+    {
+        "name": "Saj Travel Agency",
+        "industry": "General Services",
+        "logo": "/uploads/uploads/1785431639357-sajtravel.jpg",
+        "country": ""
+    },
+    {
         "name": "hadraawi general trading",
         "industry": "Retailers & Wholesalers",
         "logo": "/uploads/uploads/hadrawiest.logo.jpeg",
