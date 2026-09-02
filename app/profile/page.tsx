@@ -61,19 +61,82 @@ export default function ProfilePage() {
     documentTitle: string
   }>({ isOpen: false, documentUrl: "", documentTitle: "" })
 
-  const categories = ["All", "Company Profile", "Corporate Brochures", "Technology", "ERP & Business Systems", "Consulting", "Training", "Other Resources"]
+  const categories = ["All", "Company Profile", "Corporate Brochures", "Technology", "ERP & Business Systems"]
+
+  // Only these five official PDF documents should appear on this page.
+  // They are served directly from /public/documents.
+  const allowedDocuments: Document[] = [
+    {
+      id: "firm-profile",
+      title: "Firm Profile",
+      description:
+        "An overview of Merit Advisory Services, our capabilities, expertise, and commitment to helping organizations achieve sustainable growth.",
+      category: "Company Profile",
+      fileType: "PDF",
+      fileSize: "PDF",
+      thumbnail: "/documents/thumbnails/firm-profile-thumbnail.png",
+      fileUrl: "/documents/Firm%20Profile.pdf",
+      serviceId: null,
+      featured: true,
+    },
+    {
+      id: "merit-service-catalogue",
+      title: "Merit Service Catalogue",
+      description:
+        "Explore Merit Advisory Services' advisory, financial management, technology, ERP, digital transformation, and capacity-building services.",
+      category: "Corporate Brochures",
+      fileType: "PDF",
+      fileSize: "PDF",
+      thumbnail: "/documents/thumbnails/merit-service-catalogue-thumbnail.png",
+      fileUrl: "/documents/Merit%20Service%20Catalogue%20.pdf",
+      serviceId: null,
+      featured: true,
+    },
+    {
+      id: "merit-technology-solutions",
+      title: "Merit Technology Solutions",
+      description:
+        "Discover Merit Advisory's technology solutions, ERP implementation, digital transformation, software, and business systems capabilities.",
+      category: "Technology",
+      fileType: "PDF",
+      fileSize: "PDF",
+      thumbnail: "/documents/thumbnails/merit-technology-solutions-thumbnail.png",
+      fileUrl: "/documents/Merit%20Technology%20solutions%20.pdf",
+      serviceId: null,
+      featured: true,
+    },
+    {
+      id: "odoo-profile",
+      title: "Odoo Profile",
+      description:
+        "Learn about Merit Advisory's Odoo ERP expertise, implementation capabilities, business systems services, and digital transformation approach.",
+      category: "ERP & Business Systems",
+      fileType: "PDF",
+      fileSize: "PDF",
+      thumbnail: "/documents/thumbnails/odoo-profile-thumbnail.png",
+      fileUrl: "/documents/Odoo%20profile.pdf",
+      serviceId: null,
+      featured: true,
+    },
+    {
+      id: "odoo-brochure",
+      title: "Odoo Brochure",
+      description:
+        "A dedicated overview of Odoo ERP solutions and how Merit Advisory helps organizations configure, implement, integrate, and support Odoo.",
+      category: "ERP & Business Systems",
+      fileType: "PDF",
+      fileSize: "PDF",
+      thumbnail: "/documents/thumbnails/odoo-brochure-thumbnail.png",
+      fileUrl: "/documents/Odoo%20Brochure.pdf",
+      serviceId: null,
+      featured: true,
+    },
+  ]
 
   React.useEffect(() => {
-    fetch("/data/documents.json")
-      .then(res => res.json())
-      .then((data: Document[]) => {
-        // Filter for company-wide documents only (serviceId is null)
-        const companyDocs = data.filter(doc => doc.serviceId === null)
-        setDocuments(companyDocs)
-        setFilteredDocuments(companyDocs)
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
+    setDocuments(allowedDocuments)
+    setFilteredDocuments(allowedDocuments)
+    setLoading(false)
   }, [])
 
   React.useEffect(() => {
@@ -206,9 +269,17 @@ export default function ProfilePage() {
                   >
                     {/* Thumbnail */}
                     <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <CategoryIcon className="h-16 w-16 text-slate-400" />
-                      </div>
+                      {doc.thumbnail ? (
+                        <img
+                          src={doc.thumbnail}
+                          alt={doc.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <CategoryIcon className="h-16 w-16 text-slate-400" />
+                        </div>
+                      )}
                       {doc.featured && (
                         <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground">
                           Featured

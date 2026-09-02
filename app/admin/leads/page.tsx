@@ -66,13 +66,15 @@ interface Lead {
     phoneNumber?: string
     company?: string
     message?: string
+    leadSource?: string
+    source?: string
+    assignedTeamMember?: string
+    
     // CRM fields
     serviceName?: string
     selectedPackage?: string
     packagePrice?: string
     pricingTier?: string
-    leadSource?: string
-    assignedTeamMember?: string
     // Recruitment specific
     jobTitle?: string
     degree?: string
