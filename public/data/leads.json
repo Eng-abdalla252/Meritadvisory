@@ -1,5 +1,29 @@
 [
     {
+        "id": "sales_1788371641457_tsc0y0a3a",
+        "type": "sales",
+        "status": "new",
+        "createdAt": "2026-09-02T17:54:01.457Z",
+        "name": "ghjg",
+        "company": "jikjk",
+        "email": "outreach@meritadvisory.so",
+        "phone": "90672829",
+        "serviceInterested": "Digital Accounting System",
+        "budgetRange": "Not specified",
+        "projectDetails": "dsajdjkasbjdsajhjdaks",
+        "timeline": "Not specified",
+        "teamSize": "9",
+        "currentSolution": "existing",
+        "goals": "ACCOUNTING, TAX & FINANCIAL MANAGEMENT",
+        "leadSource": "questionnaire",
+        "questionnaireId": "sub_1788371641452_m6a5dl0ik",
+        "blueprintData": {
+            "id": "bp_digital_accounting",
+            "name": "Digital Accounting System",
+            "category": "Accounting"
+        }
+    },
+    {
         "id": "sales_1788340097952_4mkqdr8wd",
         "type": "sales",
         "status": "new",

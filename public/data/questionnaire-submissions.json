@@ -1,5 +1,93 @@
 [
     {
+        "id": "sub_1788371641452_m6a5dl0ik",
+        "blueprintId": "bp_digital_accounting",
+        "customerName": "ghjg",
+        "phoneNumber": "90672829",
+        "email": "outreach@meritadvisory.so",
+        "companyName": "jikjk",
+        "numEmployees": "9",
+        "numBranches": "87",
+        "cities": "i8",
+        "interest": "ACCOUNTING, TAX & FINANCIAL MANAGEMENT",
+        "managementIndustry": "manufacturing",
+        "currentSystem": "existing",
+        "briefNeed": "dsajdjkasbjdsajhjdaks",
+        "type": "questionnaire",
+        "blueprintData": {
+            "id": "bp_digital_accounting",
+            "name": "Digital Accounting System",
+            "category": "Accounting"
+        },
+        "submittedAt": "2026-09-02T17:54:01.452Z"
+    },
+    {
+        "id": "sub_1788370953788_8supg66yi",
+        "blueprintId": "bp_training_program",
+        "customerName": "ghjg",
+        "phoneNumber": "907449639",
+        "email": "outreach@meritadvisory.so",
+        "companyName": "jikjk",
+        "numEmployees": "9",
+        "numBranches": "87",
+        "cities": "i8",
+        "interest": "ACCOUNTING, TAX & FINANCIAL MANAGEMENT",
+        "managementIndustry": "other",
+        "currentSystem": "existing",
+        "briefNeed": "sjkajskjfdkjgjdfk",
+        "type": "questionnaire",
+        "blueprintData": {
+            "id": "bp_training_program",
+            "name": "Corporate Training Program",
+            "category": "Training"
+        },
+        "submittedAt": "2026-09-02T17:42:33.788Z"
+    },
+    {
+        "id": "sub_1788370952924_a2jcs6lgk",
+        "blueprintId": "bp_training_program",
+        "customerName": "ghjg",
+        "phoneNumber": "907449639",
+        "email": "outreach@meritadvisory.so",
+        "companyName": "jikjk",
+        "numEmployees": "9",
+        "numBranches": "87",
+        "cities": "i8",
+        "interest": "ACCOUNTING, TAX & FINANCIAL MANAGEMENT",
+        "managementIndustry": "other",
+        "currentSystem": "existing",
+        "briefNeed": "sjkajskjfdkjgjdfk",
+        "type": "questionnaire",
+        "blueprintData": {
+            "id": "bp_training_program",
+            "name": "Corporate Training Program",
+            "category": "Training"
+        },
+        "submittedAt": "2026-09-02T17:42:32.924Z"
+    },
+    {
+        "id": "sub_1788370949785_mbh4358oc",
+        "blueprintId": "bp_training_program",
+        "customerName": "ghjg",
+        "phoneNumber": "907449639",
+        "email": "outreach@meritadvisory.so",
+        "companyName": "jikjk",
+        "numEmployees": "9",
+        "numBranches": "87",
+        "cities": "i8",
+        "interest": "ACCOUNTING, TAX & FINANCIAL MANAGEMENT",
+        "managementIndustry": "other",
+        "currentSystem": "existing",
+        "briefNeed": "sjkajskjfdkjgjdfk",
+        "type": "questionnaire",
+        "blueprintData": {
+            "id": "bp_training_program",
+            "name": "Corporate Training Program",
+            "category": "Training"
+        },
+        "submittedAt": "2026-09-02T17:42:29.785Z"
+    },
+    {
         "id": "sub_1788340097951_zkdz9tb1s",
         "blueprintId": "bp_digital_accounting",
         "customerName": "ghjg",
