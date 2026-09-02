@@ -110,9 +110,7 @@ export default function ProjectQuestionnaireForm() {
                 blueprintData: blueprint ? {
                     id: blueprint.id,
                     name: blueprint.name,
-                    category: blueprint.category,
-                    price: blueprint.price,
-                    currency: blueprint.currency
+                    category: blueprint.category
                 } : null
             }
 
@@ -164,12 +162,6 @@ export default function ProjectQuestionnaireForm() {
                             <div>
                                 <p className="text-xs font-black uppercase tracking-widest text-slate-500">Category</p>
                                 <p className="text-sm font-bold text-slate-900">{blueprint.category}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs font-black uppercase tracking-widest text-slate-500">Price</p>
-                                <p className="text-2xl font-black text-[#b22222]">
-                                    {blueprint.currency} {blueprint.price.toLocaleString()}
-                                </p>
                             </div>
                             <div>
                                 <p className="text-xs font-black uppercase tracking-widest text-slate-500">Organization</p>
@@ -293,7 +285,7 @@ export default function ProjectQuestionnaireForm() {
                                                         <div className="flex flex-col">
                                                             <span className="font-medium">{blueprint.name}</span>
                                                             <span className="text-xs text-slate-500">
-                                                                {blueprint.category} • {blueprint.currency} {blueprint.price.toLocaleString()}
+                                                                {blueprint.category}
                                                             </span>
                                                         </div>
                                                     </SelectItem>
@@ -317,12 +309,7 @@ export default function ProjectQuestionnaireForm() {
                                             <p className="text-xs text-slate-500">{selectedBlueprint.category}</p>
                                         </div>
                                     </div>
-                                    <div className="text-right">
-                                        <p className="text-2xl font-black text-[#b22222]">
-                                            {selectedBlueprint.currency} {selectedBlueprint.price.toLocaleString()}
-                                        </p>
-                                        <p className="text-xs text-slate-500">Estimated Price</p>
-                                    </div>
+
                                 </div>
                             </Card>
                         )}
