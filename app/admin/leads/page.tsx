@@ -1089,12 +1089,7 @@ export default function LeadsAdmin() {
                                                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Service Name</p>
                                                 <p className="font-bold text-slate-900">{selectedLead.blueprintData.name}</p>
                                             </div>
-                                            <div>
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Price</p>
-                                                <p className="text-2xl font-black text-[#b22222]">
-                                                    {selectedLead.blueprintData.currency} {selectedLead.blueprintData.price.toLocaleString()}
-                                                </p>
-                                            </div>
+
                                         </div>
                                     </div>
                                 )}
@@ -1177,12 +1172,7 @@ export default function LeadsAdmin() {
                                                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Service Name</p>
                                                 <p className="font-bold text-slate-900">{selectedLead.blueprintData.name}</p>
                                             </div>
-                                            <div>
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Price</p>
-                                                <p className="text-2xl font-black text-[#b22222]">
-                                                    {selectedLead.blueprintData.currency} {selectedLead.blueprintData.price.toLocaleString()}
-                                                </p>
-                                            </div>
+
                                         </div>
                                     </div>
                                 )}
