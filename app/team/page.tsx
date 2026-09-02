@@ -1,7 +1,8 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Team } from "@/components/team"
-import { Badge } from "@/components/ui/badge"
+import { InternalPageHero } from "@/components/internal-page-hero"
+import { Users, Award, Target, Globe } from "lucide-react"
 
 export const metadata = {
     title: "Our Team | Merit Advisory Somalia",
@@ -13,20 +14,42 @@ export default function TeamPage() {
         <div className="flex min-h-screen flex-col bg-background">
             <Navbar />
             <main className="flex-1">
-                {/* Hero Section without Background Image */}
-                <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32 bg-slate-900">
-                    <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
-                        <Badge variant="outline" className="mb-4 border-accent/20 bg-accent/5 text-accent backdrop-blur-sm">
-                            Expert Leadership
-                        </Badge>
-                        <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-7xl">
-                            Our Global Experts
-                        </h1>
-                        <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80 leading-relaxed">
-                            A diverse group of strategists, technologists, and consultants dedicated to empowering Somali businesses with world-class expertise.
-                        </p>
-                    </div>
-                </section>
+                <InternalPageHero
+                    badge="Our Team"
+                    title="Meet the People Behind Merit"
+                    description="A diverse group of strategists, technologists, and consultants dedicated to empowering Somali businesses with world-class expertise."
+                    primaryCTA={{
+                        label: "Meet Our Team",
+                        href: "#team"
+                    }}
+                    visual={
+                        <div className="relative bg-white rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-200 p-8">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Users className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Team Members</p>
+                                    <p className="text-2xl font-bold text-foreground">50+</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Award className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Expertise</p>
+                                    <p className="text-2xl font-bold text-foreground">World-Class</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Target className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Focus</p>
+                                    <p className="text-2xl font-bold text-foreground">Results</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Globe className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Reach</p>
+                                    <p className="text-2xl font-bold text-foreground">Global</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    variant="split-image"
+                />
 
                 <div className="bg-background">
                     <Team showHeader={false} />

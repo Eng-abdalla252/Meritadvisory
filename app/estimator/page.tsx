@@ -1,9 +1,9 @@
 import { Metadata } from "next"
-import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import ImplementationEstimator from "@/components/implementation-estimator"
-import { Calculator } from "lucide-react"
+import { InternalPageHero } from "@/components/internal-page-hero"
+import { Calculator, Calendar, DollarSign, Target } from "lucide-react"
 
 export const metadata: Metadata = {
     title: "Implementation Blueprint & Budget Planner | Merit Advisory",
@@ -15,49 +15,44 @@ export default function EstimatorPage() {
         <main className="min-h-screen bg-white">
             <Navbar />
             
-            {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-[#0f4c9c] via-[#0f4c9c] to-[#1a66cc] pt-48 pb-32 overflow-hidden shadow-inner">
-                {/* Mesh Gradient Background */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#0f4c9c,transparent),radial-gradient(circle_at_0%_100%,#0f4c9c,transparent),radial-gradient(circle_at_100%_100%,#b22222,transparent)] opacity-30 mix-blend-overlay" />
-                
-                {/* Hero Background Logo Watermark */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-[0.12] pointer-events-none select-none overflow-hidden">
-                    <Image 
-                        src="/logo.png" 
-                        alt="Merit Background" 
-                        fill
-                        className="object-contain translate-x-1/4 scale-125"
-                        priority
-                    />
-                </div>
-                
-                <div className="mx-auto max-w-7xl px-6 relative z-10">
-                    <div className="max-w-3xl">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-                                <Calculator className="h-6 w-6 text-white" />
+            <InternalPageHero
+                badge="Blueprint & Budget Planner"
+                title="Plan Your Project With Confidence"
+                description="Plan your digital transformation with precision. Select the modules and services your business needs to get an instant cost and timeline estimation."
+                primaryCTA={{
+                    label: "Create Your Blueprint",
+                    href: "#estimator"
+                }}
+                visual={
+                    <div className="relative bg-white rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-200 p-8">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-slate-50 rounded-xl p-4">
+                                <Calculator className="h-8 w-8 text-primary mb-2" />
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Estimation</p>
+                                <p className="text-2xl font-bold text-foreground">Instant</p>
                             </div>
-                            <span className="text-blue-100 font-bold uppercase tracking-[0.3em] text-sm">Strategic Planning</span>
+                            <div className="bg-slate-50 rounded-xl p-4">
+                                <Calendar className="h-8 w-8 text-primary mb-2" />
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Timeline</p>
+                                <p className="text-2xl font-bold text-foreground">Clear</p>
+                            </div>
+                            <div className="bg-slate-50 rounded-xl p-4">
+                                <DollarSign className="h-8 w-8 text-primary mb-2" />
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Budget</p>
+                                <p className="text-2xl font-bold text-foreground">Accurate</p>
+                            </div>
+                            <div className="bg-slate-50 rounded-xl p-4">
+                                <Target className="h-8 w-8 text-primary mb-2" />
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Planning</p>
+                                <p className="text-2xl font-bold text-foreground">Strategic</p>
+                            </div>
                         </div>
-                        <h1 className="text-5xl md:text-8xl font-black tracking-tight text-white mb-6 drop-shadow-2xl">
-                            Blueprint & <span className="text-blue-200 italic">Budget Planner</span>
-                        </h1>
-                        <p className="text-xl text-blue-50 leading-relaxed max-w-2xl font-medium">
-                            Plan your digital transformation with precision. Select the modules and services 
-                            your business needs to get an instant cost and timeline estimation.
-                        </p>
                     </div>
-                </div>
+                }
+                variant="split-image"
+            />
 
-                {/* Modern Wavy Divider */}
-                <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
-                    <svg className="relative block w-[calc(100%+1.3px)] h-[80px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5,73.84-4.36,147.54,16.88,218.2,35.26,69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-1.11,1200,0V120H0Z" fill="#ffffff"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <div className="relative z-20 mx-auto max-w-7xl px-6 pb-24 -mt-16">
+            <div className="relative z-20 mx-auto max-w-7xl px-6 pb-24">
                 <div className="absolute inset-0 bg-grid-slate-100/50 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
                 <ImplementationEstimator />
             </div>

@@ -1,1 +1,26 @@
-[]
+[
+    {
+        "id": "sub_1788340097951_zkdz9tb1s",
+        "blueprintId": "bp_digital_accounting",
+        "customerName": "ghjg",
+        "phoneNumber": "908668877",
+        "email": "outreach@meritadvisory.so",
+        "companyName": "jikjk",
+        "numEmployees": "9",
+        "numBranches": "87",
+        "cities": "i8",
+        "interest": "Digital Accounting",
+        "managementIndustry": "manufacturing",
+        "currentSystem": "existing",
+        "briefNeed": "hjhjhgjhgjhgghj",
+        "type": "questionnaire",
+        "blueprintData": {
+            "id": "bp_digital_accounting",
+            "name": "Digital Accounting System",
+            "category": "Accounting",
+            "price": 3500,
+            "currency": "USD"
+        },
+        "submittedAt": "2026-09-02T09:08:17.951Z"
+    }
+]

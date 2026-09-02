@@ -46,6 +46,7 @@ export async function POST(request: Request) {
         currentLeads.unshift(leadWithMeta)
         fs.writeFileSync(DATA_PATH, JSON.stringify(currentLeads, null, 2))
 
+        console.log("Lead saved successfully:", leadWithMeta)
         return NextResponse.json({ success: true, lead: leadWithMeta })
     } catch (error) {
         console.error("Failed to save lead:", error)
@@ -56,7 +57,7 @@ export async function POST(request: Request) {
 // For updating lead status (e.g. marking as read/handled)
 export async function PUT(request: Request) {
     try {
-        const { id, status } = await request.json()
+        const { id, status, isShortlisted } = await request.json()
         
         if (!fs.existsSync(DATA_PATH)) {
             return NextResponse.json({ error: "No leads found" }, { status: 404 })
@@ -66,12 +67,13 @@ export async function PUT(request: Request) {
         let currentLeads = JSON.parse(fileContent)
         
         currentLeads = currentLeads.map((l: any) => 
-            l.id === id ? { ...l, status } : l
+            l.id === id ? { ...l, ...(status && { status }), ...(isShortlisted !== undefined && { isShortlisted }) } : l
         )
 
         fs.writeFileSync(DATA_PATH, JSON.stringify(currentLeads, null, 2))
         return NextResponse.json({ success: true })
     } catch (error) {
+        console.error("Failed to update lead:", error)
         return NextResponse.json({ error: "Failed to update lead" }, { status: 500 })
     }
 }

@@ -4,7 +4,9 @@ import { Services } from "@/components/services"
 import { ProductShowcase } from "@/components/product-showcase"
 import { SolvingStages } from "@/components/solving-stages"
 import { CTASection } from "@/components/cta-section"
-import { Badge } from "@/components/ui/badge"
+import { InternalPageHero } from "@/components/internal-page-hero"
+import { iconMap } from "@/lib/icon-map"
+import { servicesDetail } from "@/lib/services-data"
 
 export const metadata = {
     title: "Our Services & Expertise | Merit Advisory Somalia",
@@ -16,26 +18,33 @@ export default function ServicesPage() {
         <div className="flex min-h-screen flex-col bg-background">
             <Navbar />
             <main className="flex-1">
-                {/* Hero Section */}
-                <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
-                    <div className="absolute inset-0 z-0">
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/5" />
-                        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
-                    </div>
-                    
-                    <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
-                        <Badge variant="outline" className="mb-4 border-primary/20 bg-primary/5 text-primary">
-                            Solutions Portfolio
-                        </Badge>
-                        <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-                            World-Class <span className="text-primary italic">Expertise</span>
-                        </h1>
-                        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-                            Empowering organizations with high-end digital engineering, strategic ERP implementations, and comprehensive advisory services.
-                        </p>
-                    </div>
-                </section>
-
+                <InternalPageHero
+                    badge="Our Services"
+                    title="Comprehensive Services for Your Business Growth"
+                    description="Empowering organizations with high-end digital engineering, strategic ERP implementations, and comprehensive advisory services tailored to your unique needs."
+                    primaryCTA={{
+                        label: "View All Services",
+                        href: "#services"
+                    }}
+                    visual={
+                        <div className="relative bg-white rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-200 p-6">
+                            <div className="grid grid-cols-2 gap-3">
+                                {servicesDetail.slice(0, 6).map((service) => {
+                                    const ServiceIcon = iconMap[service.iconName]
+                                    return (
+                                        <div key={service.slug} className="bg-slate-50 rounded-xl p-3 hover:bg-primary/5 transition-colors">
+                                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary mb-2">
+                                                {ServiceIcon && <ServiceIcon className="h-4 w-4" />}
+                                            </div>
+                                            <p className="text-xs font-semibold text-foreground line-clamp-2">{service.title}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    }
+                    variant="split-image"
+                />
                 <div className="bg-background">
                     <Services />
                     <ProductShowcase />

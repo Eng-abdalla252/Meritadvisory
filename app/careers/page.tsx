@@ -3,10 +3,11 @@
 import * as React from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { InternalPageHero } from "@/components/internal-page-hero"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Search, MapPin, Briefcase, ArrowRight, Loader2, ChevronDown } from "lucide-react"
+import { Search, MapPin, Briefcase, ArrowRight, Loader2, ChevronDown, Users, Building2, TrendingUp } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 
@@ -53,10 +54,45 @@ export default function CareersPage() {
         <div className="flex min-h-screen flex-col bg-white">
             <Navbar />
             
-            <main className="flex-1 pt-32 pb-24">
-                <div className="mx-auto max-w-7xl px-6">
-                    <h1 className="text-5xl font-bold text-center text-slate-800 mb-16">View Current Openings</h1>
+            <main className="flex-1">
+                <InternalPageHero
+                    badge="Join Our Team"
+                    title="Build Your Future With Merit"
+                    description="Join a team of innovators, strategists, and technologists driving digital transformation across Africa. Grow your career while making a real impact."
+                    primaryCTA={{
+                        label: "View Open Positions",
+                        href: "#jobs"
+                    }}
+                    visual={
+                        <div className="relative bg-white rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-200 p-8">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Users className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Team</p>
+                                    <p className="text-2xl font-bold text-foreground">50+</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Building2 className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Locations</p>
+                                    <p className="text-2xl font-bold text-foreground">Global</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <TrendingUp className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Growth</p>
+                                    <p className="text-2xl font-bold text-foreground">Fast</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Briefcase className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Culture</p>
+                                    <p className="text-2xl font-bold text-foreground">Dynamic</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    variant="split-image"
+                />
 
+                <div className="mx-auto max-w-7xl px-6 py-16">
                     {/* Search & Filter Bar */}
                     <Card className="p-8 rounded-2xl shadow-xl shadow-slate-100 border-slate-100 mb-16 bg-white">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">

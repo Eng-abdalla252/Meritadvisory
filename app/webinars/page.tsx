@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { InternalPageHero } from "@/components/internal-page-hero"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -58,42 +59,43 @@ export default function WebinarsPage() {
         <div className="flex min-h-screen flex-col bg-white">
             <Navbar />
             
-            <main className="flex-1 pt-32 pb-20">
-                {/* Hero Section */}
-                <section className="relative mb-16 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#0f2a5e] to-[#1e4e8c] -z-10">
-                        <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-transparent opacity-50" />
-                        <div className="absolute inset-0 bg-[url('https://www.ksolves.com/static/images/webinar-bg.png')] bg-cover bg-center opacity-20" />
-                    </div>
-                    <div className="mx-auto max-w-7xl px-6 py-20 text-center">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] mb-6 backdrop-blur-md border border-red-500/20"
-                        >
-                            <Video className="h-4 w-4" />
-                            Merit Knowledge Series
-                        </motion.div>
-                        <motion.h1 
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="text-4xl md:text-6xl font-black text-white tracking-tight mb-6"
-                        >
-                            Webinars
-                        </motion.h1>
-                        <motion.p 
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className="text-lg text-slate-300 font-medium max-w-3xl mx-auto leading-relaxed"
-                        >
-                            Explore our webinars to learn how modern technologies, like Odoo ERP, AI, and Big Data, 
-                            are transforming businesses. Led by industry experts, our sessions offer a mix of 
-                            thought leadership and technical walkthroughs.
-                        </motion.p>
-                    </div>
-                </section>
+            <main className="flex-1">
+                <InternalPageHero
+                    badge="Webinars & Events"
+                    title="Learn. Connect. Grow."
+                    description="Explore our webinars to learn how modern technologies, like Odoo ERP, AI, and Big Data, are transforming businesses. Led by industry experts, our sessions offer a mix of thought leadership and technical walkthroughs."
+                    primaryCTA={{
+                        label: "Explore Webinars",
+                        href: "#webinars"
+                    }}
+                    visual={
+                        <div className="relative bg-white rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-200 p-8">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Video className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Sessions</p>
+                                    <p className="text-2xl font-bold text-foreground">50+</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Calendar className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Monthly</p>
+                                    <p className="text-2xl font-bold text-foreground">Live</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <User className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Experts</p>
+                                    <p className="text-2xl font-bold text-foreground">Industry</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Star className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Topics</p>
+                                    <p className="text-2xl font-bold text-foreground">ERP & AI</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    variant="split-image"
+                />
 
                 <div className="mx-auto max-w-7xl px-6">
                     {/* Tabs */}

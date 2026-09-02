@@ -3,10 +3,13 @@
 import * as React from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { Badge } from "@/components/ui/badge"
+import { InternalPageHero } from "@/components/internal-page-hero"
 import { Card } from "@/components/ui/card"
 import {
   Star,
+  BookOpen,
+  FileText,
+  TrendingUp,
 } from "lucide-react"
 import { motion } from "framer-motion"
 
@@ -84,40 +87,45 @@ export default function SuccessStoriesPage() {
     <div className="flex min-h-screen flex-col bg-white">
       <Navbar />
 
-      <main className="flex-1 pt-32 pb-24">
-        {/* Hero Section */}
-        <section className="relative mb-16 overflow-hidden">
-          <div className="absolute inset-0 bg-slate-50 -z-10" />
-          <div className="mx-auto max-w-7xl px-6 py-16 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#b22222]/10 text-[#b22222] font-black text-[10px] uppercase tracking-[0.2em] mb-6"
-            >
-              <Star className="h-4 w-4 fill-current" />
-              Success Stories
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6"
-            >
-              Real stories of transformation and <br />
-              <span className="text-[#b22222]">empowerment</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-lg text-slate-500 font-medium max-w-3xl mx-auto"
-            >
-              Discover how Merit Advisory partners with individuals and businesses to deliver transformative financial solutions and strategic advisory.
-            </motion.p>
-          </div>
-        </section>
+      <main className="flex-1">
+        <InternalPageHero
+          badge="Insights & Knowledge"
+          title="Insights That Inspire and Inform"
+          description="Discover how Merit Advisory partners with individuals and businesses to deliver transformative financial solutions and strategic advisory."
+          primaryCTA={{
+            label: "Explore Insights",
+            href: "#stories"
+          }}
+          visual={
+            <div className="relative bg-white rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-200 p-8">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-slate-50 rounded-xl p-4 hover:bg-primary/5 transition-colors">
+                  <BookOpen className="h-8 w-8 text-primary mb-2" />
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Articles</p>
+                  <p className="text-sm text-foreground mt-1">Industry Analysis</p>
+                </div>
+                <div className="bg-slate-50 rounded-xl p-4 hover:bg-primary/5 transition-colors">
+                  <FileText className="h-8 w-8 text-primary mb-2" />
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Reports</p>
+                  <p className="text-sm text-foreground mt-1">Research Papers</p>
+                </div>
+                <div className="bg-slate-50 rounded-xl p-4 hover:bg-primary/5 transition-colors">
+                  <TrendingUp className="h-8 w-8 text-primary mb-2" />
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Case Studies</p>
+                  <p className="text-sm text-foreground mt-1">Success Stories</p>
+                </div>
+                <div className="bg-slate-50 rounded-xl p-4 hover:bg-primary/5 transition-colors">
+                  <Star className="h-8 w-8 text-primary mb-2" />
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">News</p>
+                  <p className="text-sm text-foreground mt-1">Latest Updates</p>
+                </div>
+              </div>
+            </div>
+          }
+          variant="split-image"
+        />
 
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl px-6 py-16">
           {/* Success Stories List */}
           <div className="space-y-12">
             {stories.map((story, i) => (

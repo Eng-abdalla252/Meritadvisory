@@ -441,13 +441,11 @@ export default function ProjectQuestionnaireForm() {
                                                 className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                             >
                                                 {[
-                                                    "Digital Accounting",
-                                                    "Management System (Product)",
-                                                    "Audit & Assurance",
-                                                    "Training",
-                                                    "NGO",
-                                                    "General Trade",
-                                                    "Hospitality",
+                                                    "ACCOUNTING, TAX & FINANCIAL MANAGEMENT",
+                                                    "AUDIT AND ASSURENCE",
+                                                    "TECHNOLOGY & DIGITAL SOLUTIONS",
+                                                    "CONSULTING, ADVISORY & RESEARCH",
+                                                    "TRAINING AND CAPACITY BUILDING",
                                                 ].map((option) => (
                                                     <FormItem key={option} className="flex items-center space-x-3 space-y-0 rounded-md border p-4 bg-background transition-colors hover:bg-muted/50">
                                                         <FormControl>
@@ -478,12 +476,27 @@ export default function ProjectQuestionnaireForm() {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="retail">Retail</SelectItem>
-                                                <SelectItem value="manufacturing">Manufacturing</SelectItem>
-                                                <SelectItem value="healthcare">Healthcare</SelectItem>
-                                                <SelectItem value="finance">Financial Services</SelectItem>
-                                                <SelectItem value="logistics">Logistics</SelectItem>
-                                                <SelectItem value="other">Other</SelectItem>
+                                                <SelectItem value="retail">BUSINESS & CORPORATE MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="manufacturing">HOSPITAL MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="healthcare">DENTAL MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="finance">OPHTHALMOLOGY & EYE CARE MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="logistics">GYNECOLOGY & MATERNITY MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">EDUCATION  MANAGEMENT SYSTEM </SelectItem>
+                                                <SelectItem value="other">CONSTRUCTION, PROPERTY & REAL ESTATE MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">MICROFINANCE & COOPERATIVE MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">INSURANCE MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">PUBLIC FINANCE MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">NGO & DEVELOPMENT PROGRAMME MANAGEMENT </SelectItem>
+                                                <SelectItem value="other">TRAVEL AGENCY MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">AIRLINE MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">TRANSPORTATION & FLEET MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">LOGISTICS & SUPPLY CHAIN MANAGEMENT </SelectItem>
+                                                <SelectItem value="other">HOTEL MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">RESTAURANT MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">ENERGY & RENEWABLE ENERGY MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">FUEL  MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">UTILITY MANAGEMENT SYSTEM</SelectItem>
+                                                <SelectItem value="other">HUMAN RESOURCES MANAGEMENT SYSTEM</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />

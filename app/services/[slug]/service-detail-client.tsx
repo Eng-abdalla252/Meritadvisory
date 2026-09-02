@@ -1,6 +1,8 @@
 "use client"
 
+import * as React from "react"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
+import { InternalPageHero } from "@/components/internal-page-hero"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -14,11 +16,15 @@ import {
     Zap,
     Shield,
     Target,
+    FileText,
+    Download,
+    BookOpen,
 } from "lucide-react"
 import Link from "next/link"
 import { iconMap } from "@/lib/icon-map"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { PDFViewer } from "@/components/pdf-viewer"
 
 interface ServiceDetail {
     slug: string
@@ -38,142 +44,94 @@ interface ServiceDetailClientProps {
     related: ServiceDetail[]
 }
 
+interface Document {
+  id: string
+  title: string
+  description: string
+  category: string
+  fileType: string
+  fileSize: string
+  thumbnail: string
+  fileUrl: string
+  serviceId: string | null
+  featured: boolean
+}
+
 export function ServiceDetailClient({ service, related }: ServiceDetailClientProps) {
-    const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation()
     const { ref: benefitsRef, isVisible: benefitsVisible } = useScrollAnimation()
     const { ref: approachRef, isVisible: approachVisible } = useScrollAnimation()
     const { ref: techRef, isVisible: techVisible } = useScrollAnimation()
     const { ref: statsRef, isVisible: statsVisible } = useScrollAnimation()
     const { ref: relatedRef, isVisible: relatedVisible } = useScrollAnimation()
+    const { ref: docsRef, isVisible: docsVisible } = useScrollAnimation()
 
     const Icon = iconMap[service.iconName] || Target
+    const [relatedDocuments, setRelatedDocuments] = React.useState<Document[]>([])
+    const [pdfViewer, setPdfViewer] = React.useState<{
+        isOpen: boolean
+        documentUrl: string
+        documentTitle: string
+    }>({ isOpen: false, documentUrl: "", documentTitle: "" })
+
+    React.useEffect(() => {
+        fetch("/data/documents.json")
+            .then(res => res.json())
+            .then((data: Document[]) => {
+                // Filter documents that match this service's slug
+                const serviceDocs = data.filter(doc => doc.serviceId === service.slug)
+                setRelatedDocuments(serviceDocs)
+            })
+            .catch(() => {})
+    }, [service.slug])
+
+    const handleReadDocument = (doc: Document) => {
+        setPdfViewer({
+            isOpen: true,
+            documentUrl: doc.fileUrl,
+            documentTitle: doc.title,
+        })
+    }
+
+    const handleDownload = (doc: Document) => {
+        const link = document.createElement("a")
+        link.href = doc.fileUrl
+        link.download = doc.title
+        link.target = "_blank"
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+    }
 
     return (
         <div className="min-h-screen bg-background">
             <Navbar />
-            {/* Hero Section */}
-            <section className="relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-32 min-h-[60vh] flex flex-col justify-center">
-                {/* Background Image with Overlay */}
-                <div className="absolute inset-0 z-0">
-                    <img 
-                        src={service.imageUrl || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"} 
-                        alt={service.title}
-                        className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
-                </div>
-                
-                <div ref={heroRef} className="relative z-10 mx-auto w-full max-w-7xl px-6">
-                    <Button
-                        variant="ghost"
-                        asChild
-                        className="mb-8 pl-0 text-white/70 hover:bg-transparent hover:text-white transition-colors"
-                    >
-                        <Link href="/" className="flex items-center gap-2 text-muted-foreground">
-                            <ArrowLeft className="h-4 w-4" />
-                            Back to Home
-                        </Link>
-                    </Button>
-
-                    <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-                        <div>
-                            <div
-                                className={`inline-flex items-center gap-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 text-white transition-all duration-600 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                                    }`}
-                            >
-                                <Icon className="h-5 w-5" />
-                                <span className="text-sm font-semibold">{service.title}</span>
-                            </div>
-
-                            <h1
-                                className={`mt-6 text-4xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl transition-all duration-600 delay-100 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                                    }`}
-                            >
-                                {service.subtitle}
-                            </h1>
-
-                            <p
-                                className={`mt-6 text-lg text-white/80 leading-relaxed transition-all duration-600 delay-200 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                                    }`}
-                            >
-                                {service.heroDescription}
-                            </p>
-
-                            <div
-                                className={`mt-8 flex flex-wrap gap-4 transition-all duration-600 delay-300 ${heroVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                                    }`}
-                            >
-                                <Button size="lg" className="group rounded-full bg-accent text-white hover:bg-accent/90 border-none" asChild>
-                                    <Link href="https://wa.me/16725723750" target="_blank" rel="noopener noreferrer">
-                                        Get Started
-                                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                    </Link>
-                                </Button>
-                                <Button size="lg" variant="outline" className="rounded-full border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm" asChild>
-                                    <Link href="https://wa.me/16725723750" target="_blank" rel="noopener noreferrer">
-                                        Schedule Consultation
-                                    </Link>
-                                </Button>
-                            </div>
-                        </div>
-
-                        {/* Decorative Visualization */}
-                        <div
-                            className={`relative transition-all duration-1000 delay-400 ${heroVisible ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"
-                                }`}
-                        >
-                            <div className="relative aspect-square">
-                                {/* Central Icon */}
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="relative">
-                                        <div className="absolute inset-0 animate-ping-slow rounded-full bg-primary/20" />
-                                        <div className="relative flex h-32 w-32 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent shadow-2xl">
-                                            <Icon className="h-16 w-16 text-primary-foreground" />
-                                        </div>
-                                    </div>
+            <InternalPageHero
+                badge={service.title}
+                title={service.subtitle}
+                description={service.heroDescription}
+                primaryCTA={{
+                    label: "Get Started",
+                    href: "https://wa.me/16725723750"
+                }}
+                secondaryCTA={{
+                    label: "Schedule Consultation",
+                    href: "https://wa.me/16725723750"
+                }}
+                visual={
+                    <div className="relative bg-white rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-200 p-8">
+                        <div className="grid grid-cols-2 gap-4">
+                            {service.stats.slice(0, 4).map((stat, i) => (
+                                <div key={i} className="bg-slate-50 rounded-xl p-4">
+                                    <TrendingUp className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{stat.label}</p>
+                                    <p className="text-2xl font-bold text-foreground">{stat.value}</p>
                                 </div>
-
-                                {/* Orbiting Benefits */}
-                                {[
-                                    { icon: CheckCircle2, label: "Quality", angle: 0 },
-                                    { icon: Zap, label: "Speed", angle: 60 },
-                                    { icon: Shield, label: "Security", angle: 120 },
-                                    { icon: Target, label: "Precision", angle: 180 },
-                                    { icon: Award, label: "Excellence", angle: 240 },
-                                    { icon: Users, label: "Support", angle: 300 },
-                                ].map((item, i) => {
-                                    const OrbitIcon = item.icon
-                                    const radius = 180
-                                    const x = Math.round(Math.cos((item.angle * Math.PI) / 180) * radius * 100) / 100
-                                    const y = Math.round(Math.sin((item.angle * Math.PI) / 180) * radius * 100) / 100
-
-                                    return (
-                                        <div
-                                            key={i}
-                                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                                            style={{
-                                                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                                                animation: `float ${3 + i * 0.5}s ease-in-out infinite`,
-                                                animationDelay: `${i * 0.2}s`,
-                                            }}
-                                        >
-                                            <div className="group relative">
-                                                <div className="absolute inset-0 rounded-full bg-accent/20 blur-xl transition-all group-hover:bg-accent/40" />
-                                                <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-accent/30 bg-background shadow-lg">
-                                                    <OrbitIcon className="h-7 w-7 text-accent" />
-                                                </div>
-                                                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-medium text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100">
-                                                    {item.label}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
+                            ))}
                         </div>
                     </div>
-                </div>
-            </section>
+                }
+                variant="split-image"
+            />
 
             {/* Stats Section */}
             <section ref={statsRef} className="border-y bg-card py-12">
@@ -396,8 +354,89 @@ export function ServiceDetailClient({ service, related }: ServiceDetailClientPro
                 </section>
             )}
 
+            {/* Related Documents & Resources */}
+            {relatedDocuments.length > 0 && (
+                <section ref={docsRef} className="py-20 md:py-32 bg-card/50">
+                    <div className="mx-auto max-w-7xl px-6">
+                        <div className="mx-auto max-w-2xl text-center">
+                            <h2
+                                className={`text-3xl font-bold text-foreground md:text-4xl transition-all duration-600 ${docsVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                                    }`}
+                            >
+                                Related Documents & Resources
+                            </h2>
+                            <p
+                                className={`mt-4 text-lg text-muted-foreground transition-all duration-600 delay-100 ${docsVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                                    }`}
+                            >
+                                Download brochures, capability statements, and resources specific to {service.title.toLowerCase()}
+                            </p>
+                        </div>
+
+                        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {relatedDocuments.map((doc, i) => (
+                                <Card
+                                    key={doc.id}
+                                    className={`group relative overflow-hidden border-border bg-card transition-all duration-600 hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/20 rounded-2xl ${docsVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
+                                    style={{ transitionDelay: `${i * 80}ms` }}
+                                >
+                                    <CardContent className="p-6">
+                                        <div className="flex items-start gap-4">
+                                            <div className="flex-shrink-0">
+                                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                                                    <FileText className="h-6 w-6" />
+                                                </div>
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className="text-base font-bold text-foreground mb-2 line-clamp-2">
+                                                    {doc.title}
+                                                </h3>
+                                                <p className="text-sm text-muted-foreground mb-3 line-clamp-2 leading-relaxed">
+                                                    {doc.description}
+                                                </p>
+                                                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
+                                                    <span className="font-medium">{doc.fileType}</span>
+                                                    <span>•</span>
+                                                    <span>{doc.fileSize}</span>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <Button
+                                                        size="sm"
+                                                        className="flex-1 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-xs"
+                                                        onClick={() => handleReadDocument(doc)}
+                                                    >
+                                                        <BookOpen className="h-3.5 w-3.5 mr-1.5" />
+                                                        Read
+                                                    </Button>
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="rounded-lg border-border hover:bg-accent/10 text-xs"
+                                                        onClick={() => handleDownload(doc)}
+                                                    >
+                                                        <Download className="h-3.5 w-3.5" />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             <Footer />
+
+            {/* PDF Viewer Modal */}
+            <PDFViewer
+                isOpen={pdfViewer.isOpen}
+                onClose={() => setPdfViewer({ isOpen: false, documentUrl: "", documentTitle: "" })}
+                documentUrl={pdfViewer.documentUrl}
+                documentTitle={pdfViewer.documentTitle}
+            />
         </div>
     )
 }

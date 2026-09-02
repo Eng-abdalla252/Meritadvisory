@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Phone, ChevronDown, ArrowRight } from "lucide-react"
+import { Menu, X, Phone, ChevronDown, ArrowRight, Rocket } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import {
@@ -16,6 +16,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
+import { iconMap } from "@/lib/icon-map"
 import { servicesDetail } from "@/lib/services-data"
 
 const navLinks = [
@@ -24,36 +25,36 @@ const navLinks = [
     label: "Solutions",
     href: "/solutions",
     items: [
-      { label: "Enterprise ERP Platforms", href: "/solutions/enterprise-erp-platforms", description: "SAP, Oracle, Odoo, and more expert implementations." },
-      { label: "Intelligent Automation", href: "/solutions/intelligent-automation", description: "RPA and AI-powered workflows for efficiency." },
-      { label: "Advanced Analytics", href: "/solutions/advanced-analytics", description: "Data-driven insights and BI dashboards." },
-      { label: "System Integrations", href: "/solutions/system-integrations", description: "Seamlessly connecting your technology ecosystem." },
+      { label: "Enterprise ERP Platforms", href: "/solutions/enterprise-erp-platforms" },
+      { label: "Intelligent Automation", href: "/solutions/intelligent-automation" },
+      { label: "Advanced Analytics", href: "/solutions/advanced-analytics" },
+      { label: "System Integrations", href: "/solutions/system-integrations" },
     ],
   },
   {
     label: "Industries",
     href: "/industries",
     items: [
-      { label: "Manufacturing", href: "/industries/manufacturing", description: "Production, inventory, and supply chain optimization." },
-      { label: "Financial Services", href: "/industries/financial-services", description: "Regulatory compliance and risk management." },
-      { label: "Healthcare", href: "/industries/healthcare", description: "Compliant systems for patient and operations." },
-      { label: "Retail & E-Commerce", href: "/industries/retail-ecommerce", description: "Omnichannel commerce and integrated POS." },
+      { label: "Manufacturing", href: "/industries/manufacturing" },
+      { label: "Financial Services", href: "/industries/financial-services" },
+      { label: "Healthcare", href: "/industries/healthcare" },
+      { label: "Retail & E-Commerce", href: "/industries/retail-ecommerce" },
     ],
   },
   {
     label: "Insights",
     href: "#",
     items: [
+      { label: "News & Updates", href: "/success-stories" },
+      { label: "Company Profile", href: "/profile" },
       { label: "Case Studies", href: "/case-studies" },
-      { label: "Success Stories", href: "/success-stories" },
       { label: "Webinars", href: "/webinars" },
       { label: "Our Team", href: "/team" },
       { label: "Our Clients", href: "/clients" },
-      { label: "Blueprint & Budget Planner", href: "/estimator", description: "Get a strategic cost and timeline breakdown for your ERP project." },
+      { label: "Blueprint & Budget Planner", href: "/estimator" },
       { label: "Project Questionnaire", href: "/questionnaire" },
-      { label: "Blog", href: "/blog" },
       { label: "Careers", href: "/careers" },
-      { label: "🎓 Internship Program", href: "/careers/internship", description: "6-month free program for fresh graduates. Apply now!" },
+      { label: "🎓 Internship Program", href: "/careers/internship" },
     ],
   },
   { label: "Contact", href: "/#contact" },
@@ -93,10 +94,7 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-        ? "bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20 text-foreground"
-        : "bg-transparent text-foreground"
-        }`}
+      className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-border text-foreground"
     >
       {/* Top bar */}
       <div
@@ -153,25 +151,35 @@ export function Navbar() {
                   Services
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {servicesDetail.map((service) => (
-                      <ListItem
-                        key={service.slug}
-                        title={service.title}
-                        href={`/services/${service.slug}`}
-                      >
-                        {service.subtitle}
-                      </ListItem>
-                    ))}
-                    <li className="col-span-full pt-4 mt-2 border-t border-border">
-                        <Link 
-                            href="/services" 
-                            className="flex items-center justify-center gap-2 text-sm font-bold text-primary hover:text-accent transition-colors"
+                  <div className="grid w-[400px] gap-3 p-5 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white rounded-xl shadow-xl border border-slate-200">
+                    {servicesDetail.map((service) => {
+                      const ServiceIcon = iconMap[service.iconName] || Rocket
+                      return (
+                        <Link
+                          key={service.slug}
+                          href={`/services/${service.slug}`}
+                          className="group flex items-start gap-3 p-4 rounded-lg border border-slate-200 bg-slate-50/50 hover:border-primary/50 hover:bg-primary/5 hover:shadow-md transition-all duration-200"
                         >
-                            View All Services & Expertise <ArrowRight className="h-4 w-4" />
+                          <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                            <ServiceIcon className="h-5 w-5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                              {service.title}
+                            </div>
+                          </div>
                         </Link>
-                    </li>
-                  </ul>
+                      )
+                    })}
+                    <div className="col-span-full pt-4 mt-2 border-t border-slate-200">
+                      <Link 
+                        href="/services" 
+                        className="flex items-center justify-center gap-2 text-sm font-bold text-primary hover:text-accent transition-colors group"
+                      >
+                        View All Services & Expertise <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    </div>
+                  </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -193,17 +201,15 @@ export function Navbar() {
                       <NavigationMenuContent>
                         <ul className={cn(
                           "gap-2 p-2",
-                          link.label === "Insights" ? "w-[240px] flex flex-col" : "w-[400px] grid md:w-[500px] md:grid-cols-2 lg:w-[600px]"
+                          (link.label === "Insights" || link.label === "Solutions" || link.label === "Industries") ? "w-[240px] flex flex-col" : "w-[400px] grid md:w-[500px] md:grid-cols-2 lg:w-[600px]"
                         )}>
                           {link.items.map((subItem: any) => (
                             <ListItem
                               key={subItem.label}
                               title={subItem.label}
                               href={subItem.href}
-                              className={cn(link.label === "Insights" && "p-2")}
-                            >
-                              {subItem.description}
-                            </ListItem>
+                              className={cn((link.label === "Insights" || link.label === "Solutions" || link.label === "Industries") && "p-2")}
+                            />
                           ))}
                         </ul>
                       </NavigationMenuContent>
@@ -275,23 +281,29 @@ export function Navbar() {
               </button>
 
               {mobileServicesOpen && (
-                <div className="ml-4 flex flex-col space-y-3 border-l-2 border-border pl-4">
-                  {servicesDetail.map((service) => (
-                    <Link
-                      key={service.slug}
-                      href={`/services/${service.slug}`}
-                      onClick={() => setMobileOpen(false)}
-                      className="text-sm font-medium text-muted-foreground hover:text-primary"
-                    >
-                      {service.title}
-                    </Link>
-                  ))}
+                <div className="ml-4 flex flex-col space-y-2 border-l-2 border-border pl-4">
+                  {servicesDetail.map((service) => {
+                    const ServiceIcon = iconMap[service.iconName] || Rocket
+                    return (
+                      <Link
+                        key={service.slug}
+                        href={`/services/${service.slug}`}
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50/50 hover:border-primary/50 hover:bg-primary/5 transition-all"
+                      >
+                        <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                          <ServiceIcon className="h-4 w-4" />
+                        </div>
+                        <span className="text-sm font-medium text-foreground">{service.title}</span>
+                      </Link>
+                    )
+                  })}
                   <Link
                     href="/services"
                     onClick={() => setMobileOpen(false)}
-                    className="text-sm font-bold text-primary pt-2 border-t border-border"
+                    className="flex items-center justify-center gap-2 text-sm font-bold text-primary pt-3 border-t border-border mt-2"
                   >
-                    View All Services & Expertise
+                    View All Services & Expertise <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               )}
@@ -376,7 +388,7 @@ export function Navbar() {
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+>(({ className, title, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
@@ -384,17 +396,12 @@ const ListItem = React.forwardRef<
           href={props.href || "#"}
           ref={ref as any}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 hover:text-accent-foreground focus:bg-accent/10 focus:text-accent-foreground",
+            "block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent/10 hover:text-accent-foreground focus:bg-accent/10 focus:text-accent-foreground",
             className
           )}
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-          {children && (
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground mt-1">
-              {children}
-            </p>
-          )}
         </Link>
       </NavigationMenuLink>
     </li>

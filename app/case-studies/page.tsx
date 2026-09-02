@@ -2,7 +2,8 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { CaseStudies } from "@/components/case-studies"
 import { Projects } from "@/components/projects"
-import { Badge } from "@/components/ui/badge"
+import { InternalPageHero } from "@/components/internal-page-hero"
+import { BarChart3, TrendingUp, Target, Award } from "lucide-react"
 
 export const metadata = {
     title: "Insights | Merit Advisory Somalia",
@@ -14,30 +15,42 @@ export default function CaseStudiesPage() {
         <div className="flex min-h-screen flex-col bg-background">
             <Navbar />
             <main className="flex-1">
-                {/* Hero Section with Background Image */}
-                <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32">
-                    <div className="absolute inset-0 z-0">
-                        <img 
-                            src="/hero-images/1.jpg" 
-                            alt="Merit Advisory Base"
-                            className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
-                    </div>
-
-                    <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
-                        <Badge variant="outline" className="mb-4 border-accent/20 bg-accent/5 text-accent backdrop-blur-sm">
-                            Proven Excellence
-                        </Badge>
-                        <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-7xl">
-                            Insights & Success
-                        </h1>
-                        <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80 leading-relaxed">
-                            Discover how Merit Advisory is driving the digital revolution in Somalia, helping organizations overcome complex challenges and achieve sustainable growth.
-                        </p>
-                    </div>
-                </section>
-
+                <InternalPageHero
+                    badge="Case Studies"
+                    title="Real Solutions. Measurable Results."
+                    description="Discover how Merit Advisory is driving the digital revolution in Somalia, helping organizations overcome complex challenges and achieve sustainable growth."
+                    primaryCTA={{
+                        label: "Explore Case Studies",
+                        href: "#cases"
+                    }}
+                    visual={
+                        <div className="relative bg-white rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-200 p-8">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <BarChart3 className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Projects</p>
+                                    <p className="text-2xl font-bold text-foreground">200+</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <TrendingUp className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">ROI</p>
+                                    <p className="text-2xl font-bold text-foreground">3x Avg</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Target className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Success Rate</p>
+                                    <p className="text-2xl font-bold text-foreground">98%</p>
+                                </div>
+                                <div className="bg-slate-50 rounded-xl p-4">
+                                    <Award className="h-8 w-8 text-primary mb-2" />
+                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Impact</p>
+                                    <p className="text-2xl font-bold text-foreground">Global</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    variant="split-image"
+                />
                 <div className="bg-background">
                     <CaseStudies showHeader={false} />
                     <div className="border-t border-border">

@@ -107,30 +107,56 @@ export function Contact() {
     const formData = new FormData(e.currentTarget)
     const data = Object.fromEntries(formData.entries())
 
+    // Validate required fields
+    if (!data.firstName || !data.lastName || !data.email || !data.phone || !data.company || !data.message) {
+      toast.error("Please fill in all required fields.")
+      setIsSubmitting(false)
+      return
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(data.email as string)) {
+      toast.error("Please enter a valid email address.")
+      setIsSubmitting(false)
+      return
+    }
+
+    // Validate phone number (basic check)
+    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
+    if (!phoneRegex.test(data.phone as string)) {
+      toast.error("Please enter a valid phone number.")
+      setIsSubmitting(false)
+      return
+    }
+
     try {
       const response = await fetch("/api/admin/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...data,
-          type: "contact",
-          category: requestType,
-          customerName: `${data.firstName} ${data.lastName}`,
-          companyName: data.company,
+          type: requestType === "sales" ? "sales" : "support",
+          name: `${data.firstName} ${data.lastName}`,
+          email: data.email,
+          phone: data.phone,
+          company: data.company,
           message: data.message,
-          subject: `Website ${requestType === "sales" ? "Inquiry" : "Support Request"}`
+          subject: `Website ${requestType === "sales" ? "Inquiry" : "Support Request"}`,
+          source: "Website",
+          firstName: data.firstName,
+          lastName: data.lastName
         }),
       })
 
       if (response.ok) {
-        toast.success(requestType === "sales"
-          ? "Message sent to our Odoo Sales team!"
-          : "Support ticket created in our Odoo Helpdesk.")
-          ; (e.target as HTMLFormElement).reset()
+        toast.success("Your inquiry has been submitted successfully.")
+        ; (e.target as HTMLFormElement).reset()
       } else {
-        toast.error("Odoo connection error. Please try again later.")
+        const errorData = await response.json()
+        toast.error(errorData.error || "Unable to submit your inquiry. Please try again.")
       }
     } catch (error) {
+      console.error("Contact form submission error:", error)
       toast.error("Network error. Please try again.")
     } finally {
       setIsSubmitting(false)

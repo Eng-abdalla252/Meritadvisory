@@ -63,8 +63,8 @@ export default function SalesInquiryPage() {
             })
             
             if (res.ok) {
-                toast.success("Sales inquiry submitted successfully! Our sales team will contact you within 24 hours.")
-                router.push('/')
+                toast.success("Sales inquiry submitted successfully! Redirecting to dashboard...")
+                router.push('/admin/leads')
             } else {
                 const error = await res.json()
                 toast.error(error.message || "Failed to submit inquiry")
